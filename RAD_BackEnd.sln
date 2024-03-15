@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.Presentation", "RAD_BackEnd\RAD_BackEnd.Presentation.csproj", "{B9061473-59E6-496F-AA2F-27D8328F8A6F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.DataAccess", "RAD_BackEnd.DataAccess\RAD_BackEnd.DataAccess.csproj", "{CC5323C8-AF8E-42B4-B4D7-348DE5938E17}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.Domain", "RAD_BackEnd.Domain\RAD_BackEnd.Domain.csproj", "{5F71C508-14F0-43F9-B092-073F86170AE4}"
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B9061473-59E6-496F-AA2F-27D8328F8A6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9061473-59E6-496F-AA2F-27D8328F8A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9061473-59E6-496F-AA2F-27D8328F8A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9061473-59E6-496F-AA2F-27D8328F8A6F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC5323C8-AF8E-42B4-B4D7-348DE5938E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC5323C8-AF8E-42B4-B4D7-348DE5938E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC5323C8-AF8E-42B4-B4D7-348DE5938E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
