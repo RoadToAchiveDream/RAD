@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.DTOs", "RAD_Bac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.Services", "RAD_BackEnd.Services\RAD_BackEnd.Services.csproj", "{84092D7E-9CF3-469F-B94B-59AB547DC336}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.Presentation", "RAD_BackEnd.Presentation\RAD_BackEnd.Presentation.csproj", "{741BAB02-B127-4A77-9A69-8C1E1D062CFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.API", "RAD_BackEnd.API\RAD_BackEnd.API.csproj", "{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{84092D7E-9CF3-469F-B94B-59AB547DC336}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84092D7E-9CF3-469F-B94B-59AB547DC336}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84092D7E-9CF3-469F-B94B-59AB547DC336}.Release|Any CPU.Build.0 = Release|Any CPU
+		{741BAB02-B127-4A77-9A69-8C1E1D062CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{741BAB02-B127-4A77-9A69-8C1E1D062CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{741BAB02-B127-4A77-9A69-8C1E1D062CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{741BAB02-B127-4A77-9A69-8C1E1D062CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
