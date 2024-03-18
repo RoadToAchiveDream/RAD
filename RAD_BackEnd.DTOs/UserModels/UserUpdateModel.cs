@@ -1,4 +1,4 @@
-﻿namespace RAD_BackEnd.DTOs;
+﻿namespace RAD_BackEnd.DTOs.UserModels;
 public class UserUpdateModel
 {
 #pragma warning disable
