@@ -1,0 +1,19 @@
+﻿using RAD_BackEnd.Domain.Commons;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RAD_BackEnd.Domain.Entities;
+
+public class User:Auditable
+{
+#pragma warning disable
+    public string UserName { get; set; }
+    public string Password {  get; set; }
+    public string Email { get; set; }
+    public string FirstName {  get; set; }
+    public string LastName { get; set; }
+   
+}
