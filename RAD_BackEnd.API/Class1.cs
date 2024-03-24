@@ -1,7 +1,6 @@
-﻿namespace RAD_BackEnd.API
+﻿namespace RAD_BackEnd.API;
+public class Class1
 {
-    public class Class1
-    {
-
-    }
+    
 }
+
