@@ -1,7 +1,6 @@
-﻿namespace RAD_BackEnd.Services
-{
-    public class Class1
-    {
+﻿namespace RAD_BackEnd.Services;
 
-    }
+public class Class1
+{
+
 }
