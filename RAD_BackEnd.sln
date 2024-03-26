@@ -3,17 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.DataAccess", "RAD_BackEnd.DataAccess\RAD_BackEnd.DataAccess.csproj", "{CC5323C8-AF8E-42B4-B4D7-348DE5938E17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RAD_BackEnd.DataAccess", "RAD_BackEnd.DataAccess\RAD_BackEnd.DataAccess.csproj", "{CC5323C8-AF8E-42B4-B4D7-348DE5938E17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.Domain", "RAD_BackEnd.Domain\RAD_BackEnd.Domain.csproj", "{5F71C508-14F0-43F9-B092-073F86170AE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RAD_BackEnd.Domain", "RAD_BackEnd.Domain\RAD_BackEnd.Domain.csproj", "{5F71C508-14F0-43F9-B092-073F86170AE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.DTOs", "RAD_BackEnd.DTOs\RAD_BackEnd.DTOs.csproj", "{E28A4D0A-10D5-48D3-843C-05B93E4BDFA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RAD_BackEnd.DTOs", "RAD_BackEnd.DTOs\RAD_BackEnd.DTOs.csproj", "{E28A4D0A-10D5-48D3-843C-05B93E4BDFA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.Services", "RAD_BackEnd.Services\RAD_BackEnd.Services.csproj", "{84092D7E-9CF3-469F-B94B-59AB547DC336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RAD_BackEnd.Services", "RAD_BackEnd.Services\RAD_BackEnd.Services.csproj", "{84092D7E-9CF3-469F-B94B-59AB547DC336}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.Presentation", "RAD_BackEnd.Presentation\RAD_BackEnd.Presentation.csproj", "{741BAB02-B127-4A77-9A69-8C1E1D062CFB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD_BackEnd.API", "RAD_BackEnd.API\RAD_BackEnd.API.csproj", "{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RAD_BackEnd.Presentation", "RAD_BackEnd.Presentation\RAD_BackEnd.Presentation.csproj", "{741BAB02-B127-4A77-9A69-8C1E1D062CFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{741BAB02-B127-4A77-9A69-8C1E1D062CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{741BAB02-B127-4A77-9A69-8C1E1D062CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{741BAB02-B127-4A77-9A69-8C1E1D062CFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EACC30C-AE55-4D57-BE4F-F4AC041C572A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
