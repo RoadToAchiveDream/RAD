@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RAD_BackEnd.Services.Interfaces;
 
 namespace RAD_BackEnd.Services.Services;
 
-public class TaskService
+public class TaskService : ITaskService
 {
 }
