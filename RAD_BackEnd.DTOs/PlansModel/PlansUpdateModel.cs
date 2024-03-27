@@ -1,7 +1,6 @@
 ﻿namespace RAD_BackEnd.DTOs.PlansModel;
 public class PlansUpdateModel
 {
-#pragma warning disable
     public long Id { get; set; }
     public long UserId { get; set; }
     public string Title { get; set; }

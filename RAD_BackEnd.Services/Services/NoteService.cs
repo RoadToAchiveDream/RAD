@@ -1,5 +1,8 @@
-﻿namespace RAD_BackEnd.Services.Services;
-public class NoteService
+﻿using RAD_BackEnd.Services.Interfaces;
+
+namespace RAD_BackEnd.Services.Services;
+
+public class NoteService : INoteService
 {
 
 }

@@ -1,5 +1,7 @@
-﻿namespace RAD_BackEnd.Services.Services;
+﻿using RAD_BackEnd.Services.Interfaces;
 
-public class UserService
+namespace RAD_BackEnd.Services.Services;
+
+public class UserService : IUserService
 {
 }
