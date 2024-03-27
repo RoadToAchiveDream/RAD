@@ -1,6 +1,8 @@
-﻿namespace RAD_BackEnd.Services;
+﻿using RAD_BackEnd.Services.Interfaces;
 
-public class PlanService
+namespace RAD_BackEnd.Services;
+
+public class PlanService : IPlanService
 {
 }
 

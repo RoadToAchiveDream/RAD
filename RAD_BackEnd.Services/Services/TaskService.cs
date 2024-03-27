@@ -1,5 +1,7 @@
-﻿namespace RAD_BackEnd.Services.Services;
+﻿using RAD_BackEnd.Services.Interfaces;
 
-public class TaskService
+namespace RAD_BackEnd.Services.Services;
+
+public class TaskService : ITaskService
 {
 }
