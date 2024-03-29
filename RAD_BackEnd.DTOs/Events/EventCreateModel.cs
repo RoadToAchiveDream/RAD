@@ -1,5 +1,5 @@
 ﻿namespace RAD_BackEnd.DTOs.Events;
-public class EventCreateModel
+public record EventCreateModel
 {
     public long UserId { get; set; }
     public string Title { get; set; }
