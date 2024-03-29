@@ -1,15 +1,14 @@
 ﻿using RAD_BackEnd.Domain.Enums.HabitEnums;
+using RAD_BackEnd.DTOs.Users;
 namespace RAD_BackEnd.DTOs.Habits;
-public record HabitViewModel
-{
-    public long Id { get; set; }
-    public long UserId { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public Frequenty Frequenty { get; set; } = Frequenty.Daily;
-    public int Steak { get; set; }
-    public int BestSteak { get; set; }
-    public DateTime LastCompletedDate { get; set; }
-}
+public record HabitViewModel(
+     long Id,
+     UserViewModel User,
+     string Name,
+     string Description,
+     DateTime StartDate,
+     DateTime EndDate,
+     Frequenty Frequenty,
+     int Steak,
+     int BestSteak,
+     DateTime LastCompletedDate);
