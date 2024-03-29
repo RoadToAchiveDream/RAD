@@ -4,7 +4,6 @@ namespace RAD_BackEnd.DTOs.Goals;
 public record GoalViewModel(
     long Id,
     UserViewModel User,
-    UserViewModel User,
     string Title,
     string Description,
     DateTime StartTime,
