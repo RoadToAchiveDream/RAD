@@ -2,7 +2,6 @@
 namespace RAD_BackEnd.Domain.Entities;
 public class Note : Auditable
 {
-    public long Id { get; set; }
     public long UserId { get; set; }
     public User user { get; set; }
     public string Title { get; set; }
