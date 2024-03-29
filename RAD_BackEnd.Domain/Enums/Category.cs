@@ -5,5 +5,5 @@ public enum Category
     Personal,
     Work,
     Study,
-    Other,
+    Other
 }
