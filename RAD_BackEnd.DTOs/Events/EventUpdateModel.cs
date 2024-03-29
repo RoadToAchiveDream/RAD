@@ -1,5 +1,6 @@
-﻿namespace RAD_BackEnd.DTOs.Events;
-public class EventUpdateModel
+namespace RAD_BackEnd.DTOs.Events;
+
+public record EventUpdateModel
 {
     public long Id { get; set; }
     public long UserId { get; set; }

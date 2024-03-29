@@ -1,5 +1,6 @@
-﻿namespace RAD_BackEnd.DTOs.Events;
-public class EventCreateModel
+namespace RAD_BackEnd.DTOs.Events;
+
+public record EventCreateModel
 {
     public long UserId { get; set; }
     public string Title { get; set; }
@@ -9,3 +10,4 @@ public class EventCreateModel
     public string Location { get; set; }
     public DateTime Reminder_DateTime { get; set; }
 }
+
