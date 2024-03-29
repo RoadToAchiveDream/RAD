@@ -1,6 +1,8 @@
 ﻿using RAD_BackEnd.Domain.Commons;
 using RAD_BackEnd.Domain.Enums.HabitEnums;
+
 namespace RAD_BackEnd.Domain.Entities;
+
 public class Habit : Auditable
 {
     public long UserId { get; set; }
