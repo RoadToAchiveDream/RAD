@@ -1,4 +1,4 @@
-﻿namespace RAD_BackEnd.Domain.Enums;
+﻿namespace RAD_BackEnd.Domain.Enums.TaskEnums;
 
 public enum Reccuring
 {
