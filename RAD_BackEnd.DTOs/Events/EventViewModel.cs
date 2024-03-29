@@ -3,7 +3,6 @@ using RAD_BackEnd.DTOs.Users;
 namespace RAD_BackEnd.DTOs.Events;
 public record EventViewModel(
     long Id,
-    long UserId,
     UserViewModel User,
     string Title,
     string Description,
