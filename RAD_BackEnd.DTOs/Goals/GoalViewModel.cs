@@ -1,13 +1,12 @@
 ﻿using RAD_BackEnd.Domain.Enums.GoalEnums;
+using RAD_BackEnd.DTOs.Users;
 namespace RAD_BackEnd.DTOs.Goals;
-public record GoalViewModel
-{
-    public long Id { get; set; }
-    public long UserId { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
-    public Status status { get; set; }
-    public decimal Progress { get; set; }
-}
+public record GoalViewModel(
+    long Id,
+    UserViewModel User,
+    string Title,
+    string Description,
+    DateTime StartTime,
+    DateTime EndTime,
+    Status Status,
+    decimal Progress);

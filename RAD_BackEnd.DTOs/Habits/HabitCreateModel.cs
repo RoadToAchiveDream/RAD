@@ -1,14 +1,13 @@
 ﻿using RAD_BackEnd.Domain.Enums.HabitEnums;
 namespace RAD_BackEnd.DTOs.Habits;
-public record HabitCreateModel
-{
-    public long UserId { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public Frequenty Frequenty { get; set; } = Frequenty.Daily;
-    public int Steak { get; set; }
-    public int BestSteak { get; set; }
-    public DateTime LastCompletedDate { get; set; }
-}
+public record HabitCreateModel(
+    long UserId,
+     string Name,
+     string Description,
+     DateTime StartDate,
+     DateTime EndDate,
+     Frequenty Frequenty,
+     int Steak,
+     int BestSteak,
+     DateTime LastCompletedDate);
+
