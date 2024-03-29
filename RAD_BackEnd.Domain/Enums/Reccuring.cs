@@ -5,5 +5,5 @@ public enum Reccuring
     Daily,
     Weekly,
     Monthly,
-    Yearly,
+    Yearly
 }
