@@ -6,6 +6,6 @@ public record GoalCreateModel(
     string Description ,
     DateTime StartTime,
     DateTime EndTime, 
-    Status status ,
+    Status Status ,
     decimal Progress);
 
