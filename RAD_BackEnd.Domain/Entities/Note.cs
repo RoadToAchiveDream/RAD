@@ -1,5 +1,5 @@
 ﻿using RAD_BackEnd.Domain.Commons;
-using RAD_BackEnd.Domain.Enums;
+using RAD_BackEnd.Domain.Enums.NoteEnums;
 namespace RAD_BackEnd.Domain.Entities;
 public class Note : Auditable
 {
