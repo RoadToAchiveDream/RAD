@@ -1,10 +1,12 @@
 namespace RAD_BackEnd.DTOs.Events;
-public record EventUpdateModel(
-    long Id,
-    long UserId,
-    string Title,
-    string Description,
-    DateTime Start_Time,
-    DateTime End_Time,
-    string Location,
-    DateTime Reminder_DateTime);
+public class EventUpdateModel
+{
+    public long Id { get; set; }
+    public long UserId { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+    public string Location { get; set; }
+    public DateTime ReminderDateTime { get; set; }
+}
