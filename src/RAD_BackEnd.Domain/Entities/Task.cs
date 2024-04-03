@@ -11,6 +11,6 @@ public class Task : Auditable
     public DateTime DueDate { get; set; }
     public Priority Priority { get; set; } = Priority.Medium;
     public Status Status { get; set; } = Status.Pending;
-    public DateTime ReminderDateTime { get; set; }
+    public DateTime Reminder { get; set; }
     public Reccuring Reccuring { get; set; } = Reccuring.None;
 }
