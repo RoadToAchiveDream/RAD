@@ -2,7 +2,6 @@
 namespace RAD_BackEnd.DTOs.Habits;
 public class HabitUpdateModel
 {
-    public long Id { get; set; }
     public long UserId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
