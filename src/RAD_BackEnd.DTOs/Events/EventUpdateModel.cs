@@ -1,7 +1,6 @@
 namespace RAD_BackEnd.DTOs.Events;
 public class EventUpdateModel
 {
-    public long Id { get; set; }
     public long UserId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
