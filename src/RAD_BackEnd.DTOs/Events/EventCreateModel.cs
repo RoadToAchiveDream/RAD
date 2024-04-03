@@ -10,6 +10,6 @@ public class EventCreateModel
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public string Location { get; set; }
-    public DateTime ReminderDateTime { get; set; }
+    public DateTime Reminder { get; set; }
 }
 

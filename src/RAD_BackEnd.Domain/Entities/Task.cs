@@ -2,7 +2,6 @@
 using RAD_BackEnd.Domain.Enums.TaskEnums;
 
 namespace RAD_BackEnd.Domain.Entities;
-
 public class Task : Auditable
 {
     public long UserId { get; set; }
@@ -12,6 +11,6 @@ public class Task : Auditable
     public DateTime DueDate { get; set; }
     public Priority Priority { get; set; } = Priority.Medium;
     public Status Status { get; set; } = Status.Pending;
-    public DateTime ReminderDateTime { get; set; }
+    public DateTime Reminder { get; set; }
     public Reccuring Reccuring { get; set; } = Reccuring.None;
 }
