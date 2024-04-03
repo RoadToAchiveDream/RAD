@@ -1,5 +1,6 @@
 ﻿using RAD_BackEnd.Domain.Commons;
 using RAD_BackEnd.Domain.Enums.GoalEnums;
+
 namespace RAD_BackEnd.Domain.Entities;
 public class Goal : Auditable
 {
