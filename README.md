@@ -1,4 +1,4 @@
 # RAD_BackEnd
 
 db diagram
-https://dbdiagram.io/d/65f68a62ae072629ce32e00d
+(https://dbdiagram.io/d/65f68a62ae072629ce32e00d)
