@@ -6,13 +6,4 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Events\" />
-    <Folder Include="Services\Goals\" />
-    <Folder Include="Services\Habits\" />
-    <Folder Include="Services\Users\" />
-    <Folder Include="Services\Tasks\" />
-    <Folder Include="Services\Notes\" />
-  </ItemGroup>
-
 </Project>
