@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RAD_BackEnd.Services.Services.Notes
+﻿namespace RAD_BackEnd.Services.Services.Notes
 {
     internal class INoteService
     {

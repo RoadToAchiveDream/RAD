@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RAD_BackEnd.Services.Services.Users
+﻿namespace RAD_BackEnd.Services.Services.Users
 {
     internal class IUserService
     {
