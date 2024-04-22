@@ -1,13 +1,20 @@
 ﻿using RAD_BackEnd.Domain.Commons;
+using System.Linq.Expressions;
 
 namespace RAD_BackEnd.DataAccess.Repositories;
-public interface IRepository<TEntity> where TEntity : Auditable
+public interface IRepository<T> where T : Auditable
 {
-    Task<TEntity> InsertAsync(TEntity entity);
-    Task<TEntity> UpdateAsync(TEntity entity);
-    Task<TEntity> DeleteAsync(TEntity entity);
-    Task<TEntity> SelectByIdAsync(long id);
-    IEnumerable<TEntity> SelectAllAsEnumerable();
-    IQueryable<TEntity> SelectAllAsQueryable();
-    Task SaveChangesAsync();
+    ValueTask<T> InsertAsync(T entity);
+    ValueTask<T> DeleteAsync(T entity);
+    ValueTask<T> DropAsync(T entity);
+    ValueTask<T> UpdateAsync(T entity);
+    ValueTask<T> SelectAsync(Expression<Func<T, bool>> expression, string[] includes = null);
+    ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(
+        Expression<Func<T, bool>> expression = null,
+         string[] includes = null,
+         bool isTracked = true);
+    IQueryable<T> SelectAsQueryable(
+        Expression<Func<T, bool>> expression = null,
+        string[] includes = null,
+        bool isTracked = true);
 }

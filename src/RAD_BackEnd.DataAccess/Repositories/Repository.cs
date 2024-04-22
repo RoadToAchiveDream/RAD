@@ -1,42 +1,83 @@
-﻿using RAD_BackEnd.Domain.Commons;
+﻿using Microsoft.EntityFrameworkCore;
+using RAD_BackEnd.DataAccess.Contexts;
+using RAD_BackEnd.Domain.Commons;
+using System.Linq.Expressions;
 
 namespace RAD_BackEnd.DataAccess.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditable
+public class Repository<T> : IRepository<T> where T : Auditable
 {
-    public Task<TEntity> DeleteAsync(TEntity entity)
+    private readonly AppDbContext context;
+    private readonly DbSet<T> set;
+    public Repository(AppDbContext context)
     {
-        throw new NotImplementedException();
+        this.context = context;
+        this.set = context.Set<T>();
     }
 
-    public Task<TEntity> InsertAsync(TEntity entity)
+    public async ValueTask<T> InsertAsync(T entity)
     {
-        throw new NotImplementedException();
+        return (await set.AddAsync(entity)).Entity;
     }
 
-    public Task SaveChangesAsync()
+    public async ValueTask<T> UpdateAsync(T entity)
     {
-        throw new NotImplementedException();
+        entity.UpdatedAt = DateTime.UtcNow;
+        set.Update(entity);
+        return await Task.FromResult(entity);
     }
 
-    public IEnumerable<TEntity> SelectAllAsEnumerable()
+    public async ValueTask<T> DeleteAsync(T entity)
     {
-        throw new NotImplementedException();
+        entity.IsDeleted = true;
+        entity.DeletedAt = DateTime.UtcNow;
+        set.Update(entity);
+        return await Task.FromResult(entity);
     }
 
-    public IQueryable<TEntity> SelectAllAsQueryable()
+    public async ValueTask<T> DropAsync(T entity)
     {
-        throw new NotImplementedException();
+        return await Task.FromResult(set.Remove(entity).Entity);
     }
 
-    public Task<TEntity> SelectByIdAsync(long id)
+    public async ValueTask<T> SelectAsync(Expression<Func<T, bool>> expression, string[] includes = null)
     {
-        throw new NotImplementedException();
+        var query = set.Where(expression);
+
+        if (includes is not null)
+            foreach (var include in includes)
+                query = query.Include(include);
+
+        return await query.FirstOrDefaultAsync();
     }
 
-    public Task<TEntity> UpdateAsync(TEntity entity)
+    public async ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(Expression<Func<T, bool>> expression = null, string[] includes = null, bool isTracked = true)
     {
-        throw new NotImplementedException();
+        var query = expression is null ? set : set.Where(expression);
+
+        if (includes is not null)
+            foreach (var include in includes)
+                query = query.Include(include);
+
+        if (!isTracked)
+            query.AsNoTracking();
+
+        return await query.ToListAsync();
+    }
+
+    public IQueryable<T> SelectAsQueryable(Expression<Func<T, bool>> expression = null, string[] includes = null, bool isTracked = true)
+    {
+        var query = expression is null ? set : set.Where(expression);
+
+        if (includes is not null)
+            foreach (var include in includes)
+                query = query.Include(include);
+
+        if (!isTracked)
+            query.AsNoTracking();
+
+
+        return query;
     }
 }
 
