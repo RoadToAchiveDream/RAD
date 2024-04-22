@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\RAD_BackEnd.DTOs\RAD_BackEnd.DTOs.csproj" />
   </ItemGroup>
 
 </Project>
