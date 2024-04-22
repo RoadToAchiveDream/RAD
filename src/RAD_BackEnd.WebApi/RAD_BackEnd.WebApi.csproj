@@ -15,4 +15,8 @@
     <ProjectReference Include="..\RAD_BackEnd.DataAccess\RAD_BackEnd.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>
