@@ -34,9 +34,12 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork, IMapp
         return true;
     }
 
-    public ValueTask<IEnumerable<TaskViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<TaskViewModel>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+            expression: t => !t.IsDeleted);
+
+        return mapper.Map<IEnumerable<TaskViewModel>>(Tasks);
     }
 
     public async ValueTask<TaskViewModel> GetByIdAsync(long id)
@@ -62,7 +65,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork, IMapp
         var existUser = await userService.GetByIdAsync(existsTask.UserId);
 
         var mappedForUpdate = mapper.Map(task, existsTask);
-        var updated = unitOfWork.Tasks.UpdateAsync(mappedForUpdate);
+        var updated = await unitOfWork.Tasks.UpdateAsync(mappedForUpdate);
         await unitOfWork.SaveAsync();
 
         var mapped = mapper.Map<TaskViewModel>(updated);
