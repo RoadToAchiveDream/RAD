@@ -6,8 +6,4 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RAD_BackEnd.Domain\RAD_BackEnd.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

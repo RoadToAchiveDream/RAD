@@ -6,4 +6,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RAD_BackEnd.DTOs\RAD_BackEnd.DTOs.csproj" />
+  </ItemGroup>
+
 </Project>
