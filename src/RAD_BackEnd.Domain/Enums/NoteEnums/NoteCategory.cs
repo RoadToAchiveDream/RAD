@@ -1,5 +1,5 @@
 ﻿namespace RAD_BackEnd.Domain.Enums.NoteEnums;
-public enum Category
+public enum NoteCategory
 {
     General,
     Personal,

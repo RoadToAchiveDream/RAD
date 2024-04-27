@@ -1,6 +1,5 @@
 ﻿using RAD_BackEnd.Domain.Enums.NoteEnums;
 using RAD_BackEnd.DTOs.Users;
-
 namespace RAD_BackEnd.DTOs.Notes;
 public class NoteViewModel
 {
@@ -8,6 +7,6 @@ public class NoteViewModel
     public UserViewModel User { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
-    public Category Category { get; set; }
+    public NoteCategory Category { get; set; }
 }
 

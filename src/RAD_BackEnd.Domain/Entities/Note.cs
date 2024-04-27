@@ -8,5 +8,5 @@ public class Note : Auditable
     public User User { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
-    public Category Category { get; set; } = Category.General;
+    public NoteCategory Category { get; set; } = NoteCategory.General;
 }
