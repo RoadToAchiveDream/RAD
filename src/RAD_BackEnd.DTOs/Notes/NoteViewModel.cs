@@ -1,5 +1,6 @@
 ﻿using RAD_BackEnd.Domain.Enums.NoteEnums;
 using RAD_BackEnd.DTOs.Users;
+
 namespace RAD_BackEnd.DTOs.Notes;
 public class NoteViewModel
 {

@@ -1,4 +1,5 @@
 ﻿using RAD_BackEnd.Domain.Enums.HabitEnums;
+
 namespace RAD_BackEnd.DTOs.Habits;
 public class HabitCreateModel
 {

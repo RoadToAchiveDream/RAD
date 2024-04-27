@@ -1,5 +1,6 @@
 ﻿using RAD_BackEnd.Domain.Enums.HabitEnums;
 using RAD_BackEnd.DTOs.Users;
+
 namespace RAD_BackEnd.DTOs.Habits;
 public class HabitViewModel
 {
