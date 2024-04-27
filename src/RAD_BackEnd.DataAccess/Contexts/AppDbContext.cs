@@ -3,9 +3,9 @@ using RAD_BackEnd.Domain.Entities;
 using Task = RAD_BackEnd.Domain.Entities.Task;
 
 namespace RAD_BackEnd.DataAccess.Contexts;
-public class AppDbContext : DbContext
+public class RadDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public RadDbContext(DbContextOptions<RadDbContext> options) : base(options) { }
 
     #region DbSet Properties
     public DbSet<User> Users { get; set; }
