@@ -1,4 +1,5 @@
 ﻿using RAD_BackEnd.Domain.Enums.GoalEnums;
+
 namespace RAD_BackEnd.DTOs.Goals;
 public class GoalUpdateModel
 {

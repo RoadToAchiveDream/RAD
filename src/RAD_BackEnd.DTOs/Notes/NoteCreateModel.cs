@@ -1,4 +1,5 @@
 ﻿using RAD_BackEnd.Domain.Enums.NoteEnums;
+
 namespace RAD_BackEnd.DTOs.Notes;
 public class NoteCreateModel
 {
