@@ -10,7 +10,7 @@ public class Task : Auditable
     public string Description { get; set; }
     public DateTime DueDate { get; set; }
     public Priority Priority { get; set; } = Priority.Medium;
-    public Status Status { get; set; } = Status.Pending;
+    public Enums.TaskEnums.TaskStatus Status { get; set; } = Enums.TaskEnums.TaskStatus.Pending;
     public DateTime Reminder { get; set; }
     public Reccuring Reccuring { get; set; } = Reccuring.None;
 }
