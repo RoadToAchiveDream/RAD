@@ -11,7 +11,7 @@ using RAD_BackEnd.DataAccess.Contexts;
 
 namespace RAD_BackEnd.DataAccess.Migrations
 {
-    [DbContext(typeof(RadDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20240427134514_InitialMirgration")]
     partial class InitialMirgration
     {

@@ -7,7 +7,7 @@ namespace RAD_BackEnd.DataAccess.UnintOfWorks;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly RadDbContext context;
+    private readonly AppDbContext context;
 
     public IRepository<User> Users { get; }
     public IRepository<Goal> Goals { get; }
@@ -16,7 +16,7 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<Task> Tasks { get; }
     public IRepository<Event> Events { get; }
 
-    public UnitOfWork(RadDbContext context)
+    public UnitOfWork(AppDbContext context)
     {
         this.context = context;
 

@@ -7,9 +7,9 @@ namespace RAD_BackEnd.DataAccess.Repositories;
 
 public class Repository<T> : IRepository<T> where T : Auditable
 {
-    private readonly RadDbContext context;
+    private readonly AppDbContext context;
     private readonly DbSet<T> set;
-    public Repository(RadDbContext context)
+    public Repository(AppDbContext context)
     {
         this.context = context;
         this.set = context.Set<T>();

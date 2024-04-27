@@ -10,7 +10,7 @@ using RAD_BackEnd.DataAccess.Contexts;
 
 namespace RAD_BackEnd.DataAccess.Migrations
 {
-    [DbContext(typeof(RadDbContext))]
+    [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
