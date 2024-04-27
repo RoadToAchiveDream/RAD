@@ -12,4 +12,5 @@ public interface IUnitOfWork : IDisposable
     IRepository<Note> Notes { get; }
     IRepository<Task> Tasks { get; }
     IRepository<Event> Events { get; }
+    ValueTask<bool> SaveAsync();
 }
