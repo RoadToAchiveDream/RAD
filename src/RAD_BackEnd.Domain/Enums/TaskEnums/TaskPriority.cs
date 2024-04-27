@@ -1,6 +1,6 @@
 ﻿namespace RAD_BackEnd.Domain.Enums.TaskEnums;
 
-public enum Priority
+public enum TaskPriority
 {
     Low,
     Medium,
