@@ -7,9 +7,9 @@ namespace RAD_BackEnd.DataAccess.Repositories;
 
 public class Repository<T> : IRepository<T> where T : Auditable
 {
-    private readonly AppDbContext context;
+    private readonly RadDbContext context;
     private readonly DbSet<T> set;
-    public Repository(AppDbContext context)
+    public Repository(RadDbContext context)
     {
         this.context = context;
         this.set = context.Set<T>();
@@ -51,7 +51,10 @@ public class Repository<T> : IRepository<T> where T : Auditable
         return await query.FirstOrDefaultAsync();
     }
 
-    public async ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(Expression<Func<T, bool>> expression = null, string[] includes = null, bool isTracked = true)
+    public async ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(
+        Expression<Func<T, bool>> expression = null,
+        string[] includes = null,
+        bool isTracked = true)
     {
         var query = expression is null ? set : set.Where(expression);
 
@@ -65,7 +68,10 @@ public class Repository<T> : IRepository<T> where T : Auditable
         return await query.ToListAsync();
     }
 
-    public IQueryable<T> SelectAsQueryable(Expression<Func<T, bool>> expression = null, string[] includes = null, bool isTracked = true)
+    public IQueryable<T> SelectAsQueryable(
+        Expression<Func<T, bool>> expression = null,
+        string[] includes = null,
+        bool isTracked = true)
     {
         var query = expression is null ? set : set.Where(expression);
 
@@ -75,6 +81,7 @@ public class Repository<T> : IRepository<T> where T : Auditable
 
         if (!isTracked)
             query.AsNoTracking();
+
 
         return query;
     }
