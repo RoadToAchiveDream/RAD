@@ -7,7 +7,7 @@ namespace RAD_BackEnd.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController(IUserService userService) : ControllerBase
+public class UsersController(IUserService userService) : ControllerBase
 {
     [HttpGet]
     public async ValueTask<IActionResult> GetAllAsync()
