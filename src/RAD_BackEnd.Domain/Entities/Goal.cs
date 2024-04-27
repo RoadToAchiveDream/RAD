@@ -10,7 +10,7 @@ public class Goal : Auditable
     public string Description { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public Status Status { get; set; } = Status.InProgress;
+    public GoalStatus Status { get; set; } = GoalStatus.InProgress;
     public decimal Progress { get; set; }
 
 }

@@ -10,6 +10,6 @@ public class GoalViewModel
     public string Description { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public Status Status { get; set; }
+    public GoalStatus Status { get; set; }
     public decimal Progress { get; set; }
 }

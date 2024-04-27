@@ -1,5 +1,5 @@
 ﻿namespace RAD_BackEnd.Domain.Enums.GoalEnums;
-public enum Status
+public enum GoalStatus
 {
     Pending,
     InProgress,
