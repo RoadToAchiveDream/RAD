@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RAD_BackEnd.DTOs.Tasks;
-using RAD_BackEnd.DTOs.Users;
 using RAD_BackEnd.Services.Services.Tasks;
 using RAD_BackEnd.WebApi.Models;
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RAD_BackEnd.DTOs.Habits;
-using RAD_BackEnd.DTOs.Tasks;
 using RAD_BackEnd.Services.Services.Habits;
 using RAD_BackEnd.WebApi.Models;
 
@@ -56,7 +55,7 @@ public class HabitsController(IHabitService habitService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await habitService.UpdateAsync(id,habit)
+            Data = await habitService.UpdateAsync(id, habit)
         });
     }
 }
