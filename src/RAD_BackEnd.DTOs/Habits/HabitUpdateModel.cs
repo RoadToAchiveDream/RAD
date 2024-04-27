@@ -7,7 +7,7 @@ public class HabitUpdateModel
     public string Description { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public Frequenty Frequenty { get; set; }
+    public HabitFrequenty Frequenty { get; set; }
     public int Steak { get; set; }
     public int BestSteak { get; set; }
     public DateTime LastCompletedDate { get; set; }
