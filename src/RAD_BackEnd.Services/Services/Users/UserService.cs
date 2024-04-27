@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using RAD_BackEnd.DataAccess.UnintOfWorks;
+using RAD_BackEnd.Domain.Entities;
 using RAD_BackEnd.DTOs.Users;
+using RAD_BackEnd.Services.Exceptions;
 
 namespace RAD_BackEnd.Services.Services.Users;
 
@@ -12,26 +14,54 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
             expression: u => u.Email == user.Email && !u.IsDeleted);
 
         if (existsUser is not null)
-            throw new Exception();
+            throw new AlreadyExistException($"User is already exists with this Email ({user.Email})");
+
+        var mapped = mapper.Map<User>(user);
+        var created = await unitOfWork.Users.InsertAsync(mapped);
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<UserViewModel>(mapped);
     }
 
-    public ValueTask<bool> DeleteAsync(long id)
+    public async ValueTask<bool> DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: u => u.Id == id && !u.IsDeleted)
+            ?? throw new NotFoundException($"User with Id ({id}) is not found");
+
+        await unitOfWork.Users.DeleteAsync(existUser);
+        await unitOfWork.SaveAsync();
+
+        return true;
     }
 
-    public ValueTask<IEnumerable<UserViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<UserViewModel>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var Users = await unitOfWork.Users.SelectAsEnumerableAsync(
+            expression: u => !u.IsDeleted);
+
+        return mapper.Map<IEnumerable<UserViewModel>>(Users);
     }
 
-    public ValueTask<UserViewModel> GetByIdAsync(long id)
+    public async ValueTask<UserViewModel> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: u => u.Id == id && !u.IsDeleted)
+            ?? throw new NotFoundException($"User with Id ({id}) is not found");
+
+        return mapper.Map<UserViewModel>(existUser);
     }
 
-    public ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel user)
+    public async ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel user)
     {
-        throw new NotImplementedException();
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: u => u.Id == id && !u.IsDeleted)
+            ?? throw new NotFoundException($"User with Id ({id}) is not found");
+
+        var mapped = mapper.Map(user, existUser);
+        var updated = await unitOfWork.Users.UpdateAsync(mapped);
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<UserViewModel>(updated);
     }
 }
