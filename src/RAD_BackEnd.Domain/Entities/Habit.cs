@@ -1,11 +1,12 @@
 ﻿using RAD_BackEnd.Domain.Commons;
 using RAD_BackEnd.Domain.Enums.HabitEnums;
+using RAD_BackEnd.DTOs.Users;
 
 namespace RAD_BackEnd.Domain.Entities;
 public class Habit : Auditable
 {
     public long UserId { get; set; }
-    public User User { get; set; }
+    public UserViewModel User { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime StartDate { get; set; }
