@@ -1,6 +1,6 @@
 ﻿namespace RAD_BackEnd.Domain.Enums.TaskEnums;
 
-public enum Reccuring
+public enum TaskReccuring
 {
     None,
     Daily,

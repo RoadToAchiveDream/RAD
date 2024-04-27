@@ -12,6 +12,6 @@ public record TaskViewModel
     public TaskPriority Priority { get; set; }
     public TaskStatus Status { get; set; }
     public DateTime Reminder { get; set; }
-    public Reccuring Reccuring { get; set; }
+    public TaskReccuring Reccuring { get; set; }
 
 }

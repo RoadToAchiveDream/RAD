@@ -12,5 +12,5 @@ public class Task : Auditable
     public TaskPriority Priority { get; set; } = TaskPriority.Medium;
     public Enums.TaskEnums.TaskStatus Status { get; set; } = Enums.TaskEnums.TaskStatus.Pending;
     public DateTime Reminder { get; set; }
-    public Reccuring Reccuring { get; set; } = Reccuring.None;
+    public TaskReccuring Reccuring { get; set; } = TaskReccuring.None;
 }
