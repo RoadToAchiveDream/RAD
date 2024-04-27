@@ -37,7 +37,8 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork, IMapp
     public async ValueTask<IEnumerable<TaskViewModel>> GetAllAsync()
     {
         var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
-            expression: t => !t.IsDeleted);
+            expression: t => !t.IsDeleted,
+            includes: ["User"]);
 
         return mapper.Map<IEnumerable<TaskViewModel>>(Tasks);
     }
