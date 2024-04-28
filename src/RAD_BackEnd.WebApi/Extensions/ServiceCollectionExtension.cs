@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RAD_BackEnd.DataAccess.Repositories;
 using RAD_BackEnd.DataAccess.UnintOfWorks;
+using RAD_BackEnd.DTOs.Options;
 using RAD_BackEnd.Services.Services.Events;
 using RAD_BackEnd.Services.Services.Goals;
 using RAD_BackEnd.Services.Services.Habits;
