@@ -82,7 +82,6 @@ public class Repository<T> : IRepository<T> where T : Auditable
         if (!isTracked)
             query.AsNoTracking();
 
-
         return query;
     }
 }
