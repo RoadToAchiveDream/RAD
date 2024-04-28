@@ -52,7 +52,7 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork, IMap
     public async ValueTask<EventViewModel> GetByIdAsync(long id)
     {
         var existEvent = await unitOfWork.Events.SelectAsync(
-            expression: e => !e.IsDeleted,
+            expression: e => e.Id == id && !e.IsDeleted,
             includes: ["User"])
             ?? throw new NotFoundException($"Event with Id({id}) is not found");
 

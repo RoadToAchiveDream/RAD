@@ -16,7 +16,7 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork, IMapp
         var created = await unitOfWork.Notes.InsertAsync(mapper.Map<Note>(note));
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<NoteViewModel>(note);
+        var mapped = mapper.Map<NoteViewModel>(created);
         mapped.User = existUser;
 
         return mapped;

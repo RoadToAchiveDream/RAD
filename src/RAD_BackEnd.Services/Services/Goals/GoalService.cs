@@ -17,7 +17,7 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork, IMapp
         if (existGoal is not null)
             throw new AlreadyExistException($"Goal with Title ({goal.Title} is already exists)");
 
-        var existsUser = await userService.GetByIdAsync(existGoal.UserId);
+        var existsUser = await userService.GetByIdAsync(goal.UserId);
 
         var created = await unitOfWork.Goals.InsertAsync(mapper.Map<Goal>(goal));
         await unitOfWork.SaveAsync();
