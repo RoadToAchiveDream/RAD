@@ -1,12 +1,12 @@
-﻿using RAD_BackEnd.DTOs.Goals;
+﻿using RAD_BackEnd.Domain.Entities;
 
 namespace RAD_BackEnd.Services.Services.Goals;
 
 public interface IGoalService
 {
-    ValueTask<GoalViewModel> CreateAsync(GoalCreateModel goal);
-    ValueTask<GoalViewModel> UpdateAsync(long id, GoalUpdateModel goal);
+    ValueTask<Goal> CreateAsync(Goal goal);
+    ValueTask<Goal> UpdateAsync(long id, Goal goal);
     ValueTask<bool> DeleteAsync(long id);
-    ValueTask<GoalViewModel> GetByIdAsync(long id);
-    ValueTask<IEnumerable<GoalViewModel>> GetAllAsync();
+    ValueTask<Goal> GetByIdAsync(long id);
+    ValueTask<IEnumerable<Goal>> GetAllAsync();
 }

@@ -1,12 +1,12 @@
-﻿using RAD_BackEnd.DTOs.Tasks;
+﻿using Task = RAD_BackEnd.Domain.Entities.Task;
 
 namespace RAD_BackEnd.Services.Services.Tasks;
 
 public interface ITaskService
 {
-    ValueTask<TaskViewModel> CreateAsync(TaskCreateModel task);
-    ValueTask<TaskViewModel> UpdateAsync(long id, TaskUpdateModel task);
+    ValueTask<Task> CreateAsync(Task task);
+    ValueTask<Task> UpdateAsync(long id, Task task);
     ValueTask<bool> DeleteAsync(long id);
-    ValueTask<TaskViewModel> GetByIdAsync(long id);
-    ValueTask<IEnumerable<TaskViewModel>> GetAllAsync();
+    ValueTask<Task> GetByIdAsync(long id);
+    ValueTask<IEnumerable<Task>> GetAllAsync();
 }

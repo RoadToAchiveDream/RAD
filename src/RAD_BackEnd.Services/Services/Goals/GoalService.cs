@@ -1,15 +1,13 @@
-﻿using AutoMapper;
-using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Domain.Entities;
-using RAD_BackEnd.DTOs.Goals;
 using RAD_BackEnd.Services.Exceptions;
 using RAD_BackEnd.Services.Services.Users;
 
 namespace RAD_BackEnd.Services.Services.Goals;
 
-public class GoalService(IUserService userService, IUnitOfWork unitOfWork, IMapper mapper) : IGoalService
+public class GoalService(IUserService userService, IUnitOfWork unitOfWork) : IGoalService
 {
-    public async ValueTask<GoalViewModel> CreateAsync(GoalCreateModel goal)
+    public async ValueTask<Goal> CreateAsync(Goal goal)
     {
         var existGoal = await unitOfWork.Goals.SelectAsync(
             expression: g => g.Title == goal.Title && !g.IsDeleted);
@@ -19,13 +17,12 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork, IMapp
 
         var existsUser = await userService.GetByIdAsync(goal.UserId);
 
-        var created = await unitOfWork.Goals.InsertAsync(mapper.Map<Goal>(goal));
+        var created = await unitOfWork.Goals.InsertAsync(goal);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<GoalViewModel>(created);
-        mapped.User = existsUser;
+        created.User = existsUser;
 
-        return mapped;
+        return created;
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
@@ -40,26 +37,26 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork, IMapp
         return true;
     }
 
-    public async ValueTask<IEnumerable<GoalViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<Goal>> GetAllAsync()
     {
         var Goals = await unitOfWork.Goals.SelectAsEnumerableAsync(
             expression: g => !g.IsDeleted,
             includes: ["User"]);
 
-        return mapper.Map<IEnumerable<GoalViewModel>>(Goals);
+        return Goals;
     }
 
-    public async ValueTask<GoalViewModel> GetByIdAsync(long id)
+    public async ValueTask<Goal> GetByIdAsync(long id)
     {
         var existGoal = await unitOfWork.Goals.SelectAsync(
            expression: g => g.Id == id && !g.IsDeleted,
            includes: ["User"])
            ?? throw new NotFoundException($"Goal with Id ({id} is not found)");
 
-        return mapper.Map<GoalViewModel>(existGoal);
+        return existGoal;
     }
 
-    public async ValueTask<GoalViewModel> UpdateAsync(long id, GoalUpdateModel goal)
+    public async ValueTask<Goal> UpdateAsync(long id, Goal goal)
     {
         var existGoal = await unitOfWork.Goals.SelectAsync(
            expression: g => g.Id == id && !g.IsDeleted)
@@ -67,13 +64,18 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork, IMapp
 
         var existUser = await userService.GetByIdAsync(goal.UserId);
 
-        var mappedForUpdate = mapper.Map(goal, existGoal);
-        var updated = await unitOfWork.Goals.UpdateAsync(mappedForUpdate);
+        existGoal.Title = goal.Title;
+        existGoal.Description = goal.Description;
+        existGoal.StartTime = goal.StartTime;
+        existGoal.EndTime = goal.EndTime;
+        existGoal.Status = goal.Status;
+        existGoal.Progress = goal.Progress;
+        existGoal.UserId = goal.UserId;
+        existGoal.User = existUser;
+
+        var updated = await unitOfWork.Goals.UpdateAsync(existGoal);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<GoalViewModel>(updated);
-        mapped.User = existUser;
-
-        return mapped;
+        return updated;
     }
 }

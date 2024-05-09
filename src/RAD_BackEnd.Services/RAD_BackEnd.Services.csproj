@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RAD_BackEnd.DataAccess\RAD_BackEnd.DataAccess.csproj" />
     <ProjectReference Include="..\RAD_BackEnd.Domain\RAD_BackEnd.Domain.csproj" />
-    <ProjectReference Include="..\RAD_BackEnd.DTOs\RAD_BackEnd.DTOs.csproj" />
   </ItemGroup>
 
 </Project>
