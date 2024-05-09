@@ -1,12 +1,12 @@
-﻿using RAD_BackEnd.DTOs.Habits;
+﻿using RAD_BackEnd.Domain.Entities;
 
 namespace RAD_BackEnd.Services.Services.Habits;
 
 public interface IHabitService
 {
-    ValueTask<HabitViewModel> CreateAsync(HabitCreateModel habit);
-    ValueTask<HabitViewModel> UpdateAsync(long id, HabitUpdateModel habit);
+    ValueTask<Habit> CreateAsync(Habit habit);
+    ValueTask<Habit> UpdateAsync(long id, Habit habit);
     ValueTask<bool> DeleteAsync(long id);
-    ValueTask<HabitViewModel> GetByIdAsync(long id);
-    ValueTask<IEnumerable<HabitViewModel>> GetAllAsync();
+    ValueTask<Habit> GetByIdAsync(long id);
+    ValueTask<IEnumerable<Habit>> GetAllAsync();
 }

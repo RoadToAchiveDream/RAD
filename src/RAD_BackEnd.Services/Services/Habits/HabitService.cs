@@ -1,15 +1,13 @@
-﻿using AutoMapper;
-using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Domain.Entities;
-using RAD_BackEnd.DTOs.Habits;
 using RAD_BackEnd.Services.Exceptions;
 using RAD_BackEnd.Services.Services.Users;
 
 namespace RAD_BackEnd.Services.Services.Habits;
 
-public class HabitService(IUserService userService, IUnitOfWork unitOfWork, IMapper mapper) : IHabitService
+public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IHabitService
 {
-    public async ValueTask<HabitViewModel> CreateAsync(HabitCreateModel habit)
+    public async ValueTask<Habit> CreateAsync(Habit habit)
     {
         var existUser = await userService.GetByIdAsync(habit.UserId);
 
@@ -19,13 +17,12 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork, IMap
         if (existHabit is not null)
             throw new AlreadyExistException($"Habit with name ({habit.Name} is already exists)");
 
-        var created = await unitOfWork.Habits.InsertAsync(mapper.Map<Habit>(habit));
+        var created = await unitOfWork.Habits.InsertAsync(habit);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<HabitViewModel>(created);
-        mapped.User = existUser;
+        created.User = existUser;
 
-        return mapped;
+        return created;
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
@@ -40,26 +37,26 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork, IMap
         return true;
     }
 
-    public async ValueTask<IEnumerable<HabitViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<Habit>> GetAllAsync()
     {
         var Habits = await unitOfWork.Habits.SelectAsEnumerableAsync(
             expression: h => !h.IsDeleted,
             includes: ["User"]);
 
-        return mapper.Map<IEnumerable<HabitViewModel>>(Habits);
+        return Habits;
     }
 
-    public async ValueTask<HabitViewModel> GetByIdAsync(long id)
+    public async ValueTask<Habit> GetByIdAsync(long id)
     {
         var existHabit = await unitOfWork.Habits.SelectAsync(
             expression: h => h.Id == id && !h.IsDeleted,
             includes: ["User"])
             ?? throw new NotFoundException($"Habit with Id ({id}) is not found");
 
-        return mapper.Map<HabitViewModel>(existHabit);
+        return existHabit;
     }
 
-    public async ValueTask<HabitViewModel> UpdateAsync(long id, HabitUpdateModel habit)
+    public async ValueTask<Habit> UpdateAsync(long id, Habit habit)
     {
         var existHabit = await unitOfWork.Habits.SelectAsync(
             expression: h => h.Id == id && !h.IsDeleted)
@@ -67,13 +64,20 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork, IMap
 
         var existUser = await userService.GetByIdAsync(habit.UserId);
 
-        var mappedForUpdate = mapper.Map(habit, existHabit);
-        var updated = await unitOfWork.Habits.UpdateAsync(mappedForUpdate);
+        existHabit.Name = habit.Name;
+        existHabit.Description = habit.Description;
+        existHabit.StartDate = habit.StartDate;
+        existHabit.EndDate = habit.EndDate;
+        existHabit.LastCompletedDate = habit.LastCompletedDate;
+        existHabit.BestSteak = habit.BestSteak;
+        existHabit.Steak = habit.Steak;
+        existHabit.Frequenty = habit.Frequenty;
+        existHabit.UserId = habit.UserId;
+        existHabit.User = existUser;
+
+        var updated = await unitOfWork.Habits.UpdateAsync(existHabit);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<HabitViewModel>(updated);
-        mapped.User = existUser;
-
-        return mapped;
+        return updated;
     }
 }

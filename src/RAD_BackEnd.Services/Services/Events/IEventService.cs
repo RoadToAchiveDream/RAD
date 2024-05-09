@@ -1,12 +1,12 @@
-﻿using RAD_BackEnd.DTOs.Events;
+﻿using RAD_BackEnd.Domain.Entities;
 
 namespace RAD_BackEnd.Services.Services.Events;
 
 public interface IEventService
 {
-    ValueTask<EventViewModel> CreateAsync(EventCreateModel @event);
-    ValueTask<EventViewModel> UpdateAsync(long id, EventUpdateModel @event);
+    ValueTask<Event> CreateAsync(Event @event);
+    ValueTask<Event> UpdateAsync(long id, Event @event);
     ValueTask<bool> DeleteAsync(long id);
-    ValueTask<EventViewModel> GetByIdAsync(long id);
-    ValueTask<IEnumerable<EventViewModel>> GetAllAsync();
+    ValueTask<Event> GetByIdAsync(long id);
+    ValueTask<IEnumerable<Event>> GetAllAsync();
 }
