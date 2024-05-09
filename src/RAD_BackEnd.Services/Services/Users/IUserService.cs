@@ -1,12 +1,12 @@
-﻿using RAD_BackEnd.DTOs.Users;
+﻿using RAD_BackEnd.Domain.Entities;
 
 namespace RAD_BackEnd.Services.Services.Users;
 
 public interface IUserService
 {
-    ValueTask<UserViewModel> CreateAsync(UserCreateModel user);
-    ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel user);
+    ValueTask<User> CreateAsync(User user);
+    ValueTask<User> UpdateAsync(long id, User user);
     ValueTask<bool> DeleteAsync(long id);
-    ValueTask<UserViewModel> GetByIdAsync(long id);
-    ValueTask<IEnumerable<UserViewModel>> GetAllAsync();
+    ValueTask<User> GetByIdAsync(long id);
+    ValueTask<IEnumerable<User>> GetAllAsync();
 }

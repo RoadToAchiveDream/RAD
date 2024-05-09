@@ -1,15 +1,13 @@
-﻿using AutoMapper;
-using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Domain.Entities;
-using RAD_BackEnd.DTOs.Events;
 using RAD_BackEnd.Services.Exceptions;
 using RAD_BackEnd.Services.Services.Users;
 
 namespace RAD_BackEnd.Services.Services.Events;
 
-public class EventService(IUserService userService, IUnitOfWork unitOfWork, IMapper mapper) : IEventService
+public class EventService(IUserService userService, IUnitOfWork unitOfWork) : IEventService
 {
-    public async ValueTask<EventViewModel> CreateAsync(EventCreateModel @event)
+    public async ValueTask<Event> CreateAsync(Event @event)
     {
         var existEvent = await unitOfWork.Events.SelectAsync(
             expression: e => e.Title == @event.Title && !e.IsDeleted);
@@ -19,13 +17,12 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork, IMap
 
         var existUser = await userService.GetByIdAsync(@event.UserId);
 
-        var created = await unitOfWork.Events.InsertAsync(mapper.Map<Event>(@event));
+        var created = await unitOfWork.Events.InsertAsync(@event);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<EventViewModel>(created);
-        mapped.User = existUser;
+        created.User = existUser;
 
-        return mapped;
+        return created;
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
@@ -40,26 +37,26 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork, IMap
         return true;
     }
 
-    public async ValueTask<IEnumerable<EventViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<Event>> GetAllAsync()
     {
         var Events = await unitOfWork.Events.SelectAsEnumerableAsync(
             expression: e => !e.IsDeleted,
             includes: ["User"]);
 
-        return mapper.Map<IEnumerable<EventViewModel>>(Events);
+        return Events;
     }
 
-    public async ValueTask<EventViewModel> GetByIdAsync(long id)
+    public async ValueTask<Event> GetByIdAsync(long id)
     {
         var existEvent = await unitOfWork.Events.SelectAsync(
             expression: e => e.Id == id && !e.IsDeleted,
             includes: ["User"])
             ?? throw new NotFoundException($"Event with Id({id}) is not found");
 
-        return mapper.Map<EventViewModel>(existEvent);
+        return existEvent;
     }
 
-    public async ValueTask<EventViewModel> UpdateAsync(long id, EventUpdateModel @event)
+    public async ValueTask<Event> UpdateAsync(long id, Event @event)
     {
         var existEvent = await unitOfWork.Events.SelectAsync(
             expression: e => e.Id == id && !e.IsDeleted)
@@ -67,13 +64,18 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork, IMap
 
         var existUser = await userService.GetByIdAsync(@event.UserId);
 
-        var mappedForUpdate = mapper.Map(@event, existEvent);
-        var updated = await unitOfWork.Events.UpdateAsync(mappedForUpdate);
+        existEvent.UserId = @event.UserId;
+        existEvent.User = existUser;
+        existEvent.StartTime = @event.StartTime;
+        existEvent.EndTime = @event.EndTime;
+        existEvent.Title = @event.Title;
+        existEvent.Description = @event.Description;
+        existEvent.Location = @event.Location;
+        existEvent.Reminder = @event.Reminder;
+
+        var updated = await unitOfWork.Events.UpdateAsync(existEvent);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<EventViewModel>(updated);
-        mapped.User = existUser;
-
-        return mapped;
+        return updated;
     }
 }

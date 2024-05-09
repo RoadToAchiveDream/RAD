@@ -8,7 +8,7 @@ using RAD_BackEnd.DTOs.Tasks;
 using RAD_BackEnd.DTOs.Users;
 using Task = RAD_BackEnd.Domain.Entities.Task;
 
-namespace RAD_BackEnd.Services.NewFolder;
+namespace RAD_BackEnd.WebApi.Mappers;
 
 public class MappingProfile : Profile
 {

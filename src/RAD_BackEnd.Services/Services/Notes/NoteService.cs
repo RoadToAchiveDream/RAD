@@ -1,25 +1,22 @@
-﻿using AutoMapper;
-using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Domain.Entities;
-using RAD_BackEnd.DTOs.Notes;
 using RAD_BackEnd.Services.Exceptions;
 using RAD_BackEnd.Services.Services.Users;
 
 namespace RAD_BackEnd.Services.Services.Notes;
 
-public class NoteService(IUserService userService, IUnitOfWork unitOfWork, IMapper mapper) : INoteService
+public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INoteService
 {
-    public async ValueTask<NoteViewModel> CreateAsync(NoteCreateModel note)
+    public async ValueTask<Note> CreateAsync(Note note)
     {
         var existUser = await userService.GetByIdAsync(note.UserId);
 
-        var created = await unitOfWork.Notes.InsertAsync(mapper.Map<Note>(note));
+        var created = await unitOfWork.Notes.InsertAsync(note);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<NoteViewModel>(created);
-        mapped.User = existUser;
+        created.User = existUser;
 
-        return mapped;
+        return created;
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
@@ -34,26 +31,26 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork, IMapp
         return true;
     }
 
-    public async ValueTask<IEnumerable<NoteViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<Note>> GetAllAsync()
     {
         var Notes = await unitOfWork.Notes.SelectAsEnumerableAsync(
             expression: n => !n.IsDeleted,
             includes: ["User"]);
 
-        return mapper.Map<IEnumerable<NoteViewModel>>(Notes);
+        return Notes;
     }
 
-    public async ValueTask<NoteViewModel> GetByIdAsync(long id)
+    public async ValueTask<Note> GetByIdAsync(long id)
     {
         var existNote = await unitOfWork.Notes.SelectAsync(
             expression: n => n.Id == id && !n.IsDeleted,
             includes: ["User"])
             ?? throw new NotFoundException($"Note with Id ({id}) is not found");
 
-        return mapper.Map<NoteViewModel>(existNote);
+        return existNote;
     }
 
-    public async ValueTask<NoteViewModel> UpdateAsync(long id, NoteUpdateModel note)
+    public async ValueTask<Note> UpdateAsync(long id, Note note)
     {
         var existNote = await unitOfWork.Notes.SelectAsync(
             expression: n => n.Id == id && !n.IsDeleted)
@@ -61,13 +58,15 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork, IMapp
 
         var existUser = await userService.GetByIdAsync(note.UserId);
 
-        var mappedForUpdate = mapper.Map(note, existNote);
-        var updated = await unitOfWork.Notes.UpdateAsync(mappedForUpdate);
+        existNote.Title = note.Title;
+        existNote.Content = note.Content;
+        existNote.Category = note.Category;
+        existNote.UserId = note.UserId;
+        existNote.User = existUser;
+
+        var updated = await unitOfWork.Notes.UpdateAsync(existNote);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<NoteViewModel>(updated);
-        mapped.User = existUser;
-
-        return mapped;
+        return updated;
     }
 }

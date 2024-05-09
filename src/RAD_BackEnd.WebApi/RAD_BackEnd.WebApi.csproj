@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RAD_BackEnd.DataAccess\RAD_BackEnd.DataAccess.csproj" />
+    <ProjectReference Include="..\RAD_BackEnd.DTOs\RAD_BackEnd.DTOs.csproj" />
     <ProjectReference Include="..\RAD_BackEnd.Services\RAD_BackEnd.Services.csproj" />
   </ItemGroup>
 

@@ -1,25 +1,22 @@
-﻿using AutoMapper;
-using RAD_BackEnd.DataAccess.UnintOfWorks;
-using RAD_BackEnd.DTOs.Tasks;
+﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Services.Exceptions;
 using RAD_BackEnd.Services.Services.Users;
 using Task = RAD_BackEnd.Domain.Entities.Task;
 
 namespace RAD_BackEnd.Services.Services.Tasks;
 
-public class TaskService(IUserService userService, IUnitOfWork unitOfWork, IMapper mapper) : ITaskService
+public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITaskService
 {
-    public async ValueTask<TaskViewModel> CreateAsync(TaskCreateModel task)
+    public async ValueTask<Task> CreateAsync(Task task)
     {
         var existUser = await userService.GetByIdAsync(task.UserId);
 
-        var createdTask = await unitOfWork.Tasks.InsertAsync(mapper.Map<Task>(task));
+        var createdTask = await unitOfWork.Tasks.InsertAsync(task);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<TaskViewModel>(createdTask);
-        mapped.User = existUser;
+        createdTask.User = existUser;
 
-        return mapped;
+        return createdTask;
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
@@ -34,16 +31,26 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork, IMapp
         return true;
     }
 
-    public async ValueTask<IEnumerable<TaskViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<Task>> GetAllAsync()
     {
         var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
             expression: t => !t.IsDeleted,
             includes: ["User"]);
 
-        return mapper.Map<IEnumerable<TaskViewModel>>(Tasks);
+        return Tasks;
     }
 
-    public async ValueTask<TaskViewModel> GetByIdAsync(long id)
+    public async ValueTask<Task> GetByIdAsync(long id)
+    {
+        var existsTask = await unitOfWork.Tasks.SelectAsync(
+            expression: t => t.Id == id && !t.IsDeleted,
+            includes: ["User"])
+            ?? throw new NotFoundException($"Task with Id ({id}) is not found");
+
+        return existsTask;
+    }
+
+    public async ValueTask<Task> UpdateAsync(long id, Task task)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: t => t.Id == id && !t.IsDeleted)
@@ -51,27 +58,19 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork, IMapp
 
         var existUser = await userService.GetByIdAsync(existsTask.UserId);
 
-        var mapped = mapper.Map<TaskViewModel>(existsTask);
-        mapped.User = existUser;
+        existsTask.Status = task.Status;
+        existsTask.Title = task.Title;
+        existsTask.Description = task.Description;
+        existsTask.DueDate = task.DueDate;
+        existsTask.Priority = task.Priority;
+        existsTask.Reccuring = task.Reccuring;
+        existsTask.Reminder = task.Reminder;
+        existsTask.UserId = task.UserId;
+        existsTask.User = existUser;
 
-        return mapped;
-    }
-
-    public async ValueTask<TaskViewModel> UpdateAsync(long id, TaskUpdateModel task)
-    {
-        var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: t => t.Id == id && !t.IsDeleted)
-            ?? throw new NotFoundException($"Task with Id ({id}) is not found");
-
-        var existUser = await userService.GetByIdAsync(existsTask.UserId);
-
-        var mappedForUpdate = mapper.Map(task, existsTask);
-        var updated = await unitOfWork.Tasks.UpdateAsync(mappedForUpdate);
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        var mapped = mapper.Map<TaskViewModel>(updated);
-        mapped.User = existUser;
-
-        return mapped;
+        return updated;
     }
 }
