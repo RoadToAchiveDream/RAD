@@ -21,6 +21,7 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
                 StatusCode = ex.StatusCode
             });
         }
+
         catch (ArgumentNotValidException ex)
         {
             context.Response.StatusCode = ex.StatusCode;
