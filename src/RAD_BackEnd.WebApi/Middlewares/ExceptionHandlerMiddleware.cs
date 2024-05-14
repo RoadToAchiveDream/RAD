@@ -21,7 +21,8 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
                 StatusCode = ex.StatusCode
             });
         }
-        catch (ArgumentNotValidException ex)
+
+        catch (ArgumentIsNotValidException ex)
         {
             context.Response.StatusCode = ex.StatusCode;
             await context.Response.WriteAsJsonAsync(new Response
