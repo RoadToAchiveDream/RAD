@@ -6,4 +6,7 @@ public class Auditable
     public DateTime UpdatedAt { get; set; }
     public DateTime DeletedAt { get; set; }
     public bool IsDeleted { get; set; }
+    public long CreatedByUserId { get; set; }
+    public long? UpdatedByUserId { get; set; }
+    public long? DeletedByUserId { get; set; }
 }
