@@ -51,7 +51,7 @@ public class UserApiService(
     {
         await changePasswordValidator.EnsureValidatedAsync(changePasswordModel);
         var user = await userService.ChangePasswordAsync(
-            changePasswordModel.Phone,
+            changePasswordModel.PhoneNumber,
             changePasswordModel.OldPassword,
             changePasswordModel.NewPassword);
 

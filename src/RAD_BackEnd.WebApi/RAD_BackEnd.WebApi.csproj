@@ -33,11 +33,6 @@
     <Folder Include="ApiServices\Habits\" />
     <Folder Include="ApiServices\Tasks\" />
     <Folder Include="ApiServices\Notes\" />
-    <Folder Include="Validators\Events\" />
-    <Folder Include="Validators\Goals\" />
-    <Folder Include="Validators\Habits\" />
-    <Folder Include="Validators\Tasks\" />
-    <Folder Include="Validators\Notes\" />
   </ItemGroup>
 
 </Project>

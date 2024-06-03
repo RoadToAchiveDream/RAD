@@ -12,11 +12,11 @@ public class UserCreateModelValidator : AbstractValidator<UserCreateModel>
             .NotNull()
             .WithMessage(user => $"{nameof(user.FirstName)} is not specified");
 
-        RuleFor(user => user.Phone)
+        RuleFor(user => user.PhoneNumber)
             .NotNull()
-            .WithMessage(user => $"{nameof(user.Phone)} is not specified");
+            .WithMessage(user => $"{nameof(user.PhoneNumber)} is not specified");
 
-        RuleFor(user => user.Phone)
+        RuleFor(user => user.PhoneNumber)
             .Must(ValidationHelper.IsPhoneValid);
 
         RuleFor(user => user.Email)
