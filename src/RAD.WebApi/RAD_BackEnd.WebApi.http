@@ -1,0 +1,6 @@
+@RAD.WebApi_HostAddress = http://localhost:5296
+
+GET {{RAD.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

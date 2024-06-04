@@ -1,0 +1,13 @@
+﻿using RAD.Domain.Enums.NoteEnums;
+using RAD.DTOs.Users;
+
+namespace RAD.DTOs.Notes;
+public class NoteViewModel
+{
+    public long Id { get; set; }
+    public UserViewModel User { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+    public NoteCategory Category { get; set; }
+}
+
