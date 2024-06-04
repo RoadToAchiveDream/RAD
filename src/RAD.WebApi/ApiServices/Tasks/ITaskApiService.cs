@@ -9,5 +9,5 @@ public interface ITaskApiService
     public ValueTask<TaskViewModel> PutAsync(long id, TaskUpdateModel model);
     public ValueTask<bool> DeleteAsync(long id);
     public ValueTask<TaskViewModel> GetAsync(long id);
-    public ValueTask<IEnumerable<TaskViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
+    public ValueTask<IEnumerable<TaskViewModel>> GetAsync(PaginationParams @params, Filter filter, string search = null);
 }

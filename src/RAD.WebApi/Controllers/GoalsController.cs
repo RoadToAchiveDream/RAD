@@ -1,22 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RAD.DTOs.Goals;
-using RAD.Services.Services.Goals;
+using RAD.Services.Configurations;
+using RAD.WebApi.ApiServices.Goals;
 using RAD.WebApi.Models;
 
 namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class GoalsController(IGoalService goalService) : ControllerBase
+public class GoalsController(IGoalApiService goalService) : ControllerBase
 {
     [HttpGet]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await goalService.GetAllAsync()
+            Data = await goalService.GetAsync(@params, filter, search)
         });
     }
     [HttpGet("{id:long}")]
@@ -26,7 +30,7 @@ public class GoalsController(IGoalService goalService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await goalService.GetByIdAsync(id)
+            Data = await goalService.GetAsync(id)
         });
     }
     [HttpPost]
@@ -36,7 +40,7 @@ public class GoalsController(IGoalService goalService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await goalService.CreateAsync(goal)
+            Data = await goalService.PostAsync(goal)
         });
     }
     [HttpDelete("{id:long}")]
@@ -56,7 +60,7 @@ public class GoalsController(IGoalService goalService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await goalService.UpdateAsync(id, goal)
+            Data = await goalService.PutAsync(id, goal)
         });
     }
 }

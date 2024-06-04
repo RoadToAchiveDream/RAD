@@ -3,6 +3,7 @@ using RAD.Domain.Entities;
 using Task = RAD.Domain.Entities.Task;
 
 namespace RAD.DAL.Contexts;
+
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

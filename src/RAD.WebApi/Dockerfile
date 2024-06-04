@@ -10,10 +10,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/RAD.WebApi/RAD.WebApi.csproj", "src/RAD.WebApi/"]
-COPY ["src/RAD.DataAccess/RAD.DataAccess.csproj", "src/RAD.DataAccess/"]
+COPY ["src/RAD.DAL/RAD.DAL.csproj", "src/RAD.DAL/"]
 COPY ["src/RAD.Domain/RAD.Domain.csproj", "src/RAD.Domain/"]
-COPY ["src/RAD.Services/RAD.Services.csproj", "src/RAD.Services/"]
 COPY ["src/RAD.DTOs/RAD.DTOs.csproj", "src/RAD.DTOs/"]
+COPY ["src/RAD.Services/RAD.Services.csproj", "src/RAD.Services/"]
 RUN dotnet restore "./src/RAD.WebApi/RAD.WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/RAD.WebApi"

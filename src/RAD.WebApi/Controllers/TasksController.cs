@@ -1,22 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RAD.DTOs.Tasks;
-using RAD.Services.Services.Tasks;
+using RAD.Services.Configurations;
+using RAD.WebApi.ApiServices.Tasks;
 using RAD.WebApi.Models;
 
 namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TasksController(ITaskService taskService) : ControllerBase
+public class TasksController(ITaskApiService taskService) : ControllerBase
 {
     [HttpGet]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await taskService.GetAllAsync()
+            Data = await taskService.GetAsync(@params, filter, search)
         });
     }
     [HttpGet("{id:long}")]
@@ -26,7 +30,7 @@ public class TasksController(ITaskService taskService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await taskService.GetByIdAsync(id)
+            Data = await taskService.GetAsync(id)
         });
     }
     [HttpPost]
@@ -36,7 +40,7 @@ public class TasksController(ITaskService taskService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await taskService.CreateAsync(task)
+            Data = await taskService.PostAsync(task)
         });
     }
     [HttpDelete("{id:long}")]
@@ -56,7 +60,7 @@ public class TasksController(ITaskService taskService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await taskService.UpdateAsync(id, task)
+            Data = await taskService.PutAsync(id, task)
         });
     }
 }

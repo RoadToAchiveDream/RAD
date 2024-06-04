@@ -1,22 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RAD.DTOs.Notes;
-using RAD.Services.Services.Notes;
+using RAD.Services.Configurations;
+using RAD.WebApi.ApiServices.Notes;
 using RAD.WebApi.Models;
 
 namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class NotesController(INoteService noteService) : ControllerBase
+public class NotesController(INoteApiService noteService) : ControllerBase
 {
     [HttpGet]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await noteService.GetAllAsync()
+            Data = await noteService.GetAsync(@params, filter, search)
         });
     }
     [HttpGet("{id:long}")]
@@ -26,7 +30,7 @@ public class NotesController(INoteService noteService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await noteService.GetByIdAsync(id)
+            Data = await noteService.GetAsync(id)
         });
     }
     [HttpPost]
@@ -36,7 +40,7 @@ public class NotesController(INoteService noteService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await noteService.CreateAsync(note)
+            Data = await noteService.PostAsync(note)
         });
     }
     [HttpDelete("{id:long}")]
@@ -56,7 +60,7 @@ public class NotesController(INoteService noteService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await noteService.UpdateAsync(id, note)
+            Data = await noteService.PutAsync(id, note)
         });
     }
 }

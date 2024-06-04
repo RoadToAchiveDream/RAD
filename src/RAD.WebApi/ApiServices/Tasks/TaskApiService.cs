@@ -19,7 +19,7 @@ public class TaskApiService(
         return await taskService.DeleteAsync(id);
     }
 
-    public async ValueTask<IEnumerable<TaskViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
+    public async ValueTask<IEnumerable<TaskViewModel>> GetAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var tasks = await taskService.GetAllAsync(@params, filter, search);
         return mapper.Map<IEnumerable<TaskViewModel>>(tasks);

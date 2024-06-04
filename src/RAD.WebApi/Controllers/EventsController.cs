@@ -1,22 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RAD.DTOs.Events;
-using RAD.Services.Services.Events;
+using RAD.Services.Configurations;
+using RAD.WebApi.ApiServices.Events;
 using RAD.WebApi.Models;
 
 namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EventsController(IEventService eventService) : ControllerBase
+public class EventsController(IEventApiService eventService) : ControllerBase
 {
     [HttpGet]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await eventService.GetAllAsync()
+            Data = await eventService.GetAsync(@params, filter, search)
         });
     }
     [HttpGet("{id:long}")]
@@ -26,7 +30,7 @@ public class EventsController(IEventService eventService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await eventService.GetByIdAsync(id)
+            Data = await eventService.GetAsync(id)
         });
     }
     [HttpPost]
@@ -36,7 +40,7 @@ public class EventsController(IEventService eventService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await eventService.CreateAsync(@event)
+            Data = await eventService.PostAsync(@event)
         });
     }
     [HttpDelete("{id:long}")]
@@ -56,7 +60,7 @@ public class EventsController(IEventService eventService) : ControllerBase
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await eventService.UpdateAsync(id, @event)
+            Data = await eventService.PutAsync(id, @event)
         });
     }
 }

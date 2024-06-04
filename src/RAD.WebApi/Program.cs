@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using RAD.DAL.Contexts;
-using RAD.Services.Helpers;
 using RAD.WebApi.Extensions;
-using RAD.WebApi.Mappers;
 using RAD.WebApi.Helpers;
-using RAD.WebApi.Middlewares;
+using RAD.WebApi.Mappers;
+using Serilog;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,21 +13,30 @@ builder.Services.AddControllers(options =>
     options.Conventions.Add(new RouteTokenTransformerConvention(new RouteHelper())));
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGenJwt();
+builder.Services.ConfigureSwagger();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
+builder.Services.AddJWtService(builder.Configuration);
+builder.Services.AddExceptionHandlers();
+builder.Services.AddProblemDetails();
+
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-builder.Services.AddAuthorization();
-builder.Services.AddJWtService(builder.Configuration);
-
-builder.Services.AddServices();
 builder.Services.AddValidators();
-builder.Services.AddMemoryCache();
+builder.Services.AddApiServices();
+builder.Services.AddServices();
 
-EnvironmentHelper.WebRootPath = builder.Environment.WebRootPath;
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 app.InjectEnvironmentItems();
@@ -54,7 +63,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.Run();

@@ -10,5 +10,4 @@ public interface INoteApiService
     public ValueTask<bool> DeleteAsync(long id);
     public ValueTask<NoteViewModel> GetAsync(long id);
     public ValueTask<IEnumerable<NoteViewModel>> GetAsync(PaginationParams @params, Filter filter, string search = null);
-
 }
