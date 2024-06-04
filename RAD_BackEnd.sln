@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9585A8A6-A993-499F-BFAC-6AB011BB79E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RAD_BackEnd.DataAccess", "src\RAD_BackEnd.DataAccess\RAD_BackEnd.DataAccess.csproj", "{F0FA27B2-3349-40F2-9321-49F5CD686331}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RAD_BackEnd.DAL", "src\RAD_BackEnd.DataAccess\RAD_BackEnd.DAL.csproj", "{F0FA27B2-3349-40F2-9321-49F5CD686331}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RAD_BackEnd.Domain", "src\RAD_BackEnd.Domain\RAD_BackEnd.Domain.csproj", "{3DD59F9B-1258-46BD-BE8D-7E6FFFA5A82A}"
 EndProject

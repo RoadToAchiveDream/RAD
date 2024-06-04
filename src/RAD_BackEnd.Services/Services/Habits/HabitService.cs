@@ -1,6 +1,9 @@
-﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using Microsoft.EntityFrameworkCore;
+using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Domain.Entities;
+using RAD_BackEnd.Services.Configurations;
 using RAD_BackEnd.Services.Exceptions;
+using RAD_BackEnd.Services.Extensions;
 using RAD_BackEnd.Services.Services.Users;
 
 namespace RAD_BackEnd.Services.Services.Habits;
@@ -37,13 +40,19 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IH
         return true;
     }
 
-    public async ValueTask<IEnumerable<Habit>> GetAllAsync()
+    public async ValueTask<IEnumerable<Habit>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var Habits = await unitOfWork.Habits.SelectAsEnumerableAsync(
+        var Habits = unitOfWork.Habits.SelectAsQueryable(
             expression: h => !h.IsDeleted,
-            includes: ["User"]);
+            includes: ["User"],
+            isTracked: false).OrderBy(filter);
 
-        return Habits;
+        if (!string.IsNullOrEmpty(search))
+            Habits = Habits.Where(habit =>
+                habit.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                habit.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+        return await Habits.ToPaginateAsQueryable(@params).ToListAsync();
     }
 
     public async ValueTask<Habit> GetByIdAsync(long id)

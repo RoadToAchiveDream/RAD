@@ -1,6 +1,9 @@
-﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using Microsoft.EntityFrameworkCore;
+using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Domain.Entities;
+using RAD_BackEnd.Services.Configurations;
 using RAD_BackEnd.Services.Exceptions;
+using RAD_BackEnd.Services.Extensions;
 using RAD_BackEnd.Services.Services.Users;
 
 namespace RAD_BackEnd.Services.Services.Notes;
@@ -31,13 +34,19 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
         return true;
     }
 
-    public async ValueTask<IEnumerable<Note>> GetAllAsync()
+    public async ValueTask<IEnumerable<Note>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var Notes = await unitOfWork.Notes.SelectAsEnumerableAsync(
+        var Notes = unitOfWork.Notes.SelectAsQueryable(
             expression: n => !n.IsDeleted,
-            includes: ["User"]);
+            includes: ["User"],
+            isTracked: false).OrderBy(filter);
 
-        return Notes;
+        if (!string.IsNullOrEmpty(search))
+            Notes = Notes.Where(user =>
+                user.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                user.Content.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+        return await Notes.ToPaginateAsQueryable(@params).ToListAsync();
     }
 
     public async ValueTask<Note> GetByIdAsync(long id)

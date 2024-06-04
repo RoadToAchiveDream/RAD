@@ -1,6 +1,9 @@
-﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using Microsoft.EntityFrameworkCore;
+using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Domain.Entities;
+using RAD_BackEnd.Services.Configurations;
 using RAD_BackEnd.Services.Exceptions;
+using RAD_BackEnd.Services.Extensions;
 using RAD_BackEnd.Services.Services.Users;
 
 namespace RAD_BackEnd.Services.Services.Goals;
@@ -37,13 +40,19 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork) : IGo
         return true;
     }
 
-    public async ValueTask<IEnumerable<Goal>> GetAllAsync()
+    public async ValueTask<IEnumerable<Goal>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var Goals = await unitOfWork.Goals.SelectAsEnumerableAsync(
+        var Goals = unitOfWork.Goals.SelectAsQueryable(
             expression: g => !g.IsDeleted,
-            includes: ["User"]);
+            includes: ["User"],
+            isTracked: false).OrderBy(filter);
 
-        return Goals;
+        if (!string.IsNullOrEmpty(search))
+            Goals = Goals.Where(goal =>
+            goal.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            goal.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+        return await Goals.ToPaginateAsQueryable(@params).ToListAsync();
     }
 
     public async ValueTask<Goal> GetByIdAsync(long id)

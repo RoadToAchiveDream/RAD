@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RAD_BackEnd.DataAccess\RAD_BackEnd.DataAccess.csproj" />
+    <ProjectReference Include="..\RAD_BackEnd.DataAccess\RAD_BackEnd.DAL.csproj" />
     <ProjectReference Include="..\RAD_BackEnd.Domain\RAD_BackEnd.Domain.csproj" />
   </ItemGroup>
 

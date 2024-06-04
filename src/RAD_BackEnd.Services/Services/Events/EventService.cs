@@ -1,6 +1,9 @@
-﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using Microsoft.EntityFrameworkCore;
+using RAD_BackEnd.DataAccess.UnintOfWorks;
 using RAD_BackEnd.Domain.Entities;
+using RAD_BackEnd.Services.Configurations;
 using RAD_BackEnd.Services.Exceptions;
+using RAD_BackEnd.Services.Extensions;
 using RAD_BackEnd.Services.Services.Users;
 
 namespace RAD_BackEnd.Services.Services.Events;
@@ -37,13 +40,19 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork) : IE
         return true;
     }
 
-    public async ValueTask<IEnumerable<Event>> GetAllAsync()
+    public async ValueTask<IEnumerable<Event>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var Events = await unitOfWork.Events.SelectAsEnumerableAsync(
+        var Events = unitOfWork.Events.SelectAsQueryable(
             expression: e => !e.IsDeleted,
-            includes: ["User"]);
+            includes: ["User"],
+            isTracked: false).OrderBy(filter);
 
-        return Events;
+        if (!string.IsNullOrEmpty(search))
+            Events = Events.Where(@event =>
+                @event.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                @event.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+        return await Events.ToPaginateAsQueryable(@params).ToListAsync();
     }
 
     public async ValueTask<Event> GetByIdAsync(long id)

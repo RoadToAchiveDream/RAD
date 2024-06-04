@@ -1,5 +1,8 @@
-﻿using RAD_BackEnd.DataAccess.UnintOfWorks;
+﻿using Microsoft.EntityFrameworkCore;
+using RAD_BackEnd.DataAccess.UnintOfWorks;
+using RAD_BackEnd.Services.Configurations;
 using RAD_BackEnd.Services.Exceptions;
+using RAD_BackEnd.Services.Extensions;
 using RAD_BackEnd.Services.Services.Users;
 using Task = RAD_BackEnd.Domain.Entities.Task;
 
@@ -31,13 +34,19 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         return true;
     }
 
-    public async ValueTask<IEnumerable<Task>> GetAllAsync()
+    public async ValueTask<IEnumerable<Task>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+        var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: t => !t.IsDeleted,
-            includes: ["User"]);
+            includes: ["User"],
+            isTracked: false).OrderBy(filter);
 
-        return Tasks;
+        if (!string.IsNullOrEmpty(search))
+            Tasks = Tasks.Where(user =>
+                user.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                user.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+        return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
 
     public async ValueTask<Task> GetByIdAsync(long id)
