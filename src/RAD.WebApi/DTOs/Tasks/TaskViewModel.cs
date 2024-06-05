@@ -1,10 +1,11 @@
 ﻿using RAD.Domain.Enums.TaskEnums;
+using RAD.WebApi.DTOs.Users;
 using TaskStatus = RAD.Domain.Enums.TaskEnums.TaskStatus;
-
-namespace RAD.DTOs.Tasks;
-public class TaskCreateModel
+namespace RAD.WebApi.DTOs.Tasks;
+public record TaskViewModel
 {
-    public long UserId { get; set; }
+    public long Id { get; set; }
+    public UserViewModel User { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public DateTime DueDate { get; set; }

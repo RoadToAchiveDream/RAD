@@ -1,6 +1,6 @@
 ﻿using RAD.Domain.Enums.NoteEnums;
 
-namespace RAD.DTOs.Notes;
+namespace RAD.WebApi.DTOs.Notes;
 public record NoteUpdateModel
 {
     public long UserId { get; set; }

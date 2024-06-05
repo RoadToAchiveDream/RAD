@@ -1,5 +1,5 @@
-﻿using RAD.DTOs.Users;
-using RAD.Services.Configurations;
+﻿using RAD.Services.Configurations;
+using RAD.WebApi.DTOs.Users;
 
 namespace RAD.WebApi.ApiServices.Users;
 

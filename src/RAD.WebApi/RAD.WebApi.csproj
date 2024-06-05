@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RAD.DAL\RAD.DAL.csproj" />
-    <ProjectReference Include="..\RAD.DTOs\RAD.DTOs.csproj" />
     <ProjectReference Include="..\RAD.Services\RAD.Services.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 ﻿using RAD.Domain.Enums.GoalEnums;
-using RAD.DTOs.Users;
+using RAD.WebApi.DTOs.Users;
 
-namespace RAD.DTOs.Goals;
+namespace RAD.WebApi.DTOs.Goals;
 public class GoalViewModel
 {
     public long Id { get; set; }

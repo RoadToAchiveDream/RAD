@@ -1,4 +1,4 @@
-﻿namespace RAD.DTOs.Users;
+﻿namespace RAD.WebApi.DTOs.Users;
 
 public class UserChangePasswordModel
 {

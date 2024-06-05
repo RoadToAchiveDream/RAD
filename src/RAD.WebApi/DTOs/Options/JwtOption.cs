@@ -1,4 +1,4 @@
-﻿namespace RAD.DTOs.Options;
+﻿namespace RAD.WebApi.DTOs.Options;
 
 public class JwtOption
 {

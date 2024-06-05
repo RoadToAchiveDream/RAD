@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using RAD.DTOs.Habits;
+using RAD.WebApi.DTOs.Habits;
 
 namespace RAD.WebApi.Validators.Habits;
 

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using RAD.DTOs.Tasks;
+using RAD.WebApi.DTOs.Tasks;
 
 namespace RAD.WebApi.Validators.Tasks;
 

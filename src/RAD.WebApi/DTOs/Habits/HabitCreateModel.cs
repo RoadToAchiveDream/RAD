@@ -1,7 +1,7 @@
 ﻿using RAD.Domain.Enums.HabitEnums;
 
-namespace RAD.DTOs.Habits;
-public class HabitUpdateModel
+namespace RAD.WebApi.DTOs.Habits;
+public class HabitCreateModel
 {
     public long UserId { get; set; }
     public string Name { get; set; }

@@ -1,5 +1,5 @@
-﻿using RAD.DTOs.Notes;
-using RAD.Services.Configurations;
+﻿using RAD.Services.Configurations;
+using RAD.WebApi.DTOs.Notes;
 
 namespace RAD.WebApi.ApiServices.Notes;
 

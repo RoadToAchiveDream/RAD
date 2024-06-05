@@ -1,5 +1,5 @@
-﻿using RAD.DTOs.Events;
-using RAD.Services.Configurations;
+﻿using RAD.Services.Configurations;
+using RAD.WebApi.DTOs.Events;
 
 namespace RAD.WebApi.ApiServices.Events;
 

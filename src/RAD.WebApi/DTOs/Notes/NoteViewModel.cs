@@ -1,7 +1,7 @@
 ﻿using RAD.Domain.Enums.NoteEnums;
-using RAD.DTOs.Users;
+using RAD.WebApi.DTOs.Users;
 
-namespace RAD.DTOs.Notes;
+namespace RAD.WebApi.DTOs.Notes;
 public class NoteViewModel
 {
     public long Id { get; set; }

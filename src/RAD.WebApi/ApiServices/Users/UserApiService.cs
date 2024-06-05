@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using RAD.Domain.Entities;
-using RAD.DTOs.Users;
 using RAD.Services.Configurations;
 using RAD.Services.Services.Users;
+using RAD.WebApi.DTOs.Users;
 using RAD.WebApi.Extensions;
 using RAD.WebApi.Validators.Users;
 

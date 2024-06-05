@@ -3,9 +3,9 @@ using Microsoft.Extensions.Caching.Memory;
 using RAD.DAL.UnintOfWorks;
 using RAD.Domain.Entities;
 using RAD.Services.Configurations;
+using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
 using RAD.Services.Helpers;
-using RAD.Services.Exceptions;
 
 namespace RAD.Services.Services.Users;
 

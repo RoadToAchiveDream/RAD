@@ -1,5 +1,5 @@
-﻿using RAD.DTOs.Goals;
-using RAD.Services.Configurations;
+﻿using RAD.Services.Configurations;
+using RAD.WebApi.DTOs.Goals;
 
 namespace RAD.WebApi.ApiServices.Goals;
 

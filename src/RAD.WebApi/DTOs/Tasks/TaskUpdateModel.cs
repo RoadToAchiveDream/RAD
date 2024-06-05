@@ -1,6 +1,6 @@
 ﻿using RAD.Domain.Enums.TaskEnums;
 using TaskStatus = RAD.Domain.Enums.TaskEnums.TaskStatus;
-namespace RAD.DTOs.Tasks;
+namespace RAD.WebApi.DTOs.Tasks;
 public record TaskUpdateModel
 {
     public long UserId { get; set; }

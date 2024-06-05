@@ -1,4 +1,4 @@
-namespace RAD.DTOs.Events;
+namespace RAD.WebApi.DTOs.Events;
 public class EventUpdateModel
 {
     public long UserId { get; set; }

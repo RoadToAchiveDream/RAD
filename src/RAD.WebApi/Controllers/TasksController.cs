@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RAD.DTOs.Tasks;
 using RAD.Services.Configurations;
 using RAD.WebApi.ApiServices.Tasks;
+using RAD.WebApi.DTOs.Tasks;
 using RAD.WebApi.Models;
 
 namespace RAD.WebApi.Controllers;

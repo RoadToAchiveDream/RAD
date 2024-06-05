@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using RAD.DTOs.Events;
+using RAD.WebApi.DTOs.Events;
 
 namespace RAD.WebApi.Validators.Events;
 

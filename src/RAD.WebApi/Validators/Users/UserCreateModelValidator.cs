@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using RAD.DTOs.Users;
 using RAD.Services.Helpers;
+using RAD.WebApi.DTOs.Users;
 
 namespace RAD.WebApi.Validators.Users;
 

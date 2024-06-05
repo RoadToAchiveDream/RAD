@@ -1,5 +1,5 @@
-﻿using RAD.DTOs.Habits;
-using RAD.Services.Configurations;
+﻿using RAD.Services.Configurations;
+using RAD.WebApi.DTOs.Habits;
 
 namespace RAD.WebApi.ApiServices.Habits;
 

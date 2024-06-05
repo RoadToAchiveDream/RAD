@@ -1,5 +1,5 @@
-﻿using RAD.DTOs.Tasks;
-using RAD.Services.Configurations;
+﻿using RAD.Services.Configurations;
+using RAD.WebApi.DTOs.Tasks;
 
 namespace RAD.WebApi.ApiServices.Tasks;
 

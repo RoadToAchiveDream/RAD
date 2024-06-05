@@ -1,10 +1,7 @@
-using RAD.DTOs.Users;
-
-namespace RAD.DTOs.Events;
-public class EventViewModel
+namespace RAD.WebApi.DTOs.Events;
+public class EventCreateModel
 {
-    public long Id { get; set; }
-    public UserViewModel User { get; set; }
+    public long UserId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public DateTime StartTime { get; set; }

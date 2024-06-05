@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using RAD.DTOs.Tasks;
 using RAD.Services.Configurations;
 using RAD.Services.Services.Tasks;
+using RAD.WebApi.DTOs.Tasks;
 using RAD.WebApi.Extensions;
 using RAD.WebApi.Validators.Tasks;
 using Task = RAD.Domain.Entities.Task;

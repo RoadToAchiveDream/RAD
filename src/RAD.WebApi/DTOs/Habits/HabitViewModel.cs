@@ -1,7 +1,7 @@
 ﻿using RAD.Domain.Enums.HabitEnums;
-using RAD.DTOs.Users;
+using RAD.WebApi.DTOs.Users;
 
-namespace RAD.DTOs.Habits;
+namespace RAD.WebApi.DTOs.Habits;
 public class HabitViewModel
 {
     public long Id { get; set; }

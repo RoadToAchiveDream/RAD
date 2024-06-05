@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using RAD.Domain.Entities;
-using RAD.DTOs.Habits;
 using RAD.Services.Configurations;
 using RAD.Services.Services.Habits;
+using RAD.WebApi.DTOs.Habits;
 using RAD.WebApi.Extensions;
 using RAD.WebApi.Validators.Habits;
 

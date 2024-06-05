@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using RAD.DTOs.Notes;
+using RAD.WebApi.DTOs.Notes;
 
 namespace RAD.WebApi.Validators.Notes;
 

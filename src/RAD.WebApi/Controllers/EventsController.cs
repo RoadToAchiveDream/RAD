@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RAD.DTOs.Events;
 using RAD.Services.Configurations;
 using RAD.WebApi.ApiServices.Events;
+using RAD.WebApi.DTOs.Events;
 using RAD.WebApi.Models;
 
 namespace RAD.WebApi.Controllers;

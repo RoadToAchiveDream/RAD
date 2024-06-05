@@ -1,6 +1,6 @@
 ﻿using RAD.Domain.Enums.GoalEnums;
 
-namespace RAD.DTOs.Goals;
+namespace RAD.WebApi.DTOs.Goals;
 public class GoalUpdateModel
 {
     public long UserId { get; set; }

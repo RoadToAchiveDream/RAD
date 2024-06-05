@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using RAD.Domain.Entities;
-using RAD.DTOs.Events;
-using RAD.DTOs.Goals;
-using RAD.DTOs.Habits;
-using RAD.DTOs.Notes;
-using RAD.DTOs.Tasks;
-using RAD.DTOs.Users;
+using RAD.WebApi.DTOs.Events;
+using RAD.WebApi.DTOs.Goals;
+using RAD.WebApi.DTOs.Habits;
+using RAD.WebApi.DTOs.Notes;
+using RAD.WebApi.DTOs.Tasks;
+using RAD.WebApi.DTOs.Users;
 using Task = RAD.Domain.Entities.Task;
 
 namespace RAD.WebApi.Mappers;
