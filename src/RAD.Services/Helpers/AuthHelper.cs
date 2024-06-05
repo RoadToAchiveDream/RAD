@@ -17,8 +17,8 @@ public class AuthHepler
             Subject = new ClaimsIdentity(new Claim[]
             {
                 new Claim("Id", user.Id.ToString()),
-                new Claim("PhoneNumber", user.PhoneNumer),
-                new Claim(ClaimTypes.Role, user.Role.Name),
+                new Claim("PhoneNumber", user.PhoneNumber),
+                new Claim(ClaimTypes.Role, nameof(user.UserRole)),
             }),
 
             Expires = DateTime.UtcNow.AddHours(

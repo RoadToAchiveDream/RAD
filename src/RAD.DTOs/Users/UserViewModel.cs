@@ -1,4 +1,5 @@
 ﻿namespace RAD.DTOs.Users;
+
 public class UserViewModel
 {
     public long Id { get; set; }

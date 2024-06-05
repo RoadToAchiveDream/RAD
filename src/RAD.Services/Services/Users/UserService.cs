@@ -16,8 +16,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     public async ValueTask<User> ChangePasswordAsync(string phone, string oldPassword, string newPassword)
     {
         var existUser = await unitOfWork.Users.SelectAsync(
-            expression: user => user.PhoneNumer == phone && PasswordHasher.Verify(oldPassword, user.Password) && !user.IsDeleted,
-            includes: ["Role"])
+            expression: user => user.PhoneNumber == phone && PasswordHasher.Verify(oldPassword, user.Password) && !user.IsDeleted)
             ?? throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
 
         existUser.Password = PasswordHasher.Hash(newPassword);
@@ -29,7 +28,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
 
     public async ValueTask<bool> ConfirmCodeAsync(string phone, string code)
     {
-        var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumer == phone && !user.IsDeleted)
+        var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumber == phone && !user.IsDeleted)
            ?? throw new NotFoundException($"User with Phone Number ({phone}) is not found");
 
         if (memoryCache.Get(cacheKey) as string == code)
@@ -96,8 +95,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     public async ValueTask<(User user, string token)> LoginAsync(string phone, string password)
     {
         var existUser = await unitOfWork.Users.SelectAsync(
-            expression: user => user.PhoneNumer == phone && !user.IsDeleted,
-            includes: ["Role"])
+            expression: user => user.PhoneNumber == phone && !user.IsDeleted)
             ?? throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
 
         if (!PasswordHasher.Verify(password, existUser.Password))
@@ -108,7 +106,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
 
     public async ValueTask<bool> ResetPasswordAsync(string phone, string newPassword)
     {
-        var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumer == phone && !user.IsDeleted)
+        var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumber == phone && !user.IsDeleted)
             ?? throw new NotFoundException($"User with Phone Number ({phone}) is not found");
 
         var code = memoryCache.Get(cacheKey) as string;
@@ -124,7 +122,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
 
     public async ValueTask<bool> SendCodeAsync(string phone)
     {
-        var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumer == phone && !user.IsDeleted)
+        var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumber == phone && !user.IsDeleted)
            ?? throw new NotFoundException($"User with Phone Number ({phone}) is not found");
 
         var random = new Random();

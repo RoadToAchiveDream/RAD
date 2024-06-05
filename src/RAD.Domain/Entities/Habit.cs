@@ -2,6 +2,7 @@
 using RAD.Domain.Enums.HabitEnums;
 
 namespace RAD.Domain.Entities;
+
 public class Habit : Auditable
 {
     public long UserId { get; set; }

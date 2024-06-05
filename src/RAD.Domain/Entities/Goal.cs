@@ -2,6 +2,7 @@
 using RAD.Domain.Enums.GoalEnums;
 
 namespace RAD.Domain.Entities;
+
 public class Goal : Auditable
 {
     public long UserId { get; set; }

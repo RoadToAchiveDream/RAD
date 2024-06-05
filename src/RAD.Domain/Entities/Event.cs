@@ -1,6 +1,7 @@
 ﻿using RAD.Domain.Commons;
 
 namespace RAD.Domain.Entities;
+
 public class Event : Auditable
 {
     public long UserId { get; set; }

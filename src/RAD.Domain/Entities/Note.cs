@@ -2,6 +2,7 @@
 using RAD.Domain.Enums.NoteEnums;
 
 namespace RAD.Domain.Entities;
+
 public class Note : Auditable
 {
     public long UserId { get; set; }

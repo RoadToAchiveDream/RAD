@@ -2,6 +2,7 @@
 using RAD.Domain.Enums.TaskEnums;
 
 namespace RAD.Domain.Entities;
+
 public class Task : Auditable
 {
     public long UserId { get; set; }
