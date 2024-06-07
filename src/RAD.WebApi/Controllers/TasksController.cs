@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RAD.Services.Configurations;
 using RAD.WebApi.ApiServices.Tasks;
 using RAD.WebApi.DTOs.Tasks;
@@ -8,6 +9,7 @@ namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TasksController(ITaskApiService taskService) : ControllerBase
 {
     [HttpGet]

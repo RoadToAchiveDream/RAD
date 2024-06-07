@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RAD.Services.Configurations;
 using RAD.WebApi.ApiServices.Notes;
 using RAD.WebApi.DTOs.Notes;
@@ -8,6 +9,7 @@ namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class NotesController(INoteApiService noteService) : ControllerBase
 {
     [HttpGet]

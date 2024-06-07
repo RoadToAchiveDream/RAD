@@ -2,6 +2,7 @@
 
 public enum NoteCategory
 {
+    None,
     General,
     Personal,
     Work,

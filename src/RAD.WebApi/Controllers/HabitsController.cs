@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RAD.Services.Configurations;
 using RAD.WebApi.ApiServices.Habits;
 using RAD.WebApi.DTOs.Habits;
@@ -7,6 +8,7 @@ using RAD.WebApi.Models;
 namespace RAD.WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class HabitsController(IHabitApiService habitService) : ControllerBase
 {
     [HttpGet]

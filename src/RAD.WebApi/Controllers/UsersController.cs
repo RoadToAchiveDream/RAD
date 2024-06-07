@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RAD.Services.Configurations;
 using RAD.WebApi.ApiServices.Users;
 using RAD.WebApi.DTOs.Users;
@@ -8,6 +9,7 @@ namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class UsersController(IUserApiService userApiService) : ControllerBase
 {
     [HttpGet]
@@ -23,7 +25,7 @@ public class UsersController(IUserApiService userApiService) : ControllerBase
             Data = await userApiService.GetAsync(@params, filter, search)
         });
     }
-
+    [AllowAnonymous]
     [HttpGet("{id:long}")]
     public async ValueTask<IActionResult> GetAsync(long id)
     {
@@ -34,6 +36,7 @@ public class UsersController(IUserApiService userApiService) : ControllerBase
             Data = await userApiService.GetAsync(id)
         });
     }
+    [AllowAnonymous]
     [HttpPost]
     public async ValueTask<IActionResult> PostAsync([FromBody] UserCreateModel user)
     {

@@ -2,14 +2,15 @@
 using RAD.DAL.UnintOfWorks;
 using RAD.Domain.Entities;
 using RAD.Services.Configurations;
+using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
 using RAD.Services.Services.Users;
-using RAD.Services.Exceptions;
 
 namespace RAD.Services.Services.Goals;
 
 public class GoalService(IUserService userService, IUnitOfWork unitOfWork) : IGoalService
 {
+    #region Goal CRUD
     public async ValueTask<Goal> CreateAsync(Goal goal)
     {
         var existGoal = await unitOfWork.Goals.SelectAsync(
@@ -49,8 +50,8 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork) : IGo
 
         if (!string.IsNullOrEmpty(search))
             Goals = Goals.Where(goal =>
-            goal.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-            goal.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+            goal.Title.ToLower().Contains(search.ToLower()) ||
+            goal.Description.ToLower().Contains(search.ToLower()));
 
         return await Goals.ToPaginateAsQueryable(@params).ToListAsync();
     }
@@ -87,4 +88,5 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork) : IGo
 
         return updated;
     }
+    #endregion
 }

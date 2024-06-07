@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RAD.Services.Configurations;
 using RAD.WebApi.ApiServices.Events;
 using RAD.WebApi.DTOs.Events;
@@ -8,6 +9,7 @@ namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class EventsController(IEventApiService eventService) : ControllerBase
 {
     [HttpGet]

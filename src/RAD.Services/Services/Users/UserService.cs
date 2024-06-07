@@ -13,29 +13,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
 {
     private readonly string cacheKey = "EmailCodeKey";
 
-    public async ValueTask<User> ChangePasswordAsync(string phone, string oldPassword, string newPassword)
-    {
-        var existUser = await unitOfWork.Users.SelectAsync(
-            expression: user => user.PhoneNumber == phone && PasswordHasher.Verify(oldPassword, user.Password) && !user.IsDeleted)
-            ?? throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
-
-        existUser.Password = PasswordHasher.Hash(newPassword);
-        await unitOfWork.Users.UpdateAsync(existUser);
-        await unitOfWork.SaveAsync();
-
-        return existUser;
-    }
-
-    public async ValueTask<bool> ConfirmCodeAsync(string phone, string code)
-    {
-        var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumber == phone && !user.IsDeleted)
-           ?? throw new NotFoundException($"User with Phone Number ({phone}) is not found");
-
-        if (memoryCache.Get(cacheKey) as string == code)
-            return true;
-
-        return false;
-    }
+    #region User CRUD
 
     public async ValueTask<User> CreateAsync(User user)
     {
@@ -68,19 +46,22 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
         return true;
     }
 
-    public async ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
+    public async ValueTask<User> UpdateAsync(long id, User user)
     {
-        var Users = unitOfWork.Users.SelectAsQueryable(
-            expression: u => !u.IsDeleted,
-            includes: [],
-            isTracked: false).OrderBy(filter);
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: u => u.Id == id && !u.IsDeleted)
+            ?? throw new NotFoundException($"User with Id ({id}) is not found");
 
-        if (!string.IsNullOrEmpty(search))
-            Users = Users.Where(user =>
-                user.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                user.LastName.Contains(search, StringComparison.OrdinalIgnoreCase));
+        existUser.FirstName = user.FirstName;
+        existUser.LastName = user.LastName;
+        existUser.Email = user.Email;
+        existUser.ProfilePicture = user.ProfilePicture;
+        existUser.UpdatedByUserId = HttpContextHelper.UserId;
 
-        return await Users.ToPaginateAsQueryable(@params).ToListAsync();
+        var updated = await unitOfWork.Users.UpdateAsync(existUser);
+        await unitOfWork.SaveAsync();
+
+        return updated;
     }
 
     public async ValueTask<User> GetByIdAsync(long id)
@@ -92,6 +73,22 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
         return existUser;
     }
 
+    public async ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
+    {
+        var Users = unitOfWork.Users.SelectAsQueryable(
+            expression: u => !u.IsDeleted,
+            isTracked: false).OrderBy(filter);
+
+        if (!string.IsNullOrEmpty(search))
+            Users = Users.Where(user =>
+                user.FirstName.ToLower().Contains(search.ToLower()) ||
+                user.LastName.ToLower().Contains(search.ToLower()));
+
+        return await Users.ToPaginateAsQueryable(@params).ToListAsync();
+    }
+    #endregion
+
+    #region Account Management
     public async ValueTask<(User user, string token)> LoginAsync(string phone, string password)
     {
         var existUser = await unitOfWork.Users.SelectAsync(
@@ -102,6 +99,19 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
             throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
 
         return (user: existUser, token: AuthHepler.GenerateToken(existUser));
+    }
+
+    public async ValueTask<User> ChangePasswordAsync(string phone, string oldPassword, string newPassword)
+    {
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: user => user.PhoneNumber == phone && PasswordHasher.Verify(oldPassword, user.Password) && !user.IsDeleted)
+            ?? throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
+
+        existUser.Password = PasswordHasher.Hash(newPassword);
+        await unitOfWork.Users.UpdateAsync(existUser);
+        await unitOfWork.SaveAsync();
+
+        return existUser;
     }
 
     public async ValueTask<bool> ResetPasswordAsync(string phone, string newPassword)
@@ -140,21 +150,15 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
         return true;
     }
 
-    public async ValueTask<User> UpdateAsync(long id, User user)
+    public async ValueTask<bool> ConfirmCodeAsync(string phone, string code)
     {
-        var existUser = await unitOfWork.Users.SelectAsync(
-            expression: u => u.Id == id && !u.IsDeleted)
-            ?? throw new NotFoundException($"User with Id ({id}) is not found");
+        var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumber == phone && !user.IsDeleted)
+           ?? throw new NotFoundException($"User with Phone Number ({phone}) is not found");
 
-        existUser.FirstName = user.FirstName;
-        existUser.LastName = user.LastName;
-        existUser.Email = user.Email;
-        existUser.ProfilePicture = user.ProfilePicture;
-        existUser.UpdatedByUserId = HttpContextHelper.UserId;
+        if (memoryCache.Get(cacheKey) as string == code)
+            return true;
 
-        var updated = await unitOfWork.Users.UpdateAsync(existUser);
-        await unitOfWork.SaveAsync();
-
-        return updated;
+        return false;
     }
+    #endregion
 }

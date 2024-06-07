@@ -2,14 +2,15 @@
 using RAD.DAL.UnintOfWorks;
 using RAD.Domain.Entities;
 using RAD.Services.Configurations;
+using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
 using RAD.Services.Services.Users;
-using RAD.Services.Exceptions;
 
 namespace RAD.Services.Services.Events;
 
 public class EventService(IUserService userService, IUnitOfWork unitOfWork) : IEventService
 {
+    #region Event CRUD
     public async ValueTask<Event> CreateAsync(Event @event)
     {
         var existEvent = await unitOfWork.Events.SelectAsync(
@@ -49,8 +50,8 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork) : IE
 
         if (!string.IsNullOrEmpty(search))
             Events = Events.Where(@event =>
-                @event.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                @event.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+                @event.Title.ToLower().Contains(search.ToLower()) ||
+                @event.Description.ToLower().Contains(search.ToLower()));
 
         return await Events.ToPaginateAsQueryable(@params).ToListAsync();
     }
@@ -87,4 +88,5 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork) : IE
 
         return updated;
     }
+    #endregion
 }

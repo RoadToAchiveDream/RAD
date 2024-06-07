@@ -18,7 +18,7 @@ public class AuthHepler
             {
                 new Claim("Id", user.Id.ToString()),
                 new Claim("PhoneNumber", user.PhoneNumber),
-                new Claim(ClaimTypes.Role, nameof(user.UserRole)),
+                new Claim(ClaimTypes.Role, user.UserRole.ToString()),
             }),
 
             Expires = DateTime.UtcNow.AddHours(

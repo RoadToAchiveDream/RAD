@@ -10,4 +10,8 @@ public interface INoteService
     ValueTask<bool> DeleteAsync(long id);
     ValueTask<Note> GetByIdAsync(long id);
     ValueTask<IEnumerable<Note>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
+
+    ValueTask<Note> SetCategory(long id, string category);
+    ValueTask<Note> UnsetCategory(long id);
+    ValueTask<IEnumerable<Note>> GetByCategory(string category);
 }

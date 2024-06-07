@@ -2,14 +2,15 @@
 using RAD.DAL.UnintOfWorks;
 using RAD.Domain.Entities;
 using RAD.Services.Configurations;
+using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
 using RAD.Services.Services.Users;
-using RAD.Services.Exceptions;
 
 namespace RAD.Services.Services.Habits;
 
 public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IHabitService
 {
+    #region Habit CRUD
     public async ValueTask<Habit> CreateAsync(Habit habit)
     {
         var existUser = await userService.GetByIdAsync(habit.UserId);
@@ -49,8 +50,8 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IH
 
         if (!string.IsNullOrEmpty(search))
             Habits = Habits.Where(habit =>
-                habit.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                habit.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+                habit.Name.ToLower().Contains(search.ToLower()) ||
+                habit.Description.ToLower().Contains(search.ToLower()));
 
         return await Habits.ToPaginateAsQueryable(@params).ToListAsync();
     }
@@ -89,4 +90,5 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IH
 
         return updated;
     }
+    #endregion
 }

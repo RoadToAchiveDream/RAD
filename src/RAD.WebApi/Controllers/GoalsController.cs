@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RAD.Services.Configurations;
 using RAD.WebApi.ApiServices.Goals;
 using RAD.WebApi.DTOs.Goals;
@@ -8,6 +9,7 @@ namespace RAD.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class GoalsController(IGoalApiService goalService) : ControllerBase
 {
     [HttpGet]

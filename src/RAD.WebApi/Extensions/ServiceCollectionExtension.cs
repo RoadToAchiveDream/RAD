@@ -9,6 +9,7 @@ using RAD.Services.Services.Habits;
 using RAD.Services.Services.Notes;
 using RAD.Services.Services.Tasks;
 using RAD.Services.Services.Users;
+using RAD.WebApi.ApiServices.Accounts;
 using RAD.WebApi.ApiServices.Events;
 using RAD.WebApi.ApiServices.Goals;
 using RAD.WebApi.ApiServices.Habits;
@@ -16,6 +17,7 @@ using RAD.WebApi.ApiServices.Notes;
 using RAD.WebApi.ApiServices.Tasks;
 using RAD.WebApi.ApiServices.Users;
 using RAD.WebApi.Middlewares;
+using RAD.WebApi.Validators.Accounts;
 using RAD.WebApi.Validators.Events;
 using RAD.WebApi.Validators.Goals;
 using RAD.WebApi.Validators.Habits;
@@ -42,6 +44,8 @@ public static class ServiceCollectionExtension
 
     public static void AddApiServices(this IServiceCollection services)
     {
+        services.AddScoped<IAccountApiService, AccountApiService>();
+
         services.AddScoped<IUserApiService, UserApiService>();
 
         services.AddScoped<INoteApiService, NoteApiService>();
@@ -75,6 +79,11 @@ public static class ServiceCollectionExtension
 
         services.AddTransient<HabitCreateModelValidator>();
         services.AddTransient<HabitUpdateModelValidator>();
+
+        services.AddTransient<ConfirmCodeModelValidator>();
+        services.AddTransient<LoginModelValidator>();
+        services.AddTransient<ResetPasswordModelValidator>();
+        services.AddTransient<SendCodeModelValidator>();
     }
 
 
@@ -91,7 +100,7 @@ public static class ServiceCollectionExtension
     {
         HttpContextHelper.ContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
         EnvironmentHelper.WebRootPath = Path.GetFullPath("wwwroot");
-        EnvironmentHelper.JWTKey = app.Configuration.GetSection("JWT:Key").Value;
+        EnvironmentHelper.JWTKey = app.Configuration.GetSection("JWT:SigningKey").Value;
         EnvironmentHelper.TokenLifeTimeInHours = app.Configuration.GetSection("JWT:LifeTime").Value;
         EnvironmentHelper.EmailAddress = app.Configuration.GetSection("Email:EmailAddress").Value;
         EnvironmentHelper.EmailPassword = app.Configuration.GetSection("Email:Password").Value;
@@ -109,7 +118,7 @@ public static class ServiceCollectionExtension
             x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(o =>
         {
-            var key = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);
+            var key = Encoding.UTF8.GetBytes(configuration["JWT:SigningKey"]);
             o.SaveToken = true;
             o.TokenValidationParameters = new TokenValidationParameters
             {
