@@ -11,9 +11,11 @@ public class AppDbContext : DbContext
     #region DbSet Properties
     public DbSet<User> Users { get; set; }
     public DbSet<Task> Tasks { get; set; }
+    public DbSet<TaskCategory> TaskCategories { get; set; }
     public DbSet<Event> Events { get; set; }
     public DbSet<Habit> Habits { get; set; }
     public DbSet<Note> Notes { get; set; }
+    public DbSet<NoteCategory> NoteCategories { get; set; }
     public DbSet<Goal> Goals { get; set; }
     #endregion
 }

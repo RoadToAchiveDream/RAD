@@ -81,7 +81,7 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IH
         existHabit.LastCompletedDate = habit.LastCompletedDate;
         existHabit.BestSteak = habit.BestSteak;
         existHabit.Steak = habit.Steak;
-        existHabit.Frequenty = habit.Frequenty;
+        existHabit.Frequency = habit.Frequency;
         existHabit.UserId = habit.UserId;
         existHabit.User = existUser;
 
@@ -91,4 +91,29 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IH
         return updated;
     }
     #endregion
+
+    #region Habit Features
+    public ValueTask<Habit> SetEndTime(DateTime startTime)
+    {
+        throw new NotImplementedException();
+    }
+    public ValueTask<Habit> SetFrequency(string frequency)
+    {
+        throw new NotImplementedException();
+    }
+    public ValueTask<Habit> SetStartTime(DateTime startTime)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ValueTask<Habit> SetStreak(int streak)
+    {
+        throw new NotImplementedException();
+    }
+    public ValueTask<Habit> SetBestStreak(int bestStreak)
+    {
+        throw new NotImplementedException();
+    }
+    #endregion
+
 }

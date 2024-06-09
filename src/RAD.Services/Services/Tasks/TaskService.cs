@@ -292,5 +292,51 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return existsTask;
     }
+
+    public async ValueTask<IEnumerable<Task>> GetByDueDate(DateTime dueDate)
+    {
+        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+             expression: task => task.DueDate == dueDate && !task.IsDeleted,
+             includes: ["User"])
+             ?? throw new NotFoundException($"Tasks according to this dueDate ({dueDate}) are not found");
+
+        return Tasks;
+    }
+    public async ValueTask<IEnumerable<Task>> GetByReminder(DateTime reminder)
+    {
+        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+             expression: task => task.Reminder == reminder && !task.IsDeleted,
+             includes: ["User"])
+             ?? throw new NotFoundException($"Tasks according to this reminder ({reminder}) are not found");
+
+        return Tasks;
+    }
+    public async ValueTask<IEnumerable<Task>> GetByStatus(string status)
+    {
+        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+            expression: task => task.Status.ToString() == status && !task.IsDeleted,
+            includes: ["User"])
+            ?? throw new NotFoundException($"Tasks according to this status ({status}) are not found");
+
+        return Tasks;
+    }
+    public async ValueTask<IEnumerable<Task>> GetByPriority(string priority)
+    {
+        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+            expression: task => task.Priority.ToString() == priority && !task.IsDeleted,
+            includes: ["User"])
+            ?? throw new NotFoundException($"Tasks according to this priority ({priority}) are not found");
+
+        return Tasks;
+    }
+    public async ValueTask<IEnumerable<Task>> GetByReccuring(string reccuring)
+    {
+        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+            expression: task => task.Reccuring.ToString() == reccuring && !task.IsDeleted,
+            includes: ["User"])
+            ?? throw new NotFoundException($"Tasks according to this reccuring ({reccuring}) are not found");
+
+        return Tasks;
+    }
     #endregion
 }

@@ -11,7 +11,9 @@ namespace RAD.Services.Services.Users;
 
 public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUserService
 {
+    #region Private Accessories
     private readonly string cacheKey = "EmailCodeKey";
+    #endregion
 
     #region User CRUD
 

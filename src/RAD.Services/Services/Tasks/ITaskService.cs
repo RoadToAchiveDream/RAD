@@ -22,4 +22,10 @@ public interface ITaskService
     ValueTask<Task> UnsetStatus(long id);
     ValueTask<Task> UnsetPriority(long id);
     ValueTask<Task> UnsetReccuring(long id);
+
+    ValueTask<IEnumerable<Task>> GetByDueDate(DateTime dueDate);
+    ValueTask<IEnumerable<Task>> GetByReminder(DateTime reminder);
+    ValueTask<IEnumerable<Task>> GetByStatus(string status);
+    ValueTask<IEnumerable<Task>> GetByPriority(string priority);
+    ValueTask<IEnumerable<Task>> GetByReccuring(string reccuring);
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RAD.DAL.UnintOfWorks;
 using RAD.Domain.Entities;
-using RAD.Domain.Enums.NoteEnums;
 using RAD.Services.Configurations;
 using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
@@ -72,9 +71,6 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
 
         existNote.Title = note.Title;
         existNote.Content = note.Content;
-        existNote.Category = note.Category;
-        existNote.UserId = note.UserId;
-        existNote.User = existUser;
 
         var updated = await unitOfWork.Notes.UpdateAsync(existNote);
         await unitOfWork.SaveAsync();
@@ -119,6 +115,20 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
 
         return existsNote;
     }
+    public async ValueTask<Note> SetPinned(long id)
+    {
+        var existsNote = await unitOfWork.Notes.SelectAsync(
+            expression: note => note.Id == id && !note.IsDeleted,
+            includes: ["User"])
+            ?? throw new NotFoundException($"Note with Id ({id}) is not found");
+
+        existsNote.IsPinned = true;
+        existsNote.UpdatedByUserId = HttpContextHelper.UserId;
+        await unitOfWork.SaveAsync();
+
+        return existsNote;
+    }
+
     public async ValueTask<Note> UnsetCategory(long id)
     {
         var existsNote = await unitOfWork.Notes.SelectAsync(
@@ -131,6 +141,19 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
 
 
         existsNote.Category = NoteCategory.None;
+        existsNote.UpdatedByUserId = HttpContextHelper.UserId;
+        await unitOfWork.SaveAsync();
+
+        return existsNote;
+    }
+    public async ValueTask<Note> UnsetPinned(long id)
+    {
+        var existsNote = await unitOfWork.Notes.SelectAsync(
+           expression: note => note.Id == id && !note.IsDeleted,
+           includes: ["User"])
+           ?? throw new NotFoundException($"Note with Id ({id}) is not found");
+
+        existsNote.IsPinned = false;
         existsNote.UpdatedByUserId = HttpContextHelper.UserId;
         await unitOfWork.SaveAsync();
 

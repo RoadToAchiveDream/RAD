@@ -1,6 +1,6 @@
 ﻿namespace RAD.Domain.Enums.HabitEnums;
 
-public enum HabitFrequenty
+public enum HabitFrequency
 {
     Daily,
     Weekly,
