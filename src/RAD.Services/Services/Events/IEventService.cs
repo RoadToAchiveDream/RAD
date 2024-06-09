@@ -5,9 +5,9 @@ namespace RAD.Services.Services.Events;
 
 public interface IEventService
 {
-    ValueTask<Event> CreateAsync(Event @event);
-    ValueTask<Event> UpdateAsync(long id, Event @event);
-    ValueTask<bool> DeleteAsync(long id);
-    ValueTask<Event> GetByIdAsync(long id);
-    ValueTask<IEnumerable<Event>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
+    public ValueTask<Event> CreateAsync(Event @event);
+    public ValueTask<Event> UpdateAsync(long id, Event @event);
+    public ValueTask<bool> DeleteAsync(long id);
+    public ValueTask<Event> GetByIdAsync(long id);
+    public ValueTask<IEnumerable<Event>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 }

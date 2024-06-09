@@ -5,15 +5,15 @@ namespace RAD.Services.Services.Habits;
 
 public interface IHabitService
 {
-    ValueTask<Habit> CreateAsync(Habit habit);
-    ValueTask<Habit> UpdateAsync(long id, Habit habit);
-    ValueTask<bool> DeleteAsync(long id);
-    ValueTask<Habit> GetByIdAsync(long id);
-    ValueTask<IEnumerable<Habit>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
+    public ValueTask<Habit> CreateAsync(Habit habit);
+    public ValueTask<Habit> UpdateAsync(long id, Habit habit);
+    public ValueTask<bool> DeleteAsync(long id);
+    public ValueTask<Habit> GetByIdAsync(long id);
+    public ValueTask<IEnumerable<Habit>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
-    ValueTask<Habit> SetStartTime(DateTime startTime);
-    ValueTask<Habit> SetEndTime(DateTime startTime);
-    ValueTask<Habit> SetFrequency(string frequency);
-    ValueTask<Habit> SetStreak(int streak);
-    ValueTask<Habit> SetBestStreak(int bestStreak);
+    public ValueTask<Habit> SetStartTime(DateTime startTime);
+    public ValueTask<Habit> SetEndTime(DateTime startTime);
+    public ValueTask<Habit> SetFrequency(string frequency);
+    public ValueTask<Habit> SetStreak(int streak);
+    public ValueTask<Habit> SetBestStreak(int bestStreak);
 }
