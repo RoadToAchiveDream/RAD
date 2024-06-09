@@ -13,7 +13,9 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<Goal> Goals { get; }
     public IRepository<Habit> Habits { get; }
     public IRepository<Note> Notes { get; }
+    public IRepository<NoteCategory> NoteCategories { get; }
     public IRepository<Task> Tasks { get; }
+    public IRepository<TaskCategory> TaskCategories { get; }
     public IRepository<Event> Events { get; }
 
     public UnitOfWork(AppDbContext context)
@@ -24,7 +26,9 @@ public class UnitOfWork : IUnitOfWork
         Goals = new Repository<Goal>(context);
         Habits = new Repository<Habit>(context);
         Notes = new Repository<Note>(context);
+        NoteCategories = new Repository<NoteCategory>(context);
         Tasks = new Repository<Task>(context);
+        TaskCategories = new Repository<TaskCategory>(context);
         Events = new Repository<Event>(context);
     }
 

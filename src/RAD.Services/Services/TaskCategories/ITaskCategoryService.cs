@@ -1,4 +1,5 @@
-﻿using RAD.Domain.Entities;
+﻿using Microsoft.Extensions.Options;
+using RAD.Domain.Entities;
 using RAD.Services.Configurations;
 
 namespace RAD.Services.Services.TaskCategories;
@@ -10,4 +11,8 @@ public interface ITaskCategoryService
     public ValueTask<bool> DeleteAsync(long id);
     public ValueTask<TaskCategory> GetByIdAsync(long id);
     public ValueTask<IEnumerable<TaskCategory>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
+
+    public ValueTask<TaskCategory> AddTaskToCategory(long categoryId, long taskId);
+    public ValueTask<TaskCategory> RemoveTaskFromCategory(long categoryId, long taskId);
+    public ValueTask<TaskCategory> GetCategoryByName(string name);
 }

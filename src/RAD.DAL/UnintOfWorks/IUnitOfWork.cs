@@ -14,5 +14,6 @@ public interface IUnitOfWork : IDisposable
     IRepository<Task> Tasks { get; }
     IRepository<TaskCategory> TaskCategories { get; }
     IRepository<Event> Events { get; }
+
     ValueTask<bool> SaveAsync();
 }

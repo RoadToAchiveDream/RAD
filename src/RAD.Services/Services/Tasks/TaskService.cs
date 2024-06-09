@@ -293,50 +293,55 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         return existsTask;
     }
 
-    public async ValueTask<IEnumerable<Task>> GetByDueDate(DateTime dueDate)
+    public async ValueTask<IEnumerable<Task>> GetByDueDate(PaginationParams @params, Filter filter, DateTime dueDate)
     {
-        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+        var Tasks = unitOfWork.Tasks.SelectAsQueryable(
              expression: task => task.DueDate == dueDate && !task.IsDeleted,
-             includes: ["User"])
+             includes: ["User"],
+             isTracked: false).OrderBy(filter)
              ?? throw new NotFoundException($"Tasks according to this dueDate ({dueDate}) are not found");
 
-        return Tasks;
+        return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetByReminder(DateTime reminder)
+    public async ValueTask<IEnumerable<Task>> GetByReminder(PaginationParams @params, Filter filter, DateTime reminder)
     {
-        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+        var Tasks = unitOfWork.Tasks.SelectAsQueryable(
              expression: task => task.Reminder == reminder && !task.IsDeleted,
-             includes: ["User"])
+             includes: ["User"],
+             isTracked: false).OrderBy(filter)
              ?? throw new NotFoundException($"Tasks according to this reminder ({reminder}) are not found");
 
-        return Tasks;
+        return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetByStatus(string status)
+    public async ValueTask<IEnumerable<Task>> GetByStatus(PaginationParams @params, Filter filter, string status)
     {
-        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+        var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: task => task.Status.ToString() == status && !task.IsDeleted,
-            includes: ["User"])
+            includes: ["User"],
+            isTracked: false).OrderBy(filter)
             ?? throw new NotFoundException($"Tasks according to this status ({status}) are not found");
 
-        return Tasks;
+        return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetByPriority(string priority)
+    public async ValueTask<IEnumerable<Task>> GetByPriority(PaginationParams @params, Filter filter, string priority)
     {
-        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+        var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: task => task.Priority.ToString() == priority && !task.IsDeleted,
-            includes: ["User"])
+            includes: ["User"],
+            isTracked: false).OrderBy(filter)
             ?? throw new NotFoundException($"Tasks according to this priority ({priority}) are not found");
 
-        return Tasks;
+        return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetByReccuring(string reccuring)
+    public async ValueTask<IEnumerable<Task>> GetByReccuring(PaginationParams @params, Filter filter, string reccuring)
     {
-        var Tasks = await unitOfWork.Tasks.SelectAsEnumerableAsync(
+        var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: task => task.Reccuring.ToString() == reccuring && !task.IsDeleted,
-            includes: ["User"])
+            includes: ["User"],
+            isTracked: false).OrderBy(filter)
             ?? throw new NotFoundException($"Tasks according to this reccuring ({reccuring}) are not found");
 
-        return Tasks;
+        return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
     #endregion
 }

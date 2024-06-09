@@ -5,6 +5,7 @@ namespace RAD.Domain.Entities;
 public class TaskCategory : Auditable
 {
     public long UserId { get; set; }
+    public User User { get; set; }
     public string Name { get; set; }
-    public List<Task> Tasks { get; set; }
+    public ICollection<Task> Tasks { get; set; }
 }

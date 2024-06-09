@@ -10,6 +10,7 @@ namespace RAD.Services.Services.TaskCategories;
 
 public class TaskCategoryService(IUnitOfWork unitOfWork) : ITaskCategoryService
 {
+    #region TaskCategory CRUD
     public async ValueTask<TaskCategory> CreateAsync(TaskCategory taskCategory)
     {
         var existTaskCategory = await unitOfWork.TaskCategories.SelectAsync(
@@ -75,4 +76,53 @@ public class TaskCategoryService(IUnitOfWork unitOfWork) : ITaskCategoryService
 
         return updated;
     }
+    #endregion
+
+    #region TaskCategory Features
+    public async ValueTask<TaskCategory> AddTaskToCategory(long categoryId, long taskId)
+    {
+        var existCategory = await unitOfWork.TaskCategories.SelectAsync(
+            expression: tc => (tc.Id == categoryId && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,
+            includes: ["User", "Tasks"])
+            ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
+
+        var existsTask = await unitOfWork.Tasks.SelectAsync(
+            expression: t => (t.Id == taskId && t.UserId == HttpContextHelper.UserId) && !t.IsDeleted,
+            includes: ["User", "Category"])
+            ?? throw new NotFoundException($"Task with Id ({taskId}) is not found");
+
+        existsTask.CategoryId = categoryId;
+        existsTask.Category = existCategory;
+        await unitOfWork.SaveAsync();
+
+        return await GetByIdAsync(categoryId);
+    }
+    public async ValueTask<TaskCategory> RemoveTaskFromCategory(long categoryId, long taskId)
+    {
+        var existCategory = await unitOfWork.TaskCategories.SelectAsync(
+           expression: tc => (tc.Id == categoryId && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,
+           includes: ["User", "Tasks"])
+           ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
+
+        var existsTask = await unitOfWork.Tasks.SelectAsync(
+            expression: t => (t.Id == taskId && t.UserId == HttpContextHelper.UserId) && !t.IsDeleted,
+            includes: ["User", "Category"])
+            ?? throw new NotFoundException($"Task with Id ({taskId}) is not found");
+
+        existsTask.CategoryId = 0;
+        existsTask.Category = null;
+        await unitOfWork.SaveAsync();
+
+        return await GetByIdAsync(categoryId);
+    }
+    public async ValueTask<TaskCategory> GetCategoryByName(string name)
+    {
+        var existCategory = await unitOfWork.TaskCategories.SelectAsync(
+            expression: tc => (tc.Name.ToLower().Contains(name) && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,
+            includes: ["User", "Tasks"])
+            ?? throw new NotFoundException($"Category with name ({name}) is not found");
+
+        return existCategory;
+    }
+    #endregion
 }

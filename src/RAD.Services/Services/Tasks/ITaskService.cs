@@ -17,15 +17,16 @@ public interface ITaskService
     ValueTask<Task> SetPriority(long id, string priority);
     ValueTask<Task> SetReccuring(long id, string reccuring);
 
+
     ValueTask<Task> UnsetDueDate(long id);
     ValueTask<Task> UnsetReminder(long id);
     ValueTask<Task> UnsetStatus(long id);
     ValueTask<Task> UnsetPriority(long id);
     ValueTask<Task> UnsetReccuring(long id);
 
-    ValueTask<IEnumerable<Task>> GetByDueDate(DateTime dueDate);
-    ValueTask<IEnumerable<Task>> GetByReminder(DateTime reminder);
-    ValueTask<IEnumerable<Task>> GetByStatus(string status);
-    ValueTask<IEnumerable<Task>> GetByPriority(string priority);
-    ValueTask<IEnumerable<Task>> GetByReccuring(string reccuring);
+    ValueTask<IEnumerable<Task>> GetByDueDate(PaginationParams @params, Filter filter, DateTime dueDate);
+    ValueTask<IEnumerable<Task>> GetByReminder(PaginationParams @params, Filter filter, DateTime reminder);
+    ValueTask<IEnumerable<Task>> GetByStatus(PaginationParams @params, Filter filter, string status);
+    ValueTask<IEnumerable<Task>> GetByPriority(PaginationParams @params, Filter filter, string priority);
+    ValueTask<IEnumerable<Task>> GetByReccuring(PaginationParams @params, Filter filter, string reccuring);
 }
