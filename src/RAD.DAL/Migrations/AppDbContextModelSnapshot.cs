@@ -8,7 +8,7 @@ using RAD.DAL.Contexts;
 
 #nullable disable
 
-namespace RAD.DataAccess.Migrations
+namespace RAD.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -440,9 +440,6 @@ namespace RAD.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProfilePicture")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")

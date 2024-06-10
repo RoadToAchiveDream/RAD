@@ -10,4 +10,8 @@ public interface INoteCategoryApiService
     public ValueTask<bool> DeleteAsync(long id);
     public ValueTask<NoteCategoryViewModel> GetAsync(long id);
     public ValueTask<IEnumerable<NoteCategoryViewModel>> GetAsync(PaginationParams @params, Filter filter, string search = null);
+
+    public ValueTask<NoteCategoryViewModel> AddNoteToCategoryAsync(long categoryId, long noteId);
+    public ValueTask<NoteCategoryViewModel> RemoveNoteFromCategoryAsync(long categoryId, long noteId);
+    public ValueTask<NoteCategoryViewModel> GetCategoryByNameAsync(string name);
 }

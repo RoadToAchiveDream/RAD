@@ -16,12 +16,13 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     #region Task CRUD
     public async ValueTask<Task> CreateAsync(Task task)
     {
-        var existUser = await userService.GetByIdAsync(task.UserId);
+        var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
         var createdTask = await unitOfWork.Tasks.InsertAsync(task);
         await unitOfWork.SaveAsync();
 
         createdTask.User = existUser;
+        createdTask.UserId = HttpContextHelper.UserId;
 
         return createdTask;
     }

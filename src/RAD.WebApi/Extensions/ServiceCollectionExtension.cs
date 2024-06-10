@@ -6,14 +6,18 @@ using RAD.Services.Helpers;
 using RAD.Services.Services.Events;
 using RAD.Services.Services.Goals;
 using RAD.Services.Services.Habits;
+using RAD.Services.Services.NoteCategories;
 using RAD.Services.Services.Notes;
+using RAD.Services.Services.TaskCategories;
 using RAD.Services.Services.Tasks;
 using RAD.Services.Services.Users;
 using RAD.WebApi.ApiServices.Accounts;
 using RAD.WebApi.ApiServices.Events;
 using RAD.WebApi.ApiServices.Goals;
 using RAD.WebApi.ApiServices.Habits;
+using RAD.WebApi.ApiServices.NoteCategories;
 using RAD.WebApi.ApiServices.Notes;
+using RAD.WebApi.ApiServices.TaskCategories;
 using RAD.WebApi.ApiServices.Tasks;
 using RAD.WebApi.ApiServices.Users;
 using RAD.WebApi.Middlewares;
@@ -21,7 +25,9 @@ using RAD.WebApi.Validators.Accounts;
 using RAD.WebApi.Validators.Events;
 using RAD.WebApi.Validators.Goals;
 using RAD.WebApi.Validators.Habits;
+using RAD.WebApi.Validators.NoteCategories;
 using RAD.WebApi.Validators.Notes;
+using RAD.WebApi.Validators.TaskCategories;
 using RAD.WebApi.Validators.Tasks;
 using RAD.WebApi.Validators.Users;
 using System.Text;
@@ -36,7 +42,9 @@ public static class ServiceCollectionExtension
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITaskService, TaskService>();
+        services.AddScoped<ITaskCategoryService, TaskCategoryService>();
         services.AddScoped<INoteService, NoteService>();
+        services.AddScoped<INoteCategoryService, NoteCategoryService>();
         services.AddScoped<IHabitService, HabitService>();
         services.AddScoped<IGoalService, GoalService>();
         services.AddScoped<IEventService, EventService>();
@@ -50,7 +58,11 @@ public static class ServiceCollectionExtension
 
         services.AddScoped<INoteApiService, NoteApiService>();
 
+        services.AddScoped<INoteCategoryApiService, NoteCategoryApiService>();
+
         services.AddScoped<ITaskApiService, TaskApiService>();
+
+        services.AddScoped<ITaskCategoryApiService, TaskCategoryApiService>();
 
         services.AddScoped<IGoalApiService, GoalApiService>();
 
@@ -68,8 +80,14 @@ public static class ServiceCollectionExtension
         services.AddTransient<NoteCreateModelValidator>();
         services.AddTransient<NoteUpdateModelValidator>();
 
+        services.AddTransient<NoteCategoryCreateModelValidator>();
+        services.AddTransient<NoteCategoryUpdateModelValidator>();
+
         services.AddTransient<TaskCreateModelValidator>();
         services.AddTransient<TaskUpdateModelValidator>();
+
+        services.AddTransient<TaskCategoryCreateModelValidator>();
+        services.AddTransient<TaskCategoryUpdateModelValidator>();
 
         services.AddTransient<EventCreateModelValidator>();
         services.AddTransient<EventUpdateModelValidator>();

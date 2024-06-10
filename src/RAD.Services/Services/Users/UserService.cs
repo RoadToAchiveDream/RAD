@@ -57,7 +57,6 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
         existUser.FirstName = user.FirstName;
         existUser.LastName = user.LastName;
         existUser.Email = user.Email;
-        existUser.ProfilePicture = user.ProfilePicture;
         existUser.UpdatedByUserId = HttpContextHelper.UserId;
 
         var updated = await unitOfWork.Users.UpdateAsync(existUser);

@@ -14,12 +14,15 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
     #region Note CRUD
     public async ValueTask<Note> CreateAsync(Note note)
     {
-        var existUser = await userService.GetByIdAsync(note.UserId);
+        var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
         var created = await unitOfWork.Notes.InsertAsync(note);
-        await unitOfWork.SaveAsync();
 
         created.User = existUser;
+        created.UserId = HttpContextHelper.UserId;
+        created.CreatedByUserId = HttpContextHelper.UserId;
+
+        await unitOfWork.SaveAsync();
 
         return created;
     }
@@ -30,6 +33,7 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
             expression: n => n.Id == id && !n.IsDeleted)
             ?? throw new NotFoundException($"Note with Id ({id}) is not found");
 
+        existNote.DeletedByUserId = HttpContextHelper.UserId;
         await unitOfWork.Notes.DeleteAsync(existNote);
         await unitOfWork.SaveAsync();
 
@@ -67,10 +71,11 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
             expression: n => n.Id == id && !n.IsDeleted)
             ?? throw new NotFoundException($"Note with Id ({id}) is not found");
 
-        var existUser = await userService.GetByIdAsync(note.UserId);
+        var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
         existNote.Title = note.Title;
         existNote.Content = note.Content;
+        existNote.UpdatedByUserId = HttpContextHelper.UserId;
 
         var updated = await unitOfWork.Notes.UpdateAsync(existNote);
         await unitOfWork.SaveAsync();

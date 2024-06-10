@@ -7,14 +7,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RAD.DAL.Contexts;
 
-
 #nullable disable
 
-namespace RAD.DataAccess.Migrations
+namespace RAD.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240427134514_InitialMirgration")]
-    partial class InitialMirgration
+    [Migration("20240610021728_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,8 +36,14 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("DeletedByUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -64,6 +69,9 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("UpdatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
@@ -85,8 +93,14 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("DeletedByUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -112,6 +126,9 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("UpdatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
@@ -136,8 +153,14 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("DeletedByUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -145,7 +168,7 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Frequenty")
+                    b.Property<int>("Frequency")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsDeleted")
@@ -166,6 +189,9 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("UpdatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
@@ -184,8 +210,8 @@ namespace RAD.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Content")
                         .HasColumnType("text");
@@ -193,10 +219,19 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("DeletedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPinned")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Title")
@@ -205,17 +240,22 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("UpdatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("RAD.Domain.Entities.Task", b =>
+            modelBuilder.Entity("RAD.Domain.Entities.NoteCategory", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -226,8 +266,59 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("DeletedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("UpdatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NoteCategories");
+                });
+
+            modelBuilder.Entity("RAD.Domain.Entities.Task", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("DeletedByUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -256,6 +347,53 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("UpdatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("RAD.Domain.Entities.TaskCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("DeletedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("UpdatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
@@ -263,7 +401,7 @@ namespace RAD.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("TaskCategories");
                 });
 
             modelBuilder.Entity("RAD.Domain.Entities.User", b =>
@@ -277,8 +415,17 @@ namespace RAD.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("DeletedByUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -295,14 +442,17 @@ namespace RAD.DataAccess.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
-                    b.Property<string>("ProfilePicture")
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
+                    b.Property<long?>("UpdatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("UserRole")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -344,6 +494,25 @@ namespace RAD.DataAccess.Migrations
 
             modelBuilder.Entity("RAD.Domain.Entities.Note", b =>
                 {
+                    b.HasOne("RAD.Domain.Entities.NoteCategory", "Category")
+                        .WithMany("Notes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RAD.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RAD.Domain.Entities.NoteCategory", b =>
+                {
                     b.HasOne("RAD.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -355,6 +524,25 @@ namespace RAD.DataAccess.Migrations
 
             modelBuilder.Entity("RAD.Domain.Entities.Task", b =>
                 {
+                    b.HasOne("RAD.Domain.Entities.TaskCategory", "Category")
+                        .WithMany("Tasks")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RAD.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RAD.Domain.Entities.TaskCategory", b =>
+                {
                     b.HasOne("RAD.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -362,6 +550,16 @@ namespace RAD.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RAD.Domain.Entities.NoteCategory", b =>
+                {
+                    b.Navigation("Notes");
+                });
+
+            modelBuilder.Entity("RAD.Domain.Entities.TaskCategory", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

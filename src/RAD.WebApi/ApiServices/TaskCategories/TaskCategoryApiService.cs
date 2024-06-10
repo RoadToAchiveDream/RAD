@@ -12,7 +12,7 @@ public class TaskCategoryApiService(
     IMapper mapper,
     ITaskCategoryService taskCategoryService,
     TaskCategoryCreateModelValidator createModelValidator,
-    TaskCategoryUpdateModelValidator updateModelValidator) : ITaskCategoriyApiService
+    TaskCategoryUpdateModelValidator updateModelValidator) : ITaskCategoryApiService
 {
     public async ValueTask<bool> DeleteAsync(long id)
     {
