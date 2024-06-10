@@ -12,8 +12,8 @@ using RAD.DAL.Contexts;
 namespace RAD.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240610021728_Init")]
-    partial class Init
+    [Migration("20240610114810_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -210,7 +210,7 @@ namespace RAD.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryId")
+                    b.Property<long?>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Content")
@@ -305,7 +305,7 @@ namespace RAD.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryId")
+                    b.Property<long?>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -496,9 +496,7 @@ namespace RAD.DAL.Migrations
                 {
                     b.HasOne("RAD.Domain.Entities.NoteCategory", "Category")
                         .WithMany("Notes")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("RAD.Domain.Entities.User", "User")
                         .WithMany()
@@ -526,9 +524,7 @@ namespace RAD.DAL.Migrations
                 {
                     b.HasOne("RAD.Domain.Entities.TaskCategory", "Category")
                         .WithMany("Tasks")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("RAD.Domain.Entities.User", "User")
                         .WithMany()

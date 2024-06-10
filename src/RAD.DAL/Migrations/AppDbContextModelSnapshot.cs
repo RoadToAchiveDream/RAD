@@ -207,7 +207,7 @@ namespace RAD.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryId")
+                    b.Property<long?>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Content")
@@ -302,7 +302,7 @@ namespace RAD.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryId")
+                    b.Property<long?>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -493,9 +493,7 @@ namespace RAD.DAL.Migrations
                 {
                     b.HasOne("RAD.Domain.Entities.NoteCategory", "Category")
                         .WithMany("Notes")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("RAD.Domain.Entities.User", "User")
                         .WithMany()
@@ -523,9 +521,7 @@ namespace RAD.DAL.Migrations
                 {
                     b.HasOne("RAD.Domain.Entities.TaskCategory", "Category")
                         .WithMany("Tasks")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("RAD.Domain.Entities.User", "User")
                         .WithMany()

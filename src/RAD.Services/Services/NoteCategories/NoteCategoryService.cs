@@ -15,7 +15,7 @@ public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWor
     public async ValueTask<NoteCategory> CreateAsync(NoteCategory noteCategory)
     {
         var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
-        
+
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => nc.Name.ToLower() == noteCategory.Name.ToLower() && !nc.IsDeleted);
 
@@ -111,12 +111,12 @@ public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWor
            includes: ["User", "Notes"])
            ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
 
-        var existsNote = await unitOfWork.Tasks.SelectAsync(
+        var existsNote = await unitOfWork.Notes.SelectAsync(
             expression: n => (n.Id == noteId && n.UserId == HttpContextHelper.UserId) && !n.IsDeleted,
             includes: ["User", "Category"])
             ?? throw new NotFoundException($"Note with Id ({noteId}) is not found");
 
-        existsNote.CategoryId = 0;
+        existsNote.CategoryId = null;
         existsNote.Category = null;
 
         await unitOfWork.SaveAsync();
