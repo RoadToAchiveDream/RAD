@@ -1,11 +1,10 @@
 ﻿using RAD.Domain.Enums.HabitEnums;
-using RAD.WebApi.DTOs.Users;
 
 namespace RAD.WebApi.DTOs.Habits;
 public class HabitViewModel
 {
     public long Id { get; set; }
-    public UserViewModel User { get; set; }
+    public long UserId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime StartDate { get; set; }

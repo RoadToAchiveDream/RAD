@@ -16,9 +16,15 @@ public class TaskCategoryService(IUnitOfWork unitOfWork) : ITaskCategoryService
         var existTaskCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => tc.Name.ToLower() == taskCategory.Name.ToLower() && !tc.IsDeleted);
 
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: u => u.Id == HttpContextHelper.UserId && !u.IsDeleted)
+            ?? throw new NotFoundException($"User is not found");
+
         if (existTaskCategory is not null)
             throw new AlreadyExistException("Category with this name is already exists");
 
+        taskCategory.UserId = existUser.Id;
+        taskCategory.User = existUser;
         taskCategory.CreatedByUserId = HttpContextHelper.UserId;
 
         var created = await unitOfWork.TaskCategories.InsertAsync(taskCategory);
@@ -79,7 +85,7 @@ public class TaskCategoryService(IUnitOfWork unitOfWork) : ITaskCategoryService
     #endregion
 
     #region TaskCategory Features
-    public async ValueTask<TaskCategory> AddTaskToCategory(long categoryId, long taskId)
+    public async ValueTask<TaskCategory> AddTaskToCategoryAsync(long categoryId, long taskId)
     {
         var existCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => (tc.Id == categoryId && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,
@@ -97,7 +103,7 @@ public class TaskCategoryService(IUnitOfWork unitOfWork) : ITaskCategoryService
 
         return await GetByIdAsync(categoryId);
     }
-    public async ValueTask<TaskCategory> RemoveTaskFromCategory(long categoryId, long taskId)
+    public async ValueTask<TaskCategory> RemoveTaskFromCategoryAsync(long categoryId, long taskId)
     {
         var existCategory = await unitOfWork.TaskCategories.SelectAsync(
            expression: tc => (tc.Id == categoryId && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,
@@ -115,7 +121,7 @@ public class TaskCategoryService(IUnitOfWork unitOfWork) : ITaskCategoryService
 
         return await GetByIdAsync(categoryId);
     }
-    public async ValueTask<TaskCategory> GetCategoryByName(string name)
+    public async ValueTask<TaskCategory> GetCategoryByNameAsync(string name)
     {
         var existCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => (tc.Name.ToLower().Contains(name) && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,

@@ -3,7 +3,6 @@
 namespace RAD.WebApi.DTOs.Goals;
 public class GoalCreateModel
 {
-    public long UserId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public DateTime StartTime { get; set; }

@@ -12,7 +12,7 @@ public interface ITaskCategoryService
     public ValueTask<TaskCategory> GetByIdAsync(long id);
     public ValueTask<IEnumerable<TaskCategory>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
-    public ValueTask<TaskCategory> AddTaskToCategory(long categoryId, long taskId);
-    public ValueTask<TaskCategory> RemoveTaskFromCategory(long categoryId, long taskId);
-    public ValueTask<TaskCategory> GetCategoryByName(string name);
+    public ValueTask<TaskCategory> AddTaskToCategoryAsync(long categoryId, long taskId);
+    public ValueTask<TaskCategory> RemoveTaskFromCategoryAsync(long categoryId, long taskId);
+    public ValueTask<TaskCategory> GetCategoryByNameAsync(string name);
 }

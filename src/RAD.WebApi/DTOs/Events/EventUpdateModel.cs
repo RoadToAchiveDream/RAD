@@ -1,7 +1,6 @@
 namespace RAD.WebApi.DTOs.Events;
 public class EventUpdateModel
 {
-    public long UserId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public DateTime StartTime { get; set; }

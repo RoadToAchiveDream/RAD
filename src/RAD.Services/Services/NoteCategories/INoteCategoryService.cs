@@ -11,7 +11,7 @@ public interface INoteCategoryService
     public ValueTask<NoteCategory> GetByIdAsync(long id);
     public ValueTask<IEnumerable<NoteCategory>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
-    public ValueTask<NoteCategory> AddNoteToCategory(long categoryId, long noteId);
-    public ValueTask<NoteCategory> RemoveNoteFromCategory(long categoryId, long noteId);
-    public ValueTask<NoteCategory> GetCategoryByName(string name);
+    public ValueTask<NoteCategory> AddNoteToCategoryAsync(long categoryId, long noteId);
+    public ValueTask<NoteCategory> RemoveNoteFromCategoryAsync(long categoryId, long noteId);
+    public ValueTask<NoteCategory> GetCategoryByNameAsync(string name);
 }

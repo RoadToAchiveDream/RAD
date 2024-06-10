@@ -18,6 +18,8 @@ public class AuthHepler
             {
                 new Claim("Id", user.Id.ToString()),
                 new Claim("PhoneNumber", user.PhoneNumber),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName),
                 new Claim(ClaimTypes.Role, user.UserRole.ToString()),
             }),
 

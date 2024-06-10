@@ -16,9 +16,15 @@ public class NoteCategoryService(IUnitOfWork unitOfWork) : INoteCategoryService
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => nc.Name.ToLower() == noteCategory.Name.ToLower() && !nc.IsDeleted);
 
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: u => u.Id == HttpContextHelper.UserId && !u.IsDeleted)
+            ?? throw new NotFoundException($"User is not found");
+
         if (existNoteCategory is not null)
             throw new AlreadyExistException("Category with this name is already exists");
 
+        noteCategory.UserId = existUser.Id;
+        noteCategory.User = existUser;
         noteCategory.CreatedByUserId = HttpContextHelper.UserId;
 
         var created = await unitOfWork.NoteCategories.InsertAsync(noteCategory);
@@ -79,7 +85,7 @@ public class NoteCategoryService(IUnitOfWork unitOfWork) : INoteCategoryService
     #endregion
 
     #region NoteCategory Features
-    public async ValueTask<NoteCategory> AddNoteToCategory(long categoryId, long noteId)
+    public async ValueTask<NoteCategory> AddNoteToCategoryAsync(long categoryId, long noteId)
     {
         var existCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => (nc.Id == categoryId && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
@@ -97,7 +103,7 @@ public class NoteCategoryService(IUnitOfWork unitOfWork) : INoteCategoryService
 
         return await GetByIdAsync(categoryId);
     }
-    public async ValueTask<NoteCategory> RemoveNoteFromCategory(long categoryId, long noteId)
+    public async ValueTask<NoteCategory> RemoveNoteFromCategoryAsync(long categoryId, long noteId)
     {
         var existCategory = await unitOfWork.NoteCategories.SelectAsync(
            expression: cc => (cc.Id == categoryId && cc.UserId == HttpContextHelper.UserId) && !cc.IsDeleted,
@@ -115,7 +121,7 @@ public class NoteCategoryService(IUnitOfWork unitOfWork) : INoteCategoryService
 
         return await GetByIdAsync(categoryId);
     }
-    public async ValueTask<NoteCategory> GetCategoryByName(string name)
+    public async ValueTask<NoteCategory> GetCategoryByNameAsync(string name)
     {
         var existCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => (nc.Name.ToLower().Contains(name) && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
