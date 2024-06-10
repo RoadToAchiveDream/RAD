@@ -18,11 +18,12 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     {
         var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
+        task.UserId = existUser.Id;
+        task.User = existUser;
+        task.CreatedByUserId = HttpContextHelper.UserId;
+
         var createdTask = await unitOfWork.Tasks.InsertAsync(task);
         await unitOfWork.SaveAsync();
-
-        createdTask.User = existUser;
-        createdTask.UserId = HttpContextHelper.UserId;
 
         return createdTask;
     }
@@ -33,6 +34,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
             expression: t => t.Id == id && !t.IsDeleted)
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
+        existsTask.DeletedByUserId = HttpContextHelper.UserId;
         await unitOfWork.Tasks.DeleteAsync(existsTask);
         await unitOfWork.SaveAsync();
 
@@ -74,6 +76,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         existsTask.Title = task.Title;
         existsTask.Description = task.Description;
+        existsTask.UpdatedByUserId = HttpContextHelper.UserId;
 
         var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();

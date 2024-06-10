@@ -4,6 +4,7 @@ using RAD.Domain.Entities;
 using RAD.Services.Configurations;
 using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
+using RAD.Services.Helpers;
 using RAD.Services.Services.Users;
 
 namespace RAD.Services.Services.Habits;
@@ -13,13 +14,17 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IH
     #region Habit CRUD
     public async ValueTask<Habit> CreateAsync(Habit habit)
     {
-        var existUser = await userService.GetByIdAsync(habit.UserId);
+        var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
         var existHabit = await unitOfWork.Habits.SelectAsync(
             expression: h => h.Name == habit.Name && !h.IsDeleted);
 
         if (existHabit is not null)
             throw new AlreadyExistException($"Habit with name ({habit.Name} is already exists)");
+
+        habit.UserId = existUser.Id;
+        habit.User = existUser;
+        habit.CreatedByUserId = HttpContextHelper.UserId;
 
         var created = await unitOfWork.Habits.InsertAsync(habit);
         await unitOfWork.SaveAsync();
@@ -34,6 +39,8 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IH
         var existHabit = await unitOfWork.Habits.SelectAsync(
             expression: h => h.Id == id && !h.IsDeleted)
             ?? throw new NotFoundException($"Habit with Id ({id}) is not found");
+
+        existHabit.DeletedByUserId = HttpContextHelper.UserId;
 
         await unitOfWork.Habits.DeleteAsync(existHabit);
         await unitOfWork.SaveAsync();
@@ -84,6 +91,7 @@ public class HabitService(IUserService userService, IUnitOfWork unitOfWork) : IH
         existHabit.Frequency = habit.Frequency;
         existHabit.UserId = habit.UserId;
         existHabit.User = existUser;
+        existHabit.UpdatedByUserId = HttpContextHelper.UserId;
 
         var updated = await unitOfWork.Habits.UpdateAsync(existHabit);
         await unitOfWork.SaveAsync();

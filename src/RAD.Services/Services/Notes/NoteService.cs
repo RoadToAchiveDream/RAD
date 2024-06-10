@@ -16,12 +16,11 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
     {
         var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
+        note.UserId = existUser.Id;
+        note.User = existUser;
+        note.CreatedByUserId = HttpContextHelper.UserId;
+
         var created = await unitOfWork.Notes.InsertAsync(note);
-
-        created.User = existUser;
-        created.UserId = HttpContextHelper.UserId;
-        created.CreatedByUserId = HttpContextHelper.UserId;
-
         await unitOfWork.SaveAsync();
 
         return created;

@@ -5,20 +5,19 @@ using RAD.Services.Configurations;
 using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
 using RAD.Services.Helpers;
+using RAD.Services.Services.Users;
 
 namespace RAD.Services.Services.TaskCategories;
 
-public class TaskCategoryService(IUnitOfWork unitOfWork) : ITaskCategoryService
+public class TaskCategoryService(IUserService userService, IUnitOfWork unitOfWork) : ITaskCategoryService
 {
     #region TaskCategory CRUD
     public async ValueTask<TaskCategory> CreateAsync(TaskCategory taskCategory)
     {
+        var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
+
         var existTaskCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => tc.Name.ToLower() == taskCategory.Name.ToLower() && !tc.IsDeleted);
-
-        var existUser = await unitOfWork.Users.SelectAsync(
-            expression: u => u.Id == HttpContextHelper.UserId && !u.IsDeleted)
-            ?? throw new NotFoundException($"User is not found");
 
         if (existTaskCategory is not null)
             throw new AlreadyExistException("Category with this name is already exists");

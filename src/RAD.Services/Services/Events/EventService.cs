@@ -4,6 +4,7 @@ using RAD.Domain.Entities;
 using RAD.Services.Configurations;
 using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
+using RAD.Services.Helpers;
 using RAD.Services.Services.Users;
 
 namespace RAD.Services.Services.Events;
@@ -13,18 +14,20 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork) : IE
     #region Event CRUD
     public async ValueTask<Event> CreateAsync(Event @event)
     {
+        var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
+
         var existEvent = await unitOfWork.Events.SelectAsync(
             expression: e => e.Title == @event.Title && !e.IsDeleted);
 
         if (existEvent is not null)
             throw new AlreadyExistException($"Event with Title ({@event.Title} is already exists)");
 
-        var existUser = await userService.GetByIdAsync(@event.UserId);
+        @event.UserId = existUser.Id;
+        @event.User = existUser;
+        @event.CreatedByUserId = HttpContextHelper.UserId;
 
         var created = await unitOfWork.Events.InsertAsync(@event);
         await unitOfWork.SaveAsync();
-
-        created.User = existUser;
 
         return created;
     }
@@ -34,6 +37,8 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork) : IE
         var existEvent = await unitOfWork.Events.SelectAsync(
             expression: e => e.Id == id && !e.IsDeleted)
             ?? throw new NotFoundException($"Event with Id ({id}) is not found");
+
+        existEvent.DeletedByUserId = HttpContextHelper.UserId;
 
         await unitOfWork.Events.DeleteAsync(existEvent);
         await unitOfWork.SaveAsync();
@@ -82,6 +87,7 @@ public class EventService(IUserService userService, IUnitOfWork unitOfWork) : IE
         existEvent.Description = @event.Description;
         existEvent.Location = @event.Location;
         existEvent.Reminder = @event.Reminder;
+        existEvent.UpdatedByUserId = HttpContextHelper.UserId;
 
         var updated = await unitOfWork.Events.UpdateAsync(existEvent);
         await unitOfWork.SaveAsync();

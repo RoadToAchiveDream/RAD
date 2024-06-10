@@ -5,20 +5,19 @@ using RAD.Services.Configurations;
 using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
 using RAD.Services.Helpers;
+using RAD.Services.Services.Users;
 
 namespace RAD.Services.Services.NoteCategories;
 
-public class NoteCategoryService(IUnitOfWork unitOfWork) : INoteCategoryService
+public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWork) : INoteCategoryService
 {
     #region NoteCategory CRUD
     public async ValueTask<NoteCategory> CreateAsync(NoteCategory noteCategory)
     {
+        var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
+        
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => nc.Name.ToLower() == noteCategory.Name.ToLower() && !nc.IsDeleted);
-
-        var existUser = await unitOfWork.Users.SelectAsync(
-            expression: u => u.Id == HttpContextHelper.UserId && !u.IsDeleted)
-            ?? throw new NotFoundException($"User is not found");
 
         if (existNoteCategory is not null)
             throw new AlreadyExistException("Category with this name is already exists");
@@ -40,6 +39,7 @@ public class NoteCategoryService(IUnitOfWork unitOfWork) : INoteCategoryService
             ?? throw new NotFoundException($"Category with Id ({id}) is not found");
 
         existNoteCategory.DeletedByUserId = HttpContextHelper.UserId;
+
         await unitOfWork.NoteCategories.DeleteAsync(existNoteCategory);
         await unitOfWork.SaveAsync();
 
@@ -99,6 +99,7 @@ public class NoteCategoryService(IUnitOfWork unitOfWork) : INoteCategoryService
 
         existsNote.CategoryId = categoryId;
         existsNote.Category = existCategory;
+
         await unitOfWork.SaveAsync();
 
         return await GetByIdAsync(categoryId);
@@ -117,6 +118,7 @@ public class NoteCategoryService(IUnitOfWork unitOfWork) : INoteCategoryService
 
         existsNote.CategoryId = 0;
         existsNote.Category = null;
+
         await unitOfWork.SaveAsync();
 
         return await GetByIdAsync(categoryId);

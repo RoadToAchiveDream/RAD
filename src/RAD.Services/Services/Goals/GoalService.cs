@@ -4,6 +4,7 @@ using RAD.Domain.Entities;
 using RAD.Services.Configurations;
 using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
+using RAD.Services.Helpers;
 using RAD.Services.Services.Users;
 
 namespace RAD.Services.Services.Goals;
@@ -13,18 +14,20 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork) : IGo
     #region Goal CRUD
     public async ValueTask<Goal> CreateAsync(Goal goal)
     {
+        var existsUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
+
         var existGoal = await unitOfWork.Goals.SelectAsync(
             expression: g => g.Title == goal.Title && !g.IsDeleted);
 
         if (existGoal is not null)
             throw new AlreadyExistException($"Goal with Title ({goal.Title} is already exists)");
 
-        var existsUser = await userService.GetByIdAsync(goal.UserId);
+        goal.UserId = existsUser.Id;
+        goal.User = existsUser;
+        goal.CreatedByUserId = HttpContextHelper.UserId;
 
         var created = await unitOfWork.Goals.InsertAsync(goal);
         await unitOfWork.SaveAsync();
-
-        created.User = existsUser;
 
         return created;
     }
@@ -34,6 +37,8 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork) : IGo
         var existGoal = await unitOfWork.Goals.SelectAsync(
             expression: g => g.Id == id && !g.IsDeleted)
             ?? throw new NotFoundException($"Goal with Id ({id} is not found)");
+
+        existGoal.DeletedByUserId = HttpContextHelper.UserId;
 
         await unitOfWork.Goals.DeleteAsync(existGoal);
         await unitOfWork.SaveAsync();
@@ -82,6 +87,7 @@ public class GoalService(IUserService userService, IUnitOfWork unitOfWork) : IGo
         existGoal.Progress = goal.Progress;
         existGoal.UserId = goal.UserId;
         existGoal.User = existUser;
+        existGoal.UpdatedByUserId = HttpContextHelper.UserId;
 
         var updated = await unitOfWork.Goals.UpdateAsync(existGoal);
         await unitOfWork.SaveAsync();
