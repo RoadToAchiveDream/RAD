@@ -31,11 +31,10 @@ public class TaskCategoryApiService(
         return mapper.Map<IEnumerable<TaskCategoryViewModel>>(taskCategories);
     }
 
-    public async ValueTask<TaskCategoryViewModel> PostAsync(TaskCategoryCreateModel model)
+    public async ValueTask<bool> PostAsync(TaskCategoryCreateModel model)
     {
         await createModelValidator.EnsureValidatedAsync(model);
-        var taskCategory = await taskCategoryService.CreateAsync(mapper.Map<TaskCategory>(model));
-        return mapper.Map<TaskCategoryViewModel>(taskCategory);
+        return await taskCategoryService.CreateAsync(mapper.Map<TaskCategory>(model));
     }
 
     public async ValueTask<TaskCategoryViewModel> PutAsync(long id, TaskCategoryUpdateModel model)
@@ -45,16 +44,14 @@ public class TaskCategoryApiService(
         return mapper.Map<TaskCategoryViewModel>(taskCategory);
     }
 
-    public async ValueTask<TaskCategoryViewModel> AddTaskToCategoryAsync(long categoryId, long taskId)
+    public async ValueTask<bool> AddTaskToCategoryAsync(long categoryId, long taskId)
     {
-        var taskCategory = await taskCategoryService.AddTaskToCategoryAsync(categoryId, taskId);
-        return mapper.Map<TaskCategoryViewModel>(taskCategory);
+        return await taskCategoryService.AddTaskToCategoryAsync(categoryId, taskId);
     }
 
-    public async ValueTask<TaskCategoryViewModel> RemoveTaskFromCategoryAsync(long categoryId, long taskId)
+    public async ValueTask<bool> RemoveTaskFromCategoryAsync(long categoryId, long taskId)
     {
-        var taskCategory = await taskCategoryService.RemoveTaskFromCategoryAsync(categoryId, taskId);
-        return mapper.Map<TaskCategoryViewModel>(taskCategory);
+        return await taskCategoryService.RemoveTaskFromCategoryAsync(categoryId, taskId);
     }
 
     public async ValueTask<TaskCategoryViewModel> GetCategoryByNameAsync(string name)

@@ -31,7 +31,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: t => t.Id == id && !t.IsDeleted)
+            expression: t => (t.Id == id && t.UserId == HttpContextHelper.UserId) && !t.IsDeleted)
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
         existsTask.DeletedByUserId = HttpContextHelper.UserId;
@@ -44,7 +44,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<IEnumerable<Task>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
-            expression: t => !t.IsDeleted,
+            expression: t => !t.IsDeleted && t.UserId == HttpContextHelper.UserId,
             includes: ["User"],
             isTracked: false).OrderBy(filter);
 
@@ -59,7 +59,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<Task> GetByIdAsync(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: t => t.Id == id && !t.IsDeleted,
+            expression: t => t.Id == id && !t.IsDeleted && t.UserId == HttpContextHelper.UserId,
             includes: ["User"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
@@ -69,7 +69,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<Task> UpdateAsync(long id, Task task)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: t => t.Id == id && !t.IsDeleted)
+            expression: t => (t.Id == id && t.UserId == HttpContextHelper.UserId) && !t.IsDeleted)
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
         var existUser = await userService.GetByIdAsync(existsTask.UserId);
@@ -89,8 +89,8 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<Task> SetDueDate(long id, DateTime dueDate)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
-            includes: ["Users"])
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
+            includes: ["User"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
         if (existsTask.DueDate == dueDate)
@@ -98,15 +98,17 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         existsTask.DueDate = dueDate;
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
     public async ValueTask<Task> SetReminder(long id, DateTime reminder)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
-            includes: ["Users"])
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
+            includes: ["User"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
         if (existsTask.Reminder == reminder)
@@ -114,15 +116,17 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         existsTask.Reminder = reminder;
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
     public async ValueTask<Task> SetStatus(long id, string status)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
-            includes: ["Users"])
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
+            includes: ["User"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
         if (existsTask.Status.ToString() == status)
@@ -146,15 +150,17 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         }
 
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
     public async ValueTask<Task> SetPriority(long id, string priority)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
-            includes: ["Users"])
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
+            includes: ["User"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
         if (existsTask.Priority.ToString() == priority)
@@ -175,15 +181,17 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         }
 
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
     public async ValueTask<Task> SetReccuring(long id, string reccuring)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
-            includes: ["Users"])
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
+            includes: ["User"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
         if (existsTask.Reccuring.ToString() == reccuring)
@@ -208,15 +216,17 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         }
 
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
 
     public async ValueTask<Task> UnsetDueDate(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
             includes: ["Users"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
@@ -225,14 +235,16 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         existsTask.DueDate = DateTime.MinValue;
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
     public async ValueTask<Task> UnsetReminder(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
             includes: ["Users"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
@@ -241,14 +253,16 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         existsTask.Reminder = DateTime.MinValue;
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
     public async ValueTask<Task> UnsetStatus(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
             includes: ["Users"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
@@ -256,16 +270,17 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
             throw new AlreadyExistException("Already unset or not set Status yet");
 
         existsTask.Status = TaskStatus.Pending;
-
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
     public async ValueTask<Task> UnsetPriority(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
             includes: ["Users"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
@@ -346,6 +361,41 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
             ?? throw new NotFoundException($"Tasks according to this reccuring ({reccuring}) are not found");
 
         return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
+    }
+
+    public async ValueTask<Task> SetCategoryId(long taskId, long categoryId)
+    {
+        var existTask = await unitOfWork.Tasks.SelectAsync(
+             expression: t => t.Id == taskId && !t.IsDeleted)
+             ?? throw new NotFoundException($"Task with Id ({taskId}) is not found");
+
+        if (existTask.CategoryId == categoryId)
+            throw new AlreadyExistException("Task is already set to this category");
+
+        existTask.CategoryId = categoryId;
+        existTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existTask);
+        await unitOfWork.SaveAsync();
+
+        return updated;
+    }
+    public async ValueTask<Task> UnsetCategoryId(long taskId)
+    {
+        var existTask = await unitOfWork.Tasks.SelectAsync(
+             expression: t => t.Id == taskId && !t.IsDeleted)
+             ?? throw new NotFoundException($"Task with Id ({taskId}) is not found");
+
+        if (existTask.CategoryId == 0 || existTask.CategoryId is null)
+            throw new ArgumentIsNotValidException("Task has not set to any category");
+
+        existTask.CategoryId = null;
+        existTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existTask);
+        await unitOfWork.SaveAsync();
+
+        return updated;
     }
     #endregion
 }

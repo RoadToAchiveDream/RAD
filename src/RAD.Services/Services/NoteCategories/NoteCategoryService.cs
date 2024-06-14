@@ -7,7 +7,6 @@ using RAD.Services.Extensions;
 using RAD.Services.Helpers;
 using RAD.Services.Services.Notes;
 using RAD.Services.Services.Users;
-using System.Collections.Immutable;
 
 namespace RAD.Services.Services.NoteCategories;
 

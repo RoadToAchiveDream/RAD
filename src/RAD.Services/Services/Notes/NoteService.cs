@@ -150,7 +150,6 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
         await unitOfWork.SaveAsync();
 
         return updated;
-
     }
     #endregion
 }
