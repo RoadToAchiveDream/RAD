@@ -5,7 +5,7 @@ namespace RAD.Services.Services.TaskCategories;
 
 public interface ITaskCategoryService
 {
-    public ValueTask<bool> CreateAsync(TaskCategory taskCategory);
+    public ValueTask<TaskCategory> CreateAsync(TaskCategory taskCategory);
     public ValueTask<bool> DeleteAsync(long id);
     public ValueTask<TaskCategory> UpdateAsync(long id, TaskCategory taskCategory);
     public ValueTask<TaskCategory> GetByIdAsync(long id);

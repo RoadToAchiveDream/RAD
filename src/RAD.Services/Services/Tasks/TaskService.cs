@@ -27,7 +27,6 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return createdTask;
     }
-
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
@@ -40,7 +39,6 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return true;
     }
-
     public async ValueTask<IEnumerable<Task>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
@@ -55,7 +53,6 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-
     public async ValueTask<Task> GetByIdAsync(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
@@ -65,7 +62,6 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return existsTask;
     }
-
     public async ValueTask<Task> UpdateAsync(long id, Task task)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(

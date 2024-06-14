@@ -13,7 +13,7 @@ namespace RAD.Services.Services.NoteCategories;
 public class NoteCategoryService(IUserService userService, INoteService noteService, IUnitOfWork unitOfWork) : INoteCategoryService
 {
     #region NoteCategory CRUD
-    public async ValueTask<bool> CreateAsync(NoteCategory noteCategory)
+    public async ValueTask<NoteCategory> CreateAsync(NoteCategory noteCategory)
     {
         var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
@@ -31,7 +31,7 @@ public class NoteCategoryService(IUserService userService, INoteService noteServ
         var created = await unitOfWork.NoteCategories.InsertAsync(noteCategory);
         await unitOfWork.SaveAsync();
 
-        return true;
+        return created;
     }
 
     public async ValueTask<bool> DeleteAsync(long id)

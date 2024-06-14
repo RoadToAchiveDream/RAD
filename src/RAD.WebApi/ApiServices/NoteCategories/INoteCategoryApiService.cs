@@ -5,7 +5,7 @@ namespace RAD.WebApi.ApiServices.NoteCategories;
 
 public interface INoteCategoryApiService
 {
-    public ValueTask<bool> PostAsync(NoteCategoryCreateModel model);
+    public ValueTask<NoteCategoryViewModel> PostAsync(NoteCategoryCreateModel model);
     public ValueTask<bool> DeleteAsync(long id);
     public ValueTask<NoteCategoryViewModel> PutAsync(long id, NoteCategoryUpdateModel model);
     public ValueTask<NoteCategoryViewModel> GetAsync(long id);

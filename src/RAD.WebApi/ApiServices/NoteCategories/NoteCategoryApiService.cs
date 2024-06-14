@@ -31,10 +31,11 @@ public class NoteCategoryApiService(
         return mapper.Map<IEnumerable<NoteCategoryViewModel>>(noteCategories);
     }
 
-    public async ValueTask<bool> PostAsync(NoteCategoryCreateModel model)
+    public async ValueTask<NoteCategoryViewModel> PostAsync(NoteCategoryCreateModel model)
     {
         await createModelValidator.EnsureValidatedAsync(model);
-        return await noteCategoryService.CreateAsync(mapper.Map<NoteCategory>(model));
+        var created = await noteCategoryService.CreateAsync(mapper.Map<NoteCategory>(model));
+        return mapper.Map<NoteCategoryViewModel>(created);
     }
 
     public async ValueTask<NoteCategoryViewModel> PutAsync(long id, NoteCategoryUpdateModel model)

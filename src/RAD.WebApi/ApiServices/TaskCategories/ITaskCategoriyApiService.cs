@@ -5,7 +5,7 @@ namespace RAD.WebApi.ApiServices.TaskCategories;
 
 public interface ITaskCategoryApiService
 {
-    public ValueTask<bool> PostAsync(TaskCategoryCreateModel model);
+    public ValueTask<TaskCategoryViewModel> PostAsync(TaskCategoryCreateModel model);
     public ValueTask<TaskCategoryViewModel> PutAsync(long id, TaskCategoryUpdateModel model);
     public ValueTask<bool> DeleteAsync(long id);
     public ValueTask<TaskCategoryViewModel> GetAsync(long id);

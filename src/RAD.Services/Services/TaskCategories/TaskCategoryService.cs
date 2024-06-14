@@ -13,7 +13,7 @@ namespace RAD.Services.Services.TaskCategories;
 public class TaskCategoryService(IUserService userService, ITaskService taskService, IUnitOfWork unitOfWork) : ITaskCategoryService
 {
     #region TaskCategory CRUD
-    public async ValueTask<bool> CreateAsync(TaskCategory taskCategory)
+    public async ValueTask<TaskCategory> CreateAsync(TaskCategory taskCategory)
     {
         var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
@@ -31,7 +31,7 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
         var created = await unitOfWork.TaskCategories.InsertAsync(taskCategory);
         await unitOfWork.SaveAsync();
 
-        return true;
+        return created;
     }
 
     public async ValueTask<bool> DeleteAsync(long id)

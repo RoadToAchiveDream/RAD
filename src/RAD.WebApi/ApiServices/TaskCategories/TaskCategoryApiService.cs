@@ -31,10 +31,11 @@ public class TaskCategoryApiService(
         return mapper.Map<IEnumerable<TaskCategoryViewModel>>(taskCategories);
     }
 
-    public async ValueTask<bool> PostAsync(TaskCategoryCreateModel model)
+    public async ValueTask<TaskCategoryViewModel> PostAsync(TaskCategoryCreateModel model)
     {
         await createModelValidator.EnsureValidatedAsync(model);
-        return await taskCategoryService.CreateAsync(mapper.Map<TaskCategory>(model));
+        var created = await taskCategoryService.CreateAsync(mapper.Map<TaskCategory>(model));
+        return mapper.Map<TaskCategoryViewModel>(created);
     }
 
     public async ValueTask<TaskCategoryViewModel> PutAsync(long id, TaskCategoryUpdateModel model)
