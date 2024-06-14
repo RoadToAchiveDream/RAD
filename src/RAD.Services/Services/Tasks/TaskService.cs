@@ -288,16 +288,17 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
             throw new AlreadyExistException("Already unset or not set Priority yet");
 
         existsTask.Priority = TaskPriority.None;
-
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
     public async ValueTask<Task> UnsetReccuring(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
-            expression: task => task.Id == id && !task.IsDeleted,
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
             includes: ["Users"])
             ?? throw new NotFoundException($"Task with Id ({id}) is not found");
 
@@ -305,17 +306,18 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
             throw new AlreadyExistException("Already unset or not set Reccuring yet");
 
         existsTask.Reccuring = TaskReccuring.None;
-
         existsTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existsTask);
         await unitOfWork.SaveAsync();
 
-        return existsTask;
+        return updated;
     }
 
     public async ValueTask<IEnumerable<Task>> GetByDueDate(PaginationParams @params, Filter filter, DateTime dueDate)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
-             expression: task => task.DueDate == dueDate && !task.IsDeleted,
+             expression: task => (task.UserId == HttpContextHelper.UserId && task.DueDate == dueDate) && !task.IsDeleted,
              includes: ["User"],
              isTracked: false).OrderBy(filter)
              ?? throw new NotFoundException($"Tasks according to this dueDate ({dueDate}) are not found");
@@ -325,7 +327,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<IEnumerable<Task>> GetByReminder(PaginationParams @params, Filter filter, DateTime reminder)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
-             expression: task => task.Reminder == reminder && !task.IsDeleted,
+             expression: task => (task.UserId == HttpContextHelper.UserId && task.Reminder == reminder) && !task.IsDeleted,
              includes: ["User"],
              isTracked: false).OrderBy(filter)
              ?? throw new NotFoundException($"Tasks according to this reminder ({reminder}) are not found");
@@ -335,7 +337,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<IEnumerable<Task>> GetByStatus(PaginationParams @params, Filter filter, string status)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
-            expression: task => task.Status.ToString() == status && !task.IsDeleted,
+            expression: task => (task.UserId == HttpContextHelper.UserId && task.Status.ToString() == status) && !task.IsDeleted,
             includes: ["User"],
             isTracked: false).OrderBy(filter)
             ?? throw new NotFoundException($"Tasks according to this status ({status}) are not found");
@@ -345,7 +347,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<IEnumerable<Task>> GetByPriority(PaginationParams @params, Filter filter, string priority)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
-            expression: task => task.Priority.ToString() == priority && !task.IsDeleted,
+            expression: task => (task.UserId == HttpContextHelper.UserId && task.Priority.ToString() == priority) && !task.IsDeleted,
             includes: ["User"],
             isTracked: false).OrderBy(filter)
             ?? throw new NotFoundException($"Tasks according to this priority ({priority}) are not found");
@@ -355,7 +357,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     public async ValueTask<IEnumerable<Task>> GetByReccuring(PaginationParams @params, Filter filter, string reccuring)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
-            expression: task => task.Reccuring.ToString() == reccuring && !task.IsDeleted,
+            expression: task => (task.UserId == HttpContextHelper.UserId && task.Reccuring.ToString() == reccuring) && !task.IsDeleted,
             includes: ["User"],
             isTracked: false).OrderBy(filter)
             ?? throw new NotFoundException($"Tasks according to this reccuring ({reccuring}) are not found");
