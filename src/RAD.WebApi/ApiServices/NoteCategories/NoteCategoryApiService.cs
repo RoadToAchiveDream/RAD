@@ -31,11 +31,10 @@ public class NoteCategoryApiService(
         return mapper.Map<IEnumerable<NoteCategoryViewModel>>(noteCategories);
     }
 
-    public async ValueTask<NoteCategoryViewModel> PostAsync(NoteCategoryCreateModel model)
+    public async ValueTask<bool> PostAsync(NoteCategoryCreateModel model)
     {
         await createModelValidator.EnsureValidatedAsync(model);
-        var noteCategory = await noteCategoryService.CreateAsync(mapper.Map<NoteCategory>(model));
-        return mapper.Map<NoteCategoryViewModel>(noteCategory);
+        return await noteCategoryService.CreateAsync(mapper.Map<NoteCategory>(model));
     }
 
     public async ValueTask<NoteCategoryViewModel> PutAsync(long id, NoteCategoryUpdateModel model)
@@ -45,16 +44,14 @@ public class NoteCategoryApiService(
         return mapper.Map<NoteCategoryViewModel>(noteCategory);
     }
 
-    public async ValueTask<NoteCategoryViewModel> AddNoteToCategoryAsync(long categoryId, long noteId)
+    public async ValueTask<bool> AddNoteToCategoryAsync(long categoryId, long noteId)
     {
-        var noteCategory = await noteCategoryService.AddNoteToCategoryAsync(categoryId, noteId);
-        return mapper.Map<NoteCategoryViewModel>(noteCategory);
+        return await noteCategoryService.AddNoteToCategoryAsync(categoryId, noteId);
     }
 
-    public async ValueTask<NoteCategoryViewModel> RemoveNoteFromCategoryAsync(long categoryId, long noteId)
+    public async ValueTask<bool> RemoveNoteFromCategoryAsync(long categoryId, long noteId)
     {
-        var noteCategory = await noteCategoryService.RemoveNoteFromCategoryAsync(categoryId, noteId);
-        return mapper.Map<NoteCategoryViewModel>(noteCategory);
+        return await noteCategoryService.RemoveNoteFromCategoryAsync(categoryId, noteId);
     }
 
     public async ValueTask<NoteCategoryViewModel> GetCategoryByNameAsync(string name)

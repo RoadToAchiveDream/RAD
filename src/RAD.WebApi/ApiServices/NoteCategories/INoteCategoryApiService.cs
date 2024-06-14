@@ -5,13 +5,13 @@ namespace RAD.WebApi.ApiServices.NoteCategories;
 
 public interface INoteCategoryApiService
 {
-    public ValueTask<NoteCategoryViewModel> PostAsync(NoteCategoryCreateModel model);
-    public ValueTask<NoteCategoryViewModel> PutAsync(long id, NoteCategoryUpdateModel model);
+    public ValueTask<bool> PostAsync(NoteCategoryCreateModel model);
     public ValueTask<bool> DeleteAsync(long id);
+    public ValueTask<NoteCategoryViewModel> PutAsync(long id, NoteCategoryUpdateModel model);
     public ValueTask<NoteCategoryViewModel> GetAsync(long id);
     public ValueTask<IEnumerable<NoteCategoryViewModel>> GetAsync(PaginationParams @params, Filter filter, string search = null);
 
-    public ValueTask<NoteCategoryViewModel> AddNoteToCategoryAsync(long categoryId, long noteId);
-    public ValueTask<NoteCategoryViewModel> RemoveNoteFromCategoryAsync(long categoryId, long noteId);
+    public ValueTask<bool> AddNoteToCategoryAsync(long categoryId, long noteId);
+    public ValueTask<bool> RemoveNoteFromCategoryAsync(long categoryId, long noteId);
     public ValueTask<NoteCategoryViewModel> GetCategoryByNameAsync(string name);
 }

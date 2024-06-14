@@ -5,19 +5,22 @@ using RAD.Services.Configurations;
 using RAD.Services.Exceptions;
 using RAD.Services.Extensions;
 using RAD.Services.Helpers;
+using RAD.Services.Services.Notes;
 using RAD.Services.Services.Users;
+using System.Collections.Immutable;
 
 namespace RAD.Services.Services.NoteCategories;
 
-public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWork) : INoteCategoryService
+public class NoteCategoryService(IUserService userService, INoteService noteService, IUnitOfWork unitOfWork) : INoteCategoryService
 {
     #region NoteCategory CRUD
-    public async ValueTask<NoteCategory> CreateAsync(NoteCategory noteCategory)
+    public async ValueTask<bool> CreateAsync(NoteCategory noteCategory)
     {
         var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
-            expression: nc => nc.Name.ToLower() == noteCategory.Name.ToLower() && !nc.IsDeleted);
+            expression: nc => (nc.Name.ToLower() == noteCategory.Name.ToLower() && nc.UserId == HttpContextHelper.UserId)
+            && !nc.IsDeleted);
 
         if (existNoteCategory is not null)
             throw new AlreadyExistException("Category with this name is already exists");
@@ -29,13 +32,13 @@ public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWor
         var created = await unitOfWork.NoteCategories.InsertAsync(noteCategory);
         await unitOfWork.SaveAsync();
 
-        return created;
+        return true;
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
-            expression: nc => nc.Id == id && !nc.IsDeleted)
+            expression: nc => (nc.Id == id && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted)
             ?? throw new NotFoundException($"Category with Id ({id}) is not found");
 
         existNoteCategory.DeletedByUserId = HttpContextHelper.UserId;
@@ -49,12 +52,19 @@ public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWor
     public async ValueTask<IEnumerable<NoteCategory>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var noteCategories = unitOfWork.NoteCategories.SelectAsQueryable(
-            expression: nc => !nc.IsDeleted,
+            expression: nc => !nc.IsDeleted && nc.UserId == HttpContextHelper.UserId,
+            includes: ["Notes"],
             isTracked: false).OrderBy(filter);
 
         if (!string.IsNullOrEmpty(search))
             noteCategories = noteCategories.Where(tc =>
                 tc.Name.ToLower().Contains(search.ToLower()));
+
+        foreach (var item in noteCategories)
+        {
+            var filteredNotes = item.Notes.Where(note => !note.IsDeleted).ToList();
+            item.Notes = filteredNotes;
+        }
 
         return await noteCategories.ToPaginateAsQueryable(@params).ToListAsync();
     }
@@ -62,8 +72,12 @@ public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWor
     public async ValueTask<NoteCategory> GetByIdAsync(long id)
     {
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
-            expression: nc => nc.Id == id && !nc.IsDeleted)
+            expression: nc => (nc.Id == id && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
+            includes: ["Notes"])
             ?? throw new NotFoundException($"category with Id ({id}) is not found");
+
+        var filteredNotes = existNoteCategory.Notes.Where(note => !note.IsDeleted);
+        existNoteCategory.Notes = filteredNotes;
 
         return existNoteCategory;
     }
@@ -71,7 +85,8 @@ public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWor
     public async ValueTask<NoteCategory> UpdateAsync(long id, NoteCategory noteCategory)
     {
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
-           expression: nc => nc.Id == id && !nc.IsDeleted)
+           expression: nc => (nc.Id == id && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
+           includes: ["User"])
            ?? throw new NotFoundException($"category with Id ({id}) is not found");
 
         existNoteCategory.Name = noteCategory.Name;
@@ -85,43 +100,25 @@ public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWor
     #endregion
 
     #region NoteCategory Features
-    public async ValueTask<NoteCategory> AddNoteToCategoryAsync(long categoryId, long noteId)
+    public async ValueTask<bool> AddNoteToCategoryAsync(long categoryId, long noteId)
     {
         var existCategory = await unitOfWork.NoteCategories.SelectAsync(
-            expression: nc => (nc.Id == categoryId && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
-            includes: ["User", "Notes"])
+            expression: nc => (nc.Id == categoryId && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted)
             ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
 
-        var existsNote = await unitOfWork.Notes.SelectAsync(
-            expression: n => (n.Id == noteId && n.UserId == HttpContextHelper.UserId) && !n.IsDeleted,
-            includes: ["User", "Category"])
-            ?? throw new NotFoundException($"Note with Id ({noteId}) is not found");
+        var set = await noteService.SetCategoryId(noteId, categoryId);
 
-        existsNote.CategoryId = categoryId;
-        existsNote.Category = existCategory;
-
-        await unitOfWork.SaveAsync();
-
-        return await GetByIdAsync(categoryId);
+        return true;
     }
-    public async ValueTask<NoteCategory> RemoveNoteFromCategoryAsync(long categoryId, long noteId)
+    public async ValueTask<bool> RemoveNoteFromCategoryAsync(long categoryId, long noteId)
     {
         var existCategory = await unitOfWork.NoteCategories.SelectAsync(
-           expression: cc => (cc.Id == categoryId && cc.UserId == HttpContextHelper.UserId) && !cc.IsDeleted,
-           includes: ["User", "Notes"])
-           ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
+            expression: nc => (nc.Id == categoryId && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted)
+            ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
 
-        var existsNote = await unitOfWork.Notes.SelectAsync(
-            expression: n => (n.Id == noteId && n.UserId == HttpContextHelper.UserId) && !n.IsDeleted,
-            includes: ["User", "Category"])
-            ?? throw new NotFoundException($"Note with Id ({noteId}) is not found");
+        var unset = await noteService.UnsetCategoryId(noteId);
 
-        existsNote.CategoryId = null;
-        existsNote.Category = null;
-
-        await unitOfWork.SaveAsync();
-
-        return await GetByIdAsync(categoryId);
+        return true;
     }
     public async ValueTask<NoteCategory> GetCategoryByNameAsync(string name)
     {
@@ -129,6 +126,9 @@ public class NoteCategoryService(IUserService userService, IUnitOfWork unitOfWor
             expression: nc => (nc.Name.ToLower().Contains(name) && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
             includes: ["User", "Notes"])
             ?? throw new NotFoundException($"Category with name ({name}) is not found");
+
+        var filteredNotes = existCategory.Notes.Where(note => !note.IsDeleted);
+        existCategory.Notes = filteredNotes;
 
         return existCategory;
     }

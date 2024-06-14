@@ -12,8 +12,8 @@ using RAD.DAL.Contexts;
 namespace RAD.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240610114810_init")]
-    partial class init
+    [Migration("20240614091651_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

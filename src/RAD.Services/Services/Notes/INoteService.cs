@@ -13,4 +13,7 @@ public interface INoteService
 
     public ValueTask<Note> SetPinned(long id);
     public ValueTask<Note> UnsetPinned(long id);
+
+    public ValueTask<Note> SetCategoryId(long noteId, long categoryId);
+    public ValueTask<Note> UnsetCategoryId(long noteId);
 }
