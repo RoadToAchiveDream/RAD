@@ -1,5 +1,4 @@
-﻿using RAD.Domain.Entities;
-using RAD.WebApi.DTOs.Notes;
+﻿using RAD.WebApi.DTOs.Notes;
 
 namespace RAD.WebApi.DTOs.NoteCategories;
 

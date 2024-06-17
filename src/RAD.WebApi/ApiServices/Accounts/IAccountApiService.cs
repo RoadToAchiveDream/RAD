@@ -1,5 +1,4 @@
 ﻿using RAD.WebApi.DTOs.Accounts;
-using RAD.WebApi.DTOs.Users;
 
 namespace RAD.WebApi.ApiServices.Accounts;
 
