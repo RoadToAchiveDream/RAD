@@ -7,12 +7,6 @@ public class SetTaskReccuringModelValidator : AbstractValidator<SetTaskReccuring
 {
     public SetTaskReccuringModelValidator()
     {
-        RuleFor(task => task.Id)
-            .NotNull()
-            .WithMessage("TaskId cannot be null")
-            .NotEqual(0)
-            .WithMessage("TaskId cannot be 0");
-
         RuleFor(task => task.Reccuring)
             .NotNull()
             .WithMessage("Reccuring cannot be null")

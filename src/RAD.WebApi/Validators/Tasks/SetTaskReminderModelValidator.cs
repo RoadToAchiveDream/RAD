@@ -7,12 +7,6 @@ public class SetTaskReminderModelValidator : AbstractValidator<SetTaskReminderMo
 {
     public SetTaskReminderModelValidator()
     {
-        RuleFor(task => task.Id)
-            .NotNull()
-            .WithMessage("TaskId cannot be null")
-            .NotEqual(0)
-            .WithMessage("TaskId cannot be 0");
-
         RuleFor(task => task.Reminder)
             .NotNull()
             .WithMessage("Reminder cannot be null")

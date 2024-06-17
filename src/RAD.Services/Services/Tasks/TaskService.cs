@@ -82,7 +82,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
     #endregion
 
     #region Task Features
-    public async ValueTask<Task> SetDueDate(long id, DateTime dueDate)
+    public async ValueTask<Task> SetDueDateAsync(long id, DateTime dueDate)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -100,7 +100,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return updated;
     }
-    public async ValueTask<Task> SetReminder(long id, DateTime reminder)
+    public async ValueTask<Task> SetReminderAsync(long id, DateTime reminder)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -118,7 +118,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return updated;
     }
-    public async ValueTask<Task> SetStatus(long id, string status)
+    public async ValueTask<Task> SetStatusAsync(long id, string status)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -152,7 +152,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return updated;
     }
-    public async ValueTask<Task> SetPriority(long id, string priority)
+    public async ValueTask<Task> SetPriorityAsync(long id, string priority)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -183,7 +183,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return updated;
     }
-    public async ValueTask<Task> SetReccuring(long id, string reccuring)
+    public async ValueTask<Task> SetReccuringAsync(long id, string reccuring)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -219,7 +219,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         return updated;
     }
 
-    public async ValueTask<Task> UnsetDueDate(long id)
+    public async ValueTask<Task> UnsetDueDateAsync(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -237,7 +237,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return updated;
     }
-    public async ValueTask<Task> UnsetReminder(long id)
+    public async ValueTask<Task> UnsetReminderAsync(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -255,7 +255,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return updated;
     }
-    public async ValueTask<Task> UnsetStatus(long id)
+    public async ValueTask<Task> UnsetStatusAsync(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -273,7 +273,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return updated;
     }
-    public async ValueTask<Task> UnsetPriority(long id)
+    public async ValueTask<Task> UnsetReccuringAsync(long id)
     {
         var existsTask = await unitOfWork.Tasks.SelectAsync(
             expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
@@ -310,7 +310,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         return updated;
     }
 
-    public async ValueTask<IEnumerable<Task>> GetByDueDate(PaginationParams @params, Filter filter, DateTime dueDate)
+    public async ValueTask<IEnumerable<Task>> GetByDueDateAsync(PaginationParams @params, Filter filter, DateTime dueDate)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
              expression: task => (task.UserId == HttpContextHelper.UserId && task.DueDate == dueDate) && !task.IsDeleted,
@@ -320,7 +320,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetByReminder(PaginationParams @params, Filter filter, DateTime reminder)
+    public async ValueTask<IEnumerable<Task>> GetByReminderAsync(PaginationParams @params, Filter filter, DateTime reminder)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
              expression: task => (task.UserId == HttpContextHelper.UserId && task.Reminder == reminder) && !task.IsDeleted,
@@ -330,7 +330,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetByStatus(PaginationParams @params, Filter filter, string status)
+    public async ValueTask<IEnumerable<Task>> GetByStatusAsync(PaginationParams @params, Filter filter, string status)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: task => (task.UserId == HttpContextHelper.UserId && task.Status.ToString() == status) && !task.IsDeleted,
@@ -340,7 +340,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetByPriority(PaginationParams @params, Filter filter, string priority)
+    public async ValueTask<IEnumerable<Task>> GetByPriorityAsync(PaginationParams @params, Filter filter, string priority)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: task => (task.UserId == HttpContextHelper.UserId && task.Priority.ToString() == priority) && !task.IsDeleted,
@@ -350,7 +350,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetByReccuring(PaginationParams @params, Filter filter, string reccuring)
+    public async ValueTask<IEnumerable<Task>> GetByReccuringAsync(PaginationParams @params, Filter filter, string reccuring)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: task => (task.UserId == HttpContextHelper.UserId && task.Reccuring.ToString() == reccuring) && !task.IsDeleted,

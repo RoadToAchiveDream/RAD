@@ -7,12 +7,6 @@ public class SetTaskStatusModelValidator : AbstractValidator<SetTaskStatusModel>
 {
     public SetTaskStatusModelValidator()
     {
-        RuleFor(task => task.Id)
-            .NotNull()
-            .WithMessage("TaskId cannot be null")
-            .NotEqual(0)
-            .WithMessage("TaskId cannot be 0");
-
         RuleFor(task => task.Status)
             .NotNull()
             .WithMessage("Status cannot be null")

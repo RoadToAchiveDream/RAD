@@ -11,24 +11,24 @@ public interface ITaskService
     public ValueTask<Task> GetByIdAsync(long id);
     public ValueTask<IEnumerable<Task>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
-    public ValueTask<Task> SetDueDate(long id, DateTime dueDate);
-    public ValueTask<Task> SetReminder(long id, DateTime reminder);
-    public ValueTask<Task> SetStatus(long id, string status);
-    public ValueTask<Task> SetPriority(long id, string priority);
-    public ValueTask<Task> SetReccuring(long id, string reccuring);
+    public ValueTask<Task> SetDueDateAsync(long id, DateTime dueDate);
+    public ValueTask<Task> SetReminderAsync(long id, DateTime reminder);
+    public ValueTask<Task> SetStatusAsync(long id, string status);
+    public ValueTask<Task> SetPriorityAsync(long id, string priority);
+    public ValueTask<Task> SetReccuringAsync(long id, string reccuring);
 
-    public ValueTask<Task> UnsetDueDate(long id);
-    public ValueTask<Task> UnsetReminder(long id);
-    public ValueTask<Task> UnsetStatus(long id);
-    public ValueTask<Task> UnsetPriority(long id);
+    public ValueTask<Task> UnsetDueDateAsync(long id);
+    public ValueTask<Task> UnsetReminderAsync(long id);
+    public ValueTask<Task> UnsetStatusAsync(long id);
+    public ValueTask<Task> UnsetReccuringAsync(long id);
     public ValueTask<Task> UnsetReccuring(long id);
 
     public ValueTask<Task> SetCategoryId(long taskId, long categoryId);
     public ValueTask<Task> UnsetCategoryId(long taskId);
 
-    public ValueTask<IEnumerable<Task>> GetByDueDate(PaginationParams @params, Filter filter, DateTime dueDate);
-    public ValueTask<IEnumerable<Task>> GetByReminder(PaginationParams @params, Filter filter, DateTime reminder);
-    public ValueTask<IEnumerable<Task>> GetByStatus(PaginationParams @params, Filter filter, string status);
-    public ValueTask<IEnumerable<Task>> GetByPriority(PaginationParams @params, Filter filter, string priority);
-    public ValueTask<IEnumerable<Task>> GetByReccuring(PaginationParams @params, Filter filter, string reccuring);
+    public ValueTask<IEnumerable<Task>> GetByDueDateAsync(PaginationParams @params, Filter filter, DateTime dueDate);
+    public ValueTask<IEnumerable<Task>> GetByReminderAsync(PaginationParams @params, Filter filter, DateTime reminder);
+    public ValueTask<IEnumerable<Task>> GetByStatusAsync(PaginationParams @params, Filter filter, string status);
+    public ValueTask<IEnumerable<Task>> GetByPriorityAsync(PaginationParams @params, Filter filter, string priority);
+    public ValueTask<IEnumerable<Task>> GetByReccuringAsync(PaginationParams @params, Filter filter, string reccuring);
 }

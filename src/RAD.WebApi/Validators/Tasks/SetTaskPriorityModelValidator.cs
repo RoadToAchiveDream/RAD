@@ -7,12 +7,6 @@ public class SetTaskPriorityModelValidator : AbstractValidator<SetTaskPriorityMo
 {
     public SetTaskPriorityModelValidator()
     {
-        RuleFor(task => task.Id)
-            .NotNull()
-            .WithMessage("TaskId cannot be null")
-            .NotEqual(0)
-            .WithMessage("TaskId cannot be 0");
-
         RuleFor(task => task.Priority)
             .NotNull()
             .WithMessage("Priority cannot be null")

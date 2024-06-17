@@ -79,12 +79,19 @@ public static class ServiceCollectionExtension
 
         services.AddTransient<NoteCreateModelValidator>();
         services.AddTransient<NoteUpdateModelValidator>();
+        services.AddTransient<SetNoteCategoryIdModelValidator>();
 
         services.AddTransient<NoteCategoryCreateModelValidator>();
         services.AddTransient<NoteCategoryUpdateModelValidator>();
 
         services.AddTransient<TaskCreateModelValidator>();
         services.AddTransient<TaskUpdateModelValidator>();
+        services.AddTransient<SetTaskCategoryIdModelValidator>();
+        services.AddTransient<SetTaskStatusModelValidator>();
+        services.AddTransient<SetTaskReccuringModelValidator>();
+        services.AddTransient<SetTaskReminderModelValidator>();
+        services.AddTransient<SetTaskPriorityModelValidator>();
+        services.AddTransient<SetTaskDueDateModelValidator>();
 
         services.AddTransient<TaskCategoryCreateModelValidator>();
         services.AddTransient<TaskCategoryUpdateModelValidator>();
