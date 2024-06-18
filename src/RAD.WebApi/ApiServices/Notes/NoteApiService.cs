@@ -44,4 +44,16 @@ public class NoteApiService(
         var note = await noteService.UpdateAsync(id, mapper.Map<Note>(model));
         return mapper.Map<NoteViewModel>(note);
     }
+
+    public async ValueTask<NoteViewModel> SetPinned(long id)
+    {
+        var note = await noteService.SetPinned(id);
+        return mapper.Map<NoteViewModel>(note);
+    }
+
+    public async ValueTask<NoteViewModel> UnsetPinned(long id)
+    {
+        var note = await noteService.UnsetPinned(id);
+        return mapper.Map<NoteViewModel>(note);
+    }
 }

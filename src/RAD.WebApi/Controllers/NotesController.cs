@@ -65,6 +65,26 @@ public class NotesController(INoteApiService noteService) : ControllerBase
             Data = await noteService.PutAsync(id, note)
         });
     }
+    [HttpPatch("set-pinned/{id:long}")]
+    public async ValueTask<IActionResult> SetPinned(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await noteService.SetPinned(id)
+        });
+    }
+    [HttpPatch("unset-pinned/{id:long}")]
+    public async ValueTask<IActionResult> UnsetPinned(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await noteService.UnsetPinned(id)
+        });
+    }
 }
 
 
