@@ -10,65 +10,78 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllers(options =>
-{
-    options.Conventions.Add(new RouteTokenTransformerConvention(new RouteHelper()));
-}).AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-}).AddJsonOptions(options =>
+    options.Conventions.Add(new RouteTokenTransformerConvention(new RouteHelper()))
+)
+.AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+})
+.AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.ConfigureSwagger();
-
+// Configure database context
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Configure Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.ConfigureSwagger();
+
+// Configure Serilog
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
+// Add custom services
 builder.Services.AddJWtService(builder.Configuration);
 builder.Services.AddExceptionHandlers();
 builder.Services.AddProblemDetails();
-
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
 builder.Services.AddValidators();
 builder.Services.AddApiServices();
 builder.Services.AddServices();
 
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder
+            .WithOrigins("https://road-to-the-dream.uz", "http://localhost:5500")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 var app = builder.Build();
+
+// Inject environment items
+app.InjectEnvironmentItems();
 
 // Ensure database is created and migrated
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<AppDbContext>();
+
     dbContext.Database.EnsureCreated();
     dbContext.Database.Migrate();
 }
 
-// Configure the HTTP request pipeline.
+// Configure middleware
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-else
-{
-    app.UseExceptionHandler();
-}
 
-app.UseHttpsRedirection();
+app.UseExceptionHandler();
 
 app.UseCors("AllowSpecificOrigin");
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 

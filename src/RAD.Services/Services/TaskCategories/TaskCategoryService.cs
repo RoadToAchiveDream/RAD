@@ -104,7 +104,7 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
             expression: tc => (tc.Id == categoryId && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted)
             ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
 
-        var set = await taskService.SetCategoryId(taskId, categoryId);
+        var set = await taskService.SetCategoryIdAsync(taskId, categoryId);
 
         return true;
     }
@@ -114,7 +114,7 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
             expression: tc => (tc.Id == categoryId && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted)
             ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
 
-        var unset = await taskService.UnsetCategoryId(taskId);
+        var unset = await taskService.UnsetCategoryIdAsync(taskId);
 
         return true;
     }

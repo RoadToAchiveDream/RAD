@@ -23,8 +23,14 @@ public interface ITaskService
     public ValueTask<Task> UnsetReccuringAsync(long id);
     public ValueTask<Task> UnsetReccuring(long id);
 
-    public ValueTask<Task> SetCategoryId(long taskId, long categoryId);
-    public ValueTask<Task> UnsetCategoryId(long taskId);
+    public ValueTask<Task> SetIsCompletedAsync(long id);
+    public ValueTask<Task> UnsetIsCompletedAsync(long id);
+
+    public ValueTask<Task> SetCategoryIdAsync(long taskId, long categoryId);
+    public ValueTask<Task> UnsetCategoryIdAsync(long taskId);
+
+    public ValueTask<IEnumerable<Task>> GetAllCompletedAsyns(PaginationParams @params, Filter filter);
+    public ValueTask<IEnumerable<Task>> GetAllNotCompletedAsyns(PaginationParams @params, Filter filter);
 
     public ValueTask<IEnumerable<Task>> GetByDueDateAsync(PaginationParams @params, Filter filter, DateTime dueDate);
     public ValueTask<IEnumerable<Task>> GetByReminderAsync(PaginationParams @params, Filter filter, DateTime reminder);

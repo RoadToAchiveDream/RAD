@@ -104,6 +104,28 @@ public class TaskApiService(
         return mapper.Map<TaskViewModel>(task);
     }
 
+    public async ValueTask<TaskViewModel> SetIsCompletedAsync(long id)
+    {
+        var task = await taskService.SetIsCompletedAsync(id);
+        return mapper.Map<TaskViewModel>(task);
+    }
+    public async ValueTask<TaskViewModel> UnsetIsCompletedAsync(long id)
+    {
+        var task = await taskService.UnsetIsCompletedAsync(id);
+        return mapper.Map<TaskViewModel>(task);
+    }
+
+    public async ValueTask<IEnumerable<TaskViewModel>> GetAllCompletedTasksAsync(PaginationParams @params, Filter filter)
+    {
+        var tasks = await taskService.GetAllCompletedAsyns(@params, filter);
+        return mapper.Map<IEnumerable<TaskViewModel>>(tasks);
+    }
+    public async ValueTask<IEnumerable<TaskViewModel>> GetAllNotCompletedTasksAsync(PaginationParams @params, Filter filter)
+    {
+        var tasks = await taskService.GetAllNotCompletedAsyns(@params, filter);
+        return mapper.Map<IEnumerable<TaskViewModel>>(tasks);
+    }
+
     public async ValueTask<IEnumerable<TaskViewModel>> GetTasksByDueDateAsync(PaginationParams @params, Filter filter, DateTime dueDate)
     {
         var tasks = await taskService.GetByDueDateAsync(@params, filter, dueDate);
@@ -129,4 +151,5 @@ public class TaskApiService(
         var tasks = await taskService.GetByReccuringAsync(@params, filter, reccuring);
         return mapper.Map<IEnumerable<TaskViewModel>>(tasks);
     }
+
 }

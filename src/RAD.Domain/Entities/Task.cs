@@ -12,6 +12,7 @@ public class Task : Auditable
     public string Title { get; set; }
     public string Description { get; set; }
     public DateTime DueDate { get; set; }
+    public bool IsCompleted { get; set; }
     public TaskPriority Priority { get; set; } = TaskPriority.Medium;
     public Enums.TaskEnums.TaskStatus Status { get; set; } = Enums.TaskEnums.TaskStatus.Pending;
     public DateTime Reminder { get; set; }

@@ -120,7 +120,26 @@ public class TasksController(ITaskApiService taskService) : ControllerBase
         });
     }
 
-
+    [HttpPatch("set-iscompleted/{id:long}")]
+    public async ValueTask<IActionResult> SetIsCompletedAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await taskService.SetIsCompletedAsync(id)
+        });
+    }
+    [HttpPatch("unset-iscompleted/{id:long}")]
+    public async ValueTask<IActionResult> UnsetIsCompletedAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await taskService.UnsetIsCompletedAsync(id)
+        });
+    }
 
     [HttpPatch("unset-status/{id:long}")]
     public async ValueTask<IActionResult> UnsetStatusAsync(long id)
@@ -173,6 +192,31 @@ public class TasksController(ITaskApiService taskService) : ControllerBase
         });
     }
 
+
+    [HttpGet("completed")]
+    public async ValueTask<IActionResult> GetAllCompletedAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await taskService.GetAllCompletedTasksAsync(@params, filter)
+        });
+    }
+    [HttpGet("not-completed")]
+    public async ValueTask<IActionResult> GetAllNotCompletedAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await taskService.GetAllNotCompletedTasksAsync(@params, filter)
+        });
+    }
 
 
     [HttpGet("by-duedate")]

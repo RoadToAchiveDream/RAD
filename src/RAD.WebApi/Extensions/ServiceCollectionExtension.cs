@@ -186,18 +186,4 @@ public static class ServiceCollectionExtension
                 });
         });
     }
-
-    public static void AddCors(this IServiceCollection services)
-    {
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowSpecificOrigin",
-                builder =>
-                {
-                    builder.WithOrigins("https://road-to-the-dream.uz")
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                });
-        });
-    }
 }

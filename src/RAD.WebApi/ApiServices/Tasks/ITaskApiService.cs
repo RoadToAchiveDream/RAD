@@ -17,11 +17,17 @@ public interface ITaskApiService
     public ValueTask<TaskViewModel> SetTaskReccuringAsync(long id, SetTaskReccuringModel model);
     public ValueTask<TaskViewModel> SetTaskStatusAsync(long id, SetTaskStatusModel model);
 
+    public ValueTask<TaskViewModel> SetIsCompletedAsync(long id);
+    public ValueTask<TaskViewModel> UnsetIsCompletedAsync(long id);
+
     public ValueTask<TaskViewModel> UnsetTaskDueDateAsync(long id);
     public ValueTask<TaskViewModel> UnsetTaskReminderAsync(long id);
     public ValueTask<TaskViewModel> UnsetTaskStatusAsync(long id);
     public ValueTask<TaskViewModel> UnsetTaskPriorityAsync(long id);
     public ValueTask<TaskViewModel> UnsetTaskReccuringAsync(long id);
+
+    public ValueTask<IEnumerable<TaskViewModel>> GetAllCompletedTasksAsync(PaginationParams @params, Filter filter);
+    public ValueTask<IEnumerable<TaskViewModel>> GetAllNotCompletedTasksAsync(PaginationParams @params, Filter filter);
 
     public ValueTask<IEnumerable<TaskViewModel>> GetTasksByDueDateAsync(PaginationParams @params, Filter filter, DateTime dueDate);
     public ValueTask<IEnumerable<TaskViewModel>> GetTasksByReminderAsync(PaginationParams @params, Filter filter, DateTime reminder);

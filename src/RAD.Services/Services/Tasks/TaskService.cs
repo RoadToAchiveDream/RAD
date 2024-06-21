@@ -310,6 +310,25 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         return updated;
     }
 
+    public async ValueTask<IEnumerable<Task>> GetAllCompletedAsyns(PaginationParams @params, Filter filter)
+    {
+        var Tasks = unitOfWork.Tasks.SelectAsQueryable(
+            expression: t => !t.IsDeleted && t.IsCompleted && t.UserId == HttpContextHelper.UserId,
+            includes: ["User"],
+            isTracked: false).OrderBy(filter);
+
+        return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
+    }
+    public async ValueTask<IEnumerable<Task>> GetAllNotCompletedAsyns(PaginationParams @params, Filter filter)
+    {
+        var Tasks = unitOfWork.Tasks.SelectAsQueryable(
+            expression: t => !t.IsDeleted && !t.IsCompleted && t.UserId == HttpContextHelper.UserId,
+            includes: ["User"],
+            isTracked: false).OrderBy(filter);
+
+        return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
+    }
+
     public async ValueTask<IEnumerable<Task>> GetByDueDateAsync(PaginationParams @params, Filter filter, DateTime dueDate)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
@@ -361,7 +380,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
 
-    public async ValueTask<Task> SetCategoryId(long taskId, long categoryId)
+    public async ValueTask<Task> SetCategoryIdAsync(long taskId, long categoryId)
     {
         var existTask = await unitOfWork.Tasks.SelectAsync(
              expression: t => t.Id == taskId && !t.IsDeleted)
@@ -378,16 +397,53 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return updated;
     }
-    public async ValueTask<Task> UnsetCategoryId(long taskId)
+    public async ValueTask<Task> UnsetCategoryIdAsync(long taskId)
     {
         var existTask = await unitOfWork.Tasks.SelectAsync(
              expression: t => t.Id == taskId && !t.IsDeleted)
              ?? throw new NotFoundException($"Task with Id ({taskId}) is not found");
 
         if (existTask.CategoryId == 0 || existTask.CategoryId is null)
-            throw new ArgumentIsNotValidException("Task has not set to any category");
+            throw new AlreadyExistException("Task already not set to any category");
 
         existTask.CategoryId = null;
+        existTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existTask);
+        await unitOfWork.SaveAsync();
+
+        return updated;
+    }
+
+    public async ValueTask<Task> SetIsCompletedAsync(long id)
+    {
+        var existTask = await unitOfWork.Tasks.SelectAsync(
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
+            includes: ["User"])
+            ?? throw new NotFoundException($"Task with Id ({id}) is not found");
+
+        if (existTask.IsCompleted == true)
+            throw new AlreadyExistException("Task is already completed");
+
+        existTask.IsCompleted = true;
+        existTask.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Tasks.UpdateAsync(existTask);
+        await unitOfWork.SaveAsync();
+
+        return updated;
+    }
+    public async ValueTask<Task> UnsetIsCompletedAsync(long id)
+    {
+        var existTask = await unitOfWork.Tasks.SelectAsync(
+            expression: task => (task.Id == id && task.UserId == HttpContextHelper.UserId) && !task.IsDeleted,
+            includes: ["User"])
+            ?? throw new NotFoundException($"Task with Id ({id}) is not found");
+
+        if (existTask.IsCompleted == false)
+            throw new AlreadyExistException("Task is already not completed");
+
+        existTask.IsCompleted = false;
         existTask.UpdatedByUserId = HttpContextHelper.UserId;
 
         var updated = await unitOfWork.Tasks.UpdateAsync(existTask);
