@@ -25,7 +25,6 @@ public class UsersController(IUserApiService userApiService) : ControllerBase
             Data = await userApiService.GetAsync(@params, filter, search)
         });
     }
-    [AllowAnonymous]
     [HttpGet("{id:long}")]
     public async ValueTask<IActionResult> GetAsync(long id)
     {

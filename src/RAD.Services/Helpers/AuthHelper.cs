@@ -17,7 +17,8 @@ public class AuthHepler
             Subject = new ClaimsIdentity(new Claim[]
             {
                 new Claim("id", user.Id.ToString()),
-                new Claim("phone-number", user.PhoneNumber),
+                new Claim("email", user.Email),
+                new Claim("phone_number", user.PhoneNumber),
                 new Claim("firstname", user.FirstName),
                 new Claim("lastname", user.LastName),
                 new Claim(ClaimTypes.Role, user.UserRole.ToString()),

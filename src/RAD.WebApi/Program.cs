@@ -50,7 +50,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
         builder => builder
-            .WithOrigins("https://road-to-the-dream.uz", "http://localhost:5500")
+            .WithOrigins("https://road-to-the-dream.uz", "http://localhost:5500", "http://127.0.0.1:5500")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
