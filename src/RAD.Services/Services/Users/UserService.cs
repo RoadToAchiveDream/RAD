@@ -20,10 +20,10 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     public async ValueTask<User> CreateAsync(User user)
     {
         var existsUser = await unitOfWork.Users.SelectAsync(
-            expression: u => u.Email == user.Email && !u.IsDeleted);
+            expression: u => (u.Email == user.Email && u.PhoneNumber == user.PhoneNumber) && !u.IsDeleted);
 
         if (existsUser is not null)
-            throw new AlreadyExistException($"User is already exists with this Email ({user.Email})");
+            throw new AlreadyExistException($"User is already exists with this Email ({user.Email}) or Phone Number ({user.PhoneNumber})");
 
         user.CreatedByUserId = HttpContextHelper.UserId;
         user.Password = PasswordHasher.Hash(user.Password);
@@ -105,8 +105,11 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     public async ValueTask<User> ChangePasswordAsync(string phone, string oldPassword, string newPassword)
     {
         var existUser = await unitOfWork.Users.SelectAsync(
-            expression: user => user.PhoneNumber == phone && PasswordHasher.Verify(oldPassword, user.Password) && !user.IsDeleted)
+            expression: user => user.PhoneNumber == phone && !user.IsDeleted)
             ?? throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
+
+        if (!PasswordHasher.Verify(oldPassword, existUser.Password))
+            throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
 
         existUser.Password = PasswordHasher.Hash(newPassword);
         await unitOfWork.Users.UpdateAsync(existUser);
