@@ -10,9 +10,16 @@ public class ConfirmCodeModelValidator : AbstractValidator<ConfirmCodeModel>
     {
         RuleFor(cc => cc.Code)
             .NotNull()
-            .WithMessage(cc => $"{nameof(cc.Code)} is not specified");
+            .NotEmpty()
+            .WithMessage("Код не должен быть пустым");
 
         RuleFor(cc => cc.PhoneNumber)
-            .Must(ValidationHelper.IsPhoneValid);
+             .NotNull()
+             .NotEmpty()
+             .WithMessage("Номер телефона не должен буть пустым");
+
+        RuleFor(cc => cc.PhoneNumber)
+            .Must(ValidationHelper.IsPhoneValid)
+            .WithMessage("Номер телефона должен быть правильным");
     }
 }

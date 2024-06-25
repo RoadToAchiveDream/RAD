@@ -10,16 +10,21 @@ public class ResetPasswordModelValidator : AbstractValidator<ResetPasswordModel>
     {
         RuleFor(rp => rp.NewPassword)
             .NotNull()
-            .WithMessage(rp => $"{nameof(rp.NewPassword)} is not specified");
+            .NotEmpty()
+            .WithMessage("Пароль не должен буть пустым");
 
         RuleFor(rp => rp.PhoneNumber)
             .NotNull()
-            .WithMessage(rp => $"{nameof(rp.PhoneNumber)} is not specified");
+            .NotEmpty()
+            .WithMessage("Номер телефона не должен буть пустым");
 
         RuleFor(rp => rp.PhoneNumber)
-            .Must(ValidationHelper.IsPhoneValid);
+            .Must(ValidationHelper.IsPhoneValid)
+            .WithMessage("Номер телефона должен быть правильным");
+
 
         RuleFor(rp => rp.NewPassword)
-            .Must(ValidationHelper.IsPasswordHard);
+            .Must(ValidationHelper.IsPasswordHard)
+            .WithMessage("Пароль должен быть не слабым");
     }
 }

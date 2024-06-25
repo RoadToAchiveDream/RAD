@@ -11,9 +11,11 @@ public class SendCodeModelValidator : AbstractValidator<SendCodeModel>
 
         RuleFor(sc => sc.PhoneNumber)
             .NotNull()
-            .WithMessage(sc => $"{nameof(sc.PhoneNumber)} is not specified");
+            .NotEmpty()
+            .WithMessage("Номер телефона не должен буть пустым");
 
         RuleFor(sc => sc.PhoneNumber)
-            .Must(ValidationHelper.IsPhoneValid);
+            .Must(ValidationHelper.IsPhoneValid)
+            .WithMessage("Номер телефона должен быть правильным");
     }
 }
