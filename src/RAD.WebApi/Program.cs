@@ -52,7 +52,8 @@ builder.Services.AddCors(options =>
         builder => builder
             .WithOrigins("https://road-to-the-dream.uz", "http://localhost:5500", "http://127.0.0.1:5500")
             .AllowAnyHeader()
-            .AllowAnyMethod());
+            .AllowAnyMethod()
+            .WithExposedHeaders("x-pagination"));
 });
 
 var app = builder.Build();
