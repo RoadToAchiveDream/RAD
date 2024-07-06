@@ -25,7 +25,7 @@ public class AuthHepler
             }),
 
             Expires = DateTime.UtcNow.AddDays(
-                Convert.ToInt32(EnvironmentHelper.TokenLifeTimeInDaysЯ)),
+                Convert.ToInt32(EnvironmentHelper.TokenLifeTimeInDays)),
 
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
