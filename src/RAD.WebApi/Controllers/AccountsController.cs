@@ -14,6 +14,7 @@ public class AccountsController(IAccountApiService accountApiService) : Controll
     [AllowAnonymous]
     public async ValueTask<IActionResult> LoginAsync([FromQuery] LoginModel loginModel)
     {
+
         return Ok(new Response
         {
             StatusCode = 200,

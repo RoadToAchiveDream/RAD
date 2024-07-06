@@ -24,8 +24,8 @@ public class AuthHepler
                 new Claim(ClaimTypes.Role, user.UserRole.ToString()),
             }),
 
-            Expires = DateTime.UtcNow.AddHours(
-                Convert.ToInt32(EnvironmentHelper.TokenLifeTimeInHours)),
+            Expires = DateTime.UtcNow.AddDays(
+                Convert.ToInt32(EnvironmentHelper.TokenLifeTimeInDaysЯ)),
 
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),

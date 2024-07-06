@@ -10,16 +10,21 @@ public class LoginModelValidator : AbstractValidator<LoginModel>
     {
         RuleFor(loginModel => loginModel.Password)
             .NotNull()
-            .WithMessage(loginModel => $"{nameof(loginModel.Password)} is not specified");
+            .NotEmpty()
+            .WithMessage("Пароль не должен буть пустым");
+        
+        RuleFor(loginModel => loginModel.Password)
+            .Must(ValidationHelper.IsPasswordHard)
+            .WithMessage("Пароль должен быть не слабым");
 
         RuleFor(loginModel => loginModel.PhoneNumber)
             .NotNull()
-            .WithMessage(loginModel => $"{nameof(loginModel.PhoneNumber)} is not specified");
+            .NotEmpty()
+            .WithMessage("Номер телефона не должен буть пустым");
 
         RuleFor(loginModel => loginModel.PhoneNumber)
-            .Must(ValidationHelper.IsPhoneValid);
+            .Must(ValidationHelper.IsPhoneValid)
+            .WithMessage("Номер телефона должен быть правильным");
 
-        RuleFor(loginModel => loginModel.Password)
-            .Must(ValidationHelper.IsPasswordHard);
     }
 }
