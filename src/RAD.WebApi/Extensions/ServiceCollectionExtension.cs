@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RAD.DAL.UnintOfWorks;
 using RAD.Services.Helpers;
+using RAD.Services.Services.Cashbooks;
 using RAD.Services.Services.Events;
 using RAD.Services.Services.Goals;
 using RAD.Services.Services.Habits;
@@ -12,6 +13,7 @@ using RAD.Services.Services.TaskCategories;
 using RAD.Services.Services.Tasks;
 using RAD.Services.Services.Users;
 using RAD.WebApi.ApiServices.Accounts;
+using RAD.WebApi.ApiServices.Cashbooks;
 using RAD.WebApi.ApiServices.Events;
 using RAD.WebApi.ApiServices.Goals;
 using RAD.WebApi.ApiServices.Habits;
@@ -22,6 +24,7 @@ using RAD.WebApi.ApiServices.Tasks;
 using RAD.WebApi.ApiServices.Users;
 using RAD.WebApi.Middlewares;
 using RAD.WebApi.Validators.Accounts;
+using RAD.WebApi.Validators.Cashbooks;
 using RAD.WebApi.Validators.Events;
 using RAD.WebApi.Validators.Goals;
 using RAD.WebApi.Validators.Habits;
@@ -48,6 +51,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<IHabitService, HabitService>();
         services.AddScoped<IGoalService, GoalService>();
         services.AddScoped<IEventService, EventService>();
+
+        services.AddScoped<ICashbookService, CashbookService>();
     }
 
     public static void AddApiServices(this IServiceCollection services)
@@ -69,6 +74,9 @@ public static class ServiceCollectionExtension
         services.AddScoped<IHabitApiService, HabitApiService>();
 
         services.AddScoped<IEventApiService, EventApiService>();
+
+
+        services.AddScoped<ICashbookApiService, CashbookApiService>();
     }
 
     public static void AddValidators(this IServiceCollection services)
@@ -109,6 +117,11 @@ public static class ServiceCollectionExtension
         services.AddTransient<LoginModelValidator>();
         services.AddTransient<ResetPasswordModelValidator>();
         services.AddTransient<SendCodeModelValidator>();
+
+
+
+        services.AddTransient<CashbookCreateModelValidator>();
+        services.AddTransient<CashbookUpdateModelValidator>();
     }
 
 

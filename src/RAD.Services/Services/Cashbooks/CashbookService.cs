@@ -19,7 +19,7 @@ public class CashbookService(IUserService userService, IUnitOfWork unitOfWork) :
             expression: c => (c.Name == cashbook.Name && c.UserId == HttpContextHelper.UserId) && !c.IsDeleted);
 
         if (existCashbook is not null)
-            throw new AlreadyExistException($"Кассовая книга с названием ({cashbook.Name} уже существует)");
+            throw new AlreadyExistException($"Кассовая книга уже существует)");
 
         cashbook.UserId = existUser.Id;
         cashbook.User = existUser;
@@ -61,14 +61,26 @@ public class CashbookService(IUserService userService, IUnitOfWork unitOfWork) :
     public async ValueTask<Cashbook> GetByIdAsync(long id)
     {
         var existsCashbook = await unitOfWork.Cashbooks.SelectAsync(
-            expression: t => t.Id == id && !t.IsDeleted && t.UserId == HttpContextHelper.UserId)
-            ?? throw new NotFoundException($"Task with Id ({id}) is not found");
+            expression: c => c.Id == id && !c.IsDeleted && c.UserId == HttpContextHelper.UserId)
+            ?? throw new NotFoundException($"Кассовая книга не найдена");
 
         return existsCashbook;
     }
 
-    public ValueTask<Cashbook> UpdateAsync(long id, Cashbook cashbook)
+    public async ValueTask<Cashbook> UpdateAsync(long id, Cashbook cashbook)
     {
-        throw new NotImplementedException();
+        var existCashbook = await unitOfWork.Cashbooks.SelectAsync(
+            expression: c => (c.Id == id && c.UserId == HttpContextHelper.UserId) && !c.IsDeleted)
+            ?? throw new NotFoundException($"Кассовая книга не найдена");
+
+        var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
+
+        existCashbook.Name = cashbook.Name;
+        existCashbook.UpdatedByUserId = HttpContextHelper.UserId;
+
+        var updated = await unitOfWork.Cashbooks.UpdateAsync(existCashbook);
+        await unitOfWork.SaveAsync();
+
+        return updated;
     }
 }
