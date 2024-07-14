@@ -9,14 +9,15 @@ public class SetNoteCategoryIdModelValidator : AbstractValidator<SetNoteCategory
     {
         RuleFor(note => note.Id)
             .NotNull()
-            .WithMessage("NoteId cannot be null")
+            .WithMessage("Id заметки не может быть пустым")
             .NotEqual(0)
-            .WithMessage("NoteId cannot be 0");
+            .WithMessage("Id заметки не может быть равен 0");
 
         RuleFor(note => note.CategoryId)
            .NotNull()
-           .WithMessage("CategoryId cannot be null")
+           .WithMessage("Id категории не может быть пустым")
            .NotEqual(0)
-           .WithMessage("CategoryId cannot be 0");
+           .WithMessage("Id категории не может быть равен 0");
     }
+
 }

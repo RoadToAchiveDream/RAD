@@ -9,8 +9,7 @@ public class NoteCategoryCreateModelValidator : AbstractValidator<NoteCategoryCr
     {
         RuleFor(nc => nc.Name)
             .NotNull()
-            .WithMessage("Name is required")
             .NotEmpty()
-            .WithMessage("Name must not be empty");
+            .WithMessage("Имя не должно быть пустым");
     }
 }

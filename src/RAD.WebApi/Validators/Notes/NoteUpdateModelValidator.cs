@@ -9,10 +9,10 @@ public class NoteUpdateModelValidator : AbstractValidator<NoteUpdateModel>
     {
         RuleFor(note => note.Title)
             .NotNull()
-            .WithMessage(note => $"{nameof(note.Title)} is not specified");
+            .WithMessage("Имя не должно быть пустым");
 
         RuleFor(note => note.Content)
             .NotEmpty()
-            .WithMessage(note => $"{nameof(note.Content)} is not specified");
+            .WithMessage("Содержимое не должно быть пустым.");
     }
 }

@@ -17,5 +17,8 @@ public class AppDbContext : DbContext
     public DbSet<Note> Notes { get; set; }
     public DbSet<NoteCategory> NoteCategories { get; set; }
     public DbSet<Goal> Goals { get; set; }
+
+    public DbSet<Cashbook> Cashbooks { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
     #endregion
 }

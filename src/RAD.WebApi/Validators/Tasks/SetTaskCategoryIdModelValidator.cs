@@ -9,8 +9,8 @@ public class SetTaskCategoryIdModelValidator : AbstractValidator<SetTaskCategory
     {
         RuleFor(task => task.CategoryId)
             .NotNull()
-            .WithMessage("Categoryid cannot be null")
+            .WithMessage("Id категории не может быть пустым")
             .NotEqual(0)
-            .WithMessage("CategoryId cannot be 0");
+            .WithMessage("Id категории не может быть равен 0");
     }
 }

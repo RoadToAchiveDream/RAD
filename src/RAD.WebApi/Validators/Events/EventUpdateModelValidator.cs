@@ -9,10 +9,10 @@ public class EventUpdateModelValidator : AbstractValidator<EventUpdateModel>
     {
         RuleFor(@event => @event.Title)
             .NotNull()
-            .WithMessage(@event => $"{nameof(@event.Title)} is not specified");
+            .WithMessage("Заголовок не должен быть пустым");
 
         RuleFor(@event => @event.Description)
             .NotEmpty()
-            .WithMessage(@event => $"{nameof(@event.Description)} is not specified");
+            .WithMessage("Описание не должно быть пустым");
     }
 }

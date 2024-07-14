@@ -22,7 +22,7 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
             && !tc.IsDeleted);
 
         if (existTaskCategory is not null)
-            throw new AlreadyExistException("Category with this name is already exists");
+            throw new AlreadyExistException("Категория уже существует");
 
         taskCategory.UserId = existUser.Id;
         taskCategory.User = existUser;
@@ -38,7 +38,7 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
     {
         var existTaskCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => (tc.Id == id && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted)
-            ?? throw new NotFoundException($"Category with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         existTaskCategory.DeletedByUserId = HttpContextHelper.UserId;
         await unitOfWork.TaskCategories.DeleteAsync(existTaskCategory);
@@ -72,7 +72,7 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
         var existTaskCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => (tc.Id == id && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,
             includes: ["Tasks"])
-            ?? throw new NotFoundException($"category with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         var filteredTasks = existTaskCategory.Tasks.Where(task => !task.IsDeleted);
         existTaskCategory.Tasks = filteredTasks;
@@ -83,9 +83,8 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
     public async ValueTask<TaskCategory> UpdateAsync(long id, TaskCategory taskCategory)
     {
         var existTaskCategory = await unitOfWork.TaskCategories.SelectAsync(
-           expression: tc => (tc.Id == id && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,
-           includes: ["User"])
-           ?? throw new NotFoundException($"category with Id ({id}) is not found");
+           expression: tc => (tc.Id == id && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted)
+           ?? throw new NotFoundException($"Категория не найдена");
 
         existTaskCategory.Name = taskCategory.Name;
         existTaskCategory.UpdatedByUserId = HttpContextHelper.UserId;
@@ -102,7 +101,7 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
     {
         var existCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => (tc.Id == categoryId && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted)
-            ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         var set = await taskService.SetCategoryIdAsync(taskId, categoryId);
 
@@ -112,7 +111,7 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
     {
         var existCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => (tc.Id == categoryId && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted)
-            ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         var unset = await taskService.UnsetCategoryIdAsync(taskId);
 
@@ -122,8 +121,8 @@ public class TaskCategoryService(IUserService userService, ITaskService taskServ
     {
         var existCategory = await unitOfWork.TaskCategories.SelectAsync(
             expression: tc => (tc.Name.ToLower().Contains(name) && tc.UserId == HttpContextHelper.UserId) && !tc.IsDeleted,
-            includes: ["User", "Tasks"])
-            ?? throw new NotFoundException($"Category with name ({name}) is not found");
+            includes: ["Tasks"])
+            ?? throw new NotFoundException($"Категория не найдена");
 
         var filteredTasks = existCategory.Tasks.Where(note => !note.IsDeleted);
         existCategory.Tasks = filteredTasks;

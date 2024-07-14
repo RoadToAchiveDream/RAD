@@ -22,7 +22,7 @@ public class NoteCategoryService(IUserService userService, INoteService noteServ
             && !nc.IsDeleted);
 
         if (existNoteCategory is not null)
-            throw new AlreadyExistException("Category with this name is already exists");
+            throw new AlreadyExistException("Категория уже существует");
 
         noteCategory.UserId = existUser.Id;
         noteCategory.User = existUser;
@@ -38,7 +38,7 @@ public class NoteCategoryService(IUserService userService, INoteService noteServ
     {
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => (nc.Id == id && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted)
-            ?? throw new NotFoundException($"Category with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         existNoteCategory.DeletedByUserId = HttpContextHelper.UserId;
 
@@ -73,7 +73,7 @@ public class NoteCategoryService(IUserService userService, INoteService noteServ
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => (nc.Id == id && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
             includes: ["Notes"])
-            ?? throw new NotFoundException($"category with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         var filteredNotes = existNoteCategory.Notes.Where(note => !note.IsDeleted);
         existNoteCategory.Notes = filteredNotes;
@@ -86,7 +86,7 @@ public class NoteCategoryService(IUserService userService, INoteService noteServ
         var existNoteCategory = await unitOfWork.NoteCategories.SelectAsync(
            expression: nc => (nc.Id == id && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
            includes: ["User"])
-           ?? throw new NotFoundException($"category with Id ({id}) is not found");
+           ?? throw new NotFoundException($"Категория не найдена");
 
         existNoteCategory.Name = noteCategory.Name;
         existNoteCategory.UpdatedByUserId = HttpContextHelper.UserId;
@@ -103,7 +103,7 @@ public class NoteCategoryService(IUserService userService, INoteService noteServ
     {
         var existCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => (nc.Id == categoryId && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted)
-            ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         var set = await noteService.SetCategoryId(noteId, categoryId);
 
@@ -113,7 +113,7 @@ public class NoteCategoryService(IUserService userService, INoteService noteServ
     {
         var existCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => (nc.Id == categoryId && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted)
-            ?? throw new NotFoundException($"Category with Id ({categoryId}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         var unset = await noteService.UnsetCategoryId(noteId);
 
@@ -124,7 +124,7 @@ public class NoteCategoryService(IUserService userService, INoteService noteServ
         var existCategory = await unitOfWork.NoteCategories.SelectAsync(
             expression: nc => (nc.Name.ToLower().Contains(name) && nc.UserId == HttpContextHelper.UserId) && !nc.IsDeleted,
             includes: ["User", "Notes"])
-            ?? throw new NotFoundException($"Category with name ({name}) is not found");
+            ?? throw new NotFoundException($"Категория не найдена");
 
         var filteredNotes = existCategory.Notes.Where(note => !note.IsDeleted);
         existCategory.Notes = filteredNotes;

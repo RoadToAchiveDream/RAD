@@ -9,10 +9,10 @@ public class SetTaskDueDateModelValidator : AbstractValidator<SetTaskDueDateMode
     {
         RuleFor(task => task.DueDate)
             .NotNull()
-            .WithMessage("DueDate cannot be null")
+            .WithMessage("Дата выполнения не может быть пустой")
             .NotEqual(DateTime.MinValue)
-            .WithMessage("DueDate must be greater tham minimal value")
+            .WithMessage("Дата выполнения должна быть больше минимального значения")
             .GreaterThan(DateTime.UtcNow)
-            .WithMessage("DueDate must be in the future");
+            .WithMessage("Дата выполнения должна быть в будущем");
     }
 }

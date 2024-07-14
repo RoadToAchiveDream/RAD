@@ -30,7 +30,7 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
     {
         var existNote = await unitOfWork.Notes.SelectAsync(
             expression: n => (n.Id == id && n.UserId == HttpContextHelper.UserId) && !n.IsDeleted)
-            ?? throw new NotFoundException($"Note with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Заметка не найдена");
 
         existNote.DeletedByUserId = HttpContextHelper.UserId;
         await unitOfWork.Notes.DeleteAsync(existNote);
@@ -59,7 +59,7 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
         var existNote = await unitOfWork.Notes.SelectAsync(
             expression: n => (n.Id == id && n.UserId == HttpContextHelper.UserId) && !n.IsDeleted,
             includes: ["User"])
-            ?? throw new NotFoundException($"Note with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Заметка не найдена");
 
         return existNote;
     }
@@ -68,7 +68,7 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
     {
         var existNote = await unitOfWork.Notes.SelectAsync(
             expression: n => (n.Id == id && n.UserId == HttpContextHelper.UserId) && !n.IsDeleted)
-            ?? throw new NotFoundException($"Note with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Заметка не найдена");
 
         var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);
 
@@ -87,12 +87,11 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
     public async ValueTask<Note> SetPinned(long id)
     {
         var existsNote = await unitOfWork.Notes.SelectAsync(
-            expression: note => (note.Id == id && note.UserId == HttpContextHelper.UserId) && !note.IsDeleted,
-            includes: ["User"])
-            ?? throw new NotFoundException($"Note with Id ({id}) is not found");
+            expression: note => (note.Id == id && note.UserId == HttpContextHelper.UserId) && !note.IsDeleted)
+            ?? throw new NotFoundException($"Заметка не найдена");
 
         if (existsNote.IsPinned)
-            throw new AlreadyExistException("Note is already pinned");
+            throw new AlreadyExistException("Заметка уже закреплена");
 
         existsNote.IsPinned = true;
         existsNote.UpdatedByUserId = HttpContextHelper.UserId;
@@ -105,10 +104,10 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
         var existsNote = await unitOfWork.Notes.SelectAsync(
            expression: note => (note.Id == id && note.UserId == HttpContextHelper.UserId) && !note.IsDeleted,
            includes: ["User"])
-           ?? throw new NotFoundException($"Note with Id ({id}) is not found");
+           ?? throw new NotFoundException($"Заметка не найдена");
 
         if (!existsNote.IsPinned)
-            throw new AlreadyExistException("Note is already unpinned");
+            throw new AlreadyExistException("Заметка уже откреплена");
 
         existsNote.IsPinned = false;
         existsNote.UpdatedByUserId = HttpContextHelper.UserId;
@@ -121,10 +120,10 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
     {
         var existNote = await unitOfWork.Notes.SelectAsync(
              expression: n => n.Id == noteId && !n.IsDeleted)
-             ?? throw new NotFoundException($"Note with Id ({noteId}) is not found");
+             ?? throw new NotFoundException($"Заметка не найдена");
 
         if (existNote.CategoryId == categoryId)
-            throw new AlreadyExistException("Note is already set to this category");
+            throw new AlreadyExistException("Заметка уже добавлено в эту категорию");
 
         existNote.CategoryId = categoryId;
         existNote.UpdatedByUserId = HttpContextHelper.UserId;
@@ -138,10 +137,10 @@ public class NoteService(IUserService userService, IUnitOfWork unitOfWork) : INo
     {
         var existNote = await unitOfWork.Notes.SelectAsync(
              expression: n => n.Id == noteId && !n.IsDeleted)
-             ?? throw new NotFoundException($"Note with Id ({noteId}) is not found");
+             ?? throw new NotFoundException($"Заметка не найдена");
 
         if (existNote.CategoryId == 0 || existNote.CategoryId is null)
-            throw new ArgumentIsNotValidException("Note has not set to any category");
+            throw new ArgumentIsNotValidException("Заметка не добавлена ни к одной категории");
 
         existNote.CategoryId = null;
         existNote.UpdatedByUserId = HttpContextHelper.UserId;

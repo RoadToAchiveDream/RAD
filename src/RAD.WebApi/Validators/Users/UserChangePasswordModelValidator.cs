@@ -10,15 +10,15 @@ public class UserChangePasswordModelValidator : AbstractValidator<UserChangePass
     {
         RuleFor(user => user.OldPassword)
             .NotNull()
-            .WithMessage(user => $"{nameof(user.OldPassword)} is not specified");
+            .WithMessage("Старый пароль не может быть пустым");
 
         RuleFor(user => user.NewPassword)
             .NotNull()
-            .WithMessage(user => $"{nameof(user.NewPassword)} is not specified");
+            .WithMessage("Новый пароль не может быть пустым");
 
         RuleFor(user => user.PhoneNumber)
             .NotNull()
-            .WithMessage(user => $"{nameof(user.PhoneNumber)} is not specified");
+            .WithMessage("Номер телефона не может быть пустым");
 
         RuleFor(user => user.PhoneNumber)
             .Must(ValidationHelper.IsPhoneValid);

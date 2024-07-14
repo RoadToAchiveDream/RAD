@@ -9,10 +9,10 @@ public class TaskCreateModelValidator : AbstractValidator<TaskCreateModel>
     {
         RuleFor(task => task.Title)
             .NotNull()
-            .WithMessage(task => $"{nameof(task.Title)} is not specified");
+            .WithMessage("Имя не должно быть пустым");
 
         RuleFor(task => task.Description)
             .NotEmpty()
-            .WithMessage(task => $"{nameof(task.Description)} is not specified");
+            .WithMessage("Описание не должно быть пустым.");
     }
 }

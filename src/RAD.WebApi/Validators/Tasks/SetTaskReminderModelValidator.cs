@@ -9,10 +9,10 @@ public class SetTaskReminderModelValidator : AbstractValidator<SetTaskReminderMo
     {
         RuleFor(task => task.Reminder)
             .NotNull()
-            .WithMessage("Reminder cannot be null")
+            .WithMessage("Напоминание не может быть пустым")
             .NotEqual(DateTime.MinValue)
-            .WithMessage("Reminder must be greater tham minimal value")
+            .WithMessage("Напоминание должно быть больше минимального значения")
             .GreaterThan(DateTime.UtcNow)
-            .WithMessage("Reminder must be in the future");
+            .WithMessage("Напоминание должно быть в будущем");
     }
 }

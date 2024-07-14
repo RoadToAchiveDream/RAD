@@ -10,18 +10,22 @@ public class UserUpdateModelValidator : AbstractValidator<UserUpdateModel>
     {
         RuleFor(user => user.FirstName)
             .NotNull()
-            .WithMessage(user => $"{nameof(user.FirstName)} is not specified");
+            .WithMessage("Имя не может быть пустым");
+
+        RuleFor(user => user.LastName)
+           .NotNull()
+           .WithMessage("Фамилия не может быть пустым");
 
         RuleFor(user => user.PhoneNumber)
             .NotNull()
-            .WithMessage(user => $"{nameof(user.PhoneNumber)} is not specified");
+            .WithMessage("Номер телефона не может быть пустым");
 
         RuleFor(user => user.PhoneNumber)
             .Must(ValidationHelper.IsPhoneValid);
 
         RuleFor(user => user.Email)
             .NotNull()
-            .WithMessage(user => $"{nameof(user.Email)} is not specified");
+            .WithMessage("Электронная почта не может быть пустой");
 
         RuleFor(user => user.Email)
             .Must(ValidationHelper.IsEmailValid);

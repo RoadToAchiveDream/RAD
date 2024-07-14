@@ -9,8 +9,7 @@ public class SetTaskReccuringModelValidator : AbstractValidator<SetTaskReccuring
     {
         RuleFor(task => task.Reccuring)
             .NotNull()
-            .WithMessage("Reccuring cannot be null")
             .NotEmpty()
-            .WithMessage("Reccuring cannot be empty");
+            .WithMessage("Повторение не может быть пустым");
     }
 }

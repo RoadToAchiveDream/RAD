@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RAD.Domain.Entities;
+using RAD.WebApi.DTOs.Cashbooks;
 using RAD.WebApi.DTOs.Events;
 using RAD.WebApi.DTOs.Goals;
 using RAD.WebApi.DTOs.Habits;
@@ -48,5 +49,9 @@ public class MappingProfile : Profile
         CreateMap<Event, EventUpdateModel>().ReverseMap();
         CreateMap<Event, EventViewModel>().ReverseMap();
 
+
+        CreateMap<Cashbook, CashbookCreateModel>().ReverseMap();
+        CreateMap<Cashbook, CashbookUpdateModel>().ReverseMap();
+        CreateMap<Cashbook, CashbookViewModel>().ReverseMap();
     }
 }

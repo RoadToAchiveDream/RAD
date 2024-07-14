@@ -18,6 +18,9 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<TaskCategory> TaskCategories { get; }
     public IRepository<Event> Events { get; }
 
+    public IRepository<Cashbook> Cashbooks { get; }
+    public IRepository<Transaction> Transactions { get; }
+
     public UnitOfWork(AppDbContext context)
     {
         this.context = context;
@@ -30,6 +33,9 @@ public class UnitOfWork : IUnitOfWork
         Tasks = new Repository<Task>(context);
         TaskCategories = new Repository<TaskCategory>(context);
         Events = new Repository<Event>(context);
+
+        Cashbooks = new Repository<Cashbook>(context);
+        Transactions = new Repository<Transaction>(context);
     }
 
     public void Dispose()

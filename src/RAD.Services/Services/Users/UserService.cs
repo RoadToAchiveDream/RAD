@@ -23,7 +23,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
             expression: u => (u.Email == user.Email && u.PhoneNumber == user.PhoneNumber) && !u.IsDeleted);
 
         if (existsUser is not null)
-            throw new AlreadyExistException($"User is already exists with this Email ({user.Email}) or Phone Number ({user.PhoneNumber})");
+            throw new AlreadyExistException($"Пользователь уже существует с этой электронной почтой ({user.Email}) или номером телефона ({user.PhoneNumber})");
 
         user.CreatedByUserId = HttpContextHelper.UserId;
         user.Password = PasswordHasher.Hash(user.Password);
@@ -38,7 +38,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     {
         var existUser = await unitOfWork.Users.SelectAsync(
             expression: u => u.Id == id && !u.IsDeleted)
-            ?? throw new NotFoundException($"User with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Пользователь не найден");
 
         existUser.DeletedByUserId = HttpContextHelper.UserId;
 
@@ -52,7 +52,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     {
         var existUser = await unitOfWork.Users.SelectAsync(
             expression: u => u.Id == id && !u.IsDeleted)
-            ?? throw new NotFoundException($"User with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Пользователь не найден");
 
         existUser.FirstName = user.FirstName;
         existUser.LastName = user.LastName;
@@ -70,7 +70,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     {
         var existUser = await unitOfWork.Users.SelectAsync(
             expression: u => u.Id == id && !u.IsDeleted)
-            ?? throw new NotFoundException($"User with Id ({id}) is not found");
+            ?? throw new NotFoundException($"Пользователь не найден");
 
         return existUser;
     }
@@ -95,10 +95,10 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     {
         var existUser = await unitOfWork.Users.SelectAsync(
             expression: user => user.PhoneNumber == phone && !user.IsDeleted)
-            ?? throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
+            ?? throw new ArgumentIsNotValidException("Введенный номер телефона или пароль недействительны");
 
         if (!PasswordHasher.Verify(password, existUser.Password))
-            throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
+            throw new ArgumentIsNotValidException("Введенный номер телефона или пароль недействительны");
 
         return (user: existUser, token: AuthHepler.GenerateToken(existUser));
     }
@@ -107,10 +107,10 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     {
         var existUser = await unitOfWork.Users.SelectAsync(
             expression: user => user.PhoneNumber == phone && !user.IsDeleted)
-            ?? throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
+            ?? throw new ArgumentIsNotValidException("Введенный номер телефона или пароль недействительны");
 
         if (!PasswordHasher.Verify(oldPassword, existUser.Password))
-            throw new ArgumentIsNotValidException("Entered Phone or password is not valid");
+            throw new ArgumentIsNotValidException("Введенный номер телефона или пароль недействительны");
 
         existUser.Password = PasswordHasher.Hash(newPassword);
         await unitOfWork.Users.UpdateAsync(existUser);
@@ -122,11 +122,11 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     public async ValueTask<bool> ResetPasswordAsync(string phone, string newPassword)
     {
         var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumber == phone && !user.IsDeleted)
-            ?? throw new NotFoundException($"User with Phone Number ({phone}) is not found");
+            ?? throw new NotFoundException($"Пользователь с номером телефона ({phone}) не найден");
 
         var code = memoryCache.Get(cacheKey) as string;
         if (!await ConfirmCodeAsync(phone, code))
-            throw new ArgumentIsNotValidException("Confirmation failed");
+            throw new ArgumentIsNotValidException("Подтверждение не удалось");
 
         existUser.Password = PasswordHasher.Hash(newPassword);
         await unitOfWork.Users.UpdateAsync(existUser);
@@ -138,11 +138,11 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     public async ValueTask<bool> SendCodeAsync(string phone)
     {
         var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumber == phone && !user.IsDeleted)
-           ?? throw new NotFoundException($"User with Phone Number ({phone}) is not found");
+           ?? throw new NotFoundException($"Пользователь с номером телефона ({phone}) не найден");
 
         var random = new Random();
         var code = random.Next(10000, 99999);
-        await EmailHelper.SendMessageAsync(existUser.Email, "Confirmation Code", code.ToString());
+        await EmailHelper.SendMessageAsync(existUser.Email, "Код подтверждения", code.ToString());
 
         var memoryCacheOptions = new MemoryCacheEntryOptions()
             .SetSize(50)
@@ -158,7 +158,7 @@ public class UserService(IUnitOfWork unitOfWork, IMemoryCache memoryCache) : IUs
     public async ValueTask<bool> ConfirmCodeAsync(string phone, string code)
     {
         var existUser = await unitOfWork.Users.SelectAsync(user => user.PhoneNumber == phone && !user.IsDeleted)
-           ?? throw new NotFoundException($"User with Phone Number ({phone}) is not found");
+           ?? throw new NotFoundException($"Пользователь с номером телефона ({phone}) не найден");
 
         if (memoryCache.Get(cacheKey) as string == code)
             return true;

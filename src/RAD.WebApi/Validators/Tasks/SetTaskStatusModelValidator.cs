@@ -9,8 +9,7 @@ public class SetTaskStatusModelValidator : AbstractValidator<SetTaskStatusModel>
     {
         RuleFor(task => task.Status)
             .NotNull()
-            .WithMessage("Status cannot be null")
             .NotEmpty()
-            .WithMessage("Status cannot be empty");
+            .WithMessage("Статус не может быть пустым");
     }
 }

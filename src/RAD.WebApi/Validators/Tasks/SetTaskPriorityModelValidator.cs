@@ -9,8 +9,7 @@ public class SetTaskPriorityModelValidator : AbstractValidator<SetTaskPriorityMo
     {
         RuleFor(task => task.Priority)
             .NotNull()
-            .WithMessage("Priority cannot be null")
             .NotEmpty()
-            .WithMessage("Priority cannot be empty");
+            .WithMessage("Приоритет не может быть пустым");
     }
 }
