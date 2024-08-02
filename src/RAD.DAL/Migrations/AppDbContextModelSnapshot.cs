@@ -460,10 +460,7 @@ namespace RAD.DAL.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("CashbookId")
-                        .HasColumnType("text");
-
-                    b.Property<long?>("CashbookId1")
+                    b.Property<long>("CashbookId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -493,15 +490,12 @@ namespace RAD.DAL.Migrations
                     b.Property<long?>("UpdatedByUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UsertId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CashbookId1");
+                    b.HasIndex("CashbookId");
 
                     b.HasIndex("UserId");
 
@@ -666,16 +660,25 @@ namespace RAD.DAL.Migrations
             modelBuilder.Entity("RAD.Domain.Entities.Transaction", b =>
                 {
                     b.HasOne("RAD.Domain.Entities.Cashbook", "Cashbook")
-                        .WithMany()
-                        .HasForeignKey("CashbookId1");
+                        .WithMany("Transactions")
+                        .HasForeignKey("CashbookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RAD.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cashbook");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RAD.Domain.Entities.Cashbook", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("RAD.Domain.Entities.NoteCategory", b =>

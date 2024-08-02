@@ -34,8 +34,11 @@ public class CashbookService(IUserService userService, IUnitOfWork unitOfWork) :
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var existCashbook = await unitOfWork.Cashbooks.SelectAsync(
-            expression: c => (c.Id == id && c.UserId == HttpContextHelper.UserId) && !c.IsDeleted)
+            expression: c => (c.Id == id && c.UserId == HttpContextHelper.UserId) && !c.IsDeleted,
+            includes: ["Transactions"])
             ?? throw new NotFoundException($"Кассовая книга не найдена");
+
+        existCashbook.Transactions.ForEach(transaction => transaction.IsDeleted = true);
 
         existCashbook.DeletedByUserId = HttpContextHelper.UserId;
 
@@ -49,6 +52,7 @@ public class CashbookService(IUserService userService, IUnitOfWork unitOfWork) :
     {
         var Cashbooks = unitOfWork.Cashbooks.SelectAsQueryable(
             expression: c => !c.IsDeleted && c.UserId == HttpContextHelper.UserId,
+            includes: ["Transactions"],
             isTracked: false).OrderBy(filter);
 
         if (!string.IsNullOrEmpty(search))
@@ -61,7 +65,8 @@ public class CashbookService(IUserService userService, IUnitOfWork unitOfWork) :
     public async ValueTask<Cashbook> GetByIdAsync(long id)
     {
         var existsCashbook = await unitOfWork.Cashbooks.SelectAsync(
-            expression: c => c.Id == id && !c.IsDeleted && c.UserId == HttpContextHelper.UserId)
+            expression: c => c.Id == id && !c.IsDeleted && c.UserId == HttpContextHelper.UserId,
+            includes: ["Transactions"])
             ?? throw new NotFoundException($"Кассовая книга не найдена");
 
         return existsCashbook;
@@ -70,7 +75,8 @@ public class CashbookService(IUserService userService, IUnitOfWork unitOfWork) :
     public async ValueTask<Cashbook> UpdateAsync(long id, Cashbook cashbook)
     {
         var existCashbook = await unitOfWork.Cashbooks.SelectAsync(
-            expression: c => (c.Id == id && c.UserId == HttpContextHelper.UserId) && !c.IsDeleted)
+            expression: c => (c.Id == id && c.UserId == HttpContextHelper.UserId) && !c.IsDeleted,
+            includes: ["Transactions"])
             ?? throw new NotFoundException($"Кассовая книга не найдена");
 
         var existUser = await userService.GetByIdAsync(HttpContextHelper.UserId);

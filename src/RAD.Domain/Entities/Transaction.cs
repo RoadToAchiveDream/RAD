@@ -5,9 +5,9 @@ namespace RAD.Domain.Entities;
 
 public class Transaction : Auditable
 {
-    public long UsertId { get; set; }
+    public long UserId { get; set; }
     public User User { get; set; }
-    public string CashbookId { get; set; }
+    public long CashbookId { get; set; }
     public Cashbook Cashbook { get; set; }
     public TransactionType Type { get; set; }
     public double Amount { get; set; }
