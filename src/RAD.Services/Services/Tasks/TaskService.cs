@@ -298,7 +298,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
         return updated;
     }
 
-    public async ValueTask<IEnumerable<Task>> GetAllCompletedAsyns(PaginationParams @params, Filter filter)
+    public async ValueTask<IEnumerable<Task>> GetAllCompletedAsync(PaginationParams @params, Filter filter)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: t => !t.IsDeleted && t.IsCompleted && t.UserId == HttpContextHelper.UserId,
@@ -306,7 +306,7 @@ public class TaskService(IUserService userService, IUnitOfWork unitOfWork) : ITa
 
         return await Tasks.ToPaginateAsQueryable(@params).ToListAsync();
     }
-    public async ValueTask<IEnumerable<Task>> GetAllNotCompletedAsyns(PaginationParams @params, Filter filter)
+    public async ValueTask<IEnumerable<Task>> GetAllNotCompletedAsync(PaginationParams @params, Filter filter)
     {
         var Tasks = unitOfWork.Tasks.SelectAsQueryable(
             expression: t => !t.IsDeleted && !t.IsCompleted && t.UserId == HttpContextHelper.UserId,

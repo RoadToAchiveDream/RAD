@@ -29,8 +29,8 @@ public interface ITaskService
     public ValueTask<Task> SetCategoryIdAsync(long taskId, long categoryId);
     public ValueTask<Task> UnsetCategoryIdAsync(long taskId);
 
-    public ValueTask<IEnumerable<Task>> GetAllCompletedAsyns(PaginationParams @params, Filter filter);
-    public ValueTask<IEnumerable<Task>> GetAllNotCompletedAsyns(PaginationParams @params, Filter filter);
+    public ValueTask<IEnumerable<Task>> GetAllCompletedAsync(PaginationParams @params, Filter filter);
+    public ValueTask<IEnumerable<Task>> GetAllNotCompletedAsync(PaginationParams @params, Filter filter);
 
     public ValueTask<IEnumerable<Task>> GetByDueDateAsync(PaginationParams @params, Filter filter, DateTime dueDate);
     public ValueTask<IEnumerable<Task>> GetByReminderAsync(PaginationParams @params, Filter filter, DateTime reminder);
