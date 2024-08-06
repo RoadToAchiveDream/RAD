@@ -6,5 +6,4 @@ public class HabitCompletionViewModel
     public long UserId { get; set; }
     public long HabitTaskId { get; set; }
     public DateTime CompletionDate { get; set; }
-
 }
