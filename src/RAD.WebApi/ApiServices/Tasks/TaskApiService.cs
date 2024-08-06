@@ -117,12 +117,12 @@ public class TaskApiService(
 
     public async ValueTask<IEnumerable<TaskViewModel>> GetAllCompletedTasksAsync(PaginationParams @params, Filter filter)
     {
-        var tasks = await taskService.GetAllCompletedAsyns(@params, filter);
+        var tasks = await taskService.GetAllCompletedAsync(@params, filter);
         return mapper.Map<IEnumerable<TaskViewModel>>(tasks);
     }
     public async ValueTask<IEnumerable<TaskViewModel>> GetAllNotCompletedTasksAsync(PaginationParams @params, Filter filter)
     {
-        var tasks = await taskService.GetAllNotCompletedAsyns(@params, filter);
+        var tasks = await taskService.GetAllNotCompletedAsync(@params, filter);
         return mapper.Map<IEnumerable<TaskViewModel>>(tasks);
     }
 
