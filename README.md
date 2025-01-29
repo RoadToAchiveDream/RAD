@@ -6,8 +6,6 @@
 <li>Mirjalol Ziyadullayev (Developer, Project Manager)</li>
 <li>Shoxsanam Abdujabborova (Developer)</li>
 
-<h4>Владелец:</h4>
-<li>Mirjalol Ziyadullayev</li>
 <br>
 Основная страница: <a href="https://road-to-the-dream.uz/src/html/authentication-login.html">Войти</a>
 <br>
