@@ -1,10 +1,10 @@
-<h4>Авторы: RAD ClientSide</h4>
+<!--<h4>Авторы: RAD ClientSide</h4>
 <li>Mirjalol Ziyadullayev (Developer, Project Manager)</li>
 <li>Habibullo Abdullayev (QA tester)</li>
 
 <h4>Авторы: RAD ServerSide</h4>
 <li>Mirjalol Ziyadullayev (Developer, Project Manager)</li>
-<li>Shoxsanam Abdujabborova (Developer)</li>
+<li>Shoxsanam Abdujabborova (Developer)</li>-->
 
 <br>
 Основная страница: <a href="https://road-to-the-dream.uz/src/html/authentication-login.html">Войти</a>
